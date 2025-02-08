@@ -12,6 +12,11 @@ class ProjectDTO
 
     private ?string $description = null;
 
+    private array $technologies = [];
+
+    private ?string $task = null;
+    private ?string $workflow = null;
+
     public function getId(): ?Ulid
     {
         return $this->id;
@@ -40,4 +45,44 @@ class ProjectDTO
 
         return $this;
     }
+
+    public function getTask(): ?string
+    {
+        return $this->task;
+    }
+
+    public function setTask(?string $task): void
+    {
+        $this->task = $task;
+    }
+
+    public function getWorkflow(): ?string
+    {
+        return $this->workflow;
+    }
+
+    public function setWorkflow(?string $workflow): void
+    {
+        $this->workflow = $workflow;
+    }
+
+    public function getTechnologies(): array
+    {
+        return $this->technologies;
+    }
+
+    public function setTechnologies(array $technologies): void
+    {
+        $this->technologies = $technologies;
+    }
+
+    public function addTechnology(?string $technology): self
+    {
+        if (!in_array($technology, $this->technologies, true)) {
+            $this->technologies[] = $technology;
+        }
+
+        return $this;
+    }
+
 }

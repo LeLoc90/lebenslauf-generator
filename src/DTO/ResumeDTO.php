@@ -9,33 +9,23 @@ class ResumeDTO
 {
     private ?string $introduction = null;
 
-    private ?string $firstname = null;
+    private ?string $name = null;
 
-    private ?string $lastname = null;
-
-    private ?string $position = null;
+    private array $positions = [];
 
     private ?string $photo = null;
 
     private Collection $languages;
 
-    private Collection $educations;
-
-    private Collection $programmingLanguages;
-
-    private Collection $tasks;
-
-    private Collection $competences;
+    private array $programmingLanguages = [];
+    private array $tools = [];
 
     private Collection $projects;
+
 
     public function __construct()
     {
         $this->languages = new ArrayCollection();
-        $this->educations = new ArrayCollection();
-        $this->programmingLanguages = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->competences = new ArrayCollection();
         $this->projects = new ArrayCollection();
     }
 
@@ -71,85 +61,43 @@ class ResumeDTO
         return $this;
     }
 
-    public function getEducations(): Collection
-    {
-        return $this->educations;
-    }
-
-    public function addEducation(EducationDTO $education): static
-    {
-        if (!$this->educations->contains($education)) {
-            $this->educations->add($education);
-        }
-        return $this;
-    }
-
-    public function removeEducation(EducationDTO $education): static
-    {
-        $this->educations->removeElement($education);
-        return $this;
-    }
-
-    public function getProgrammingLanguages(): Collection
+    public function getProgrammingLanguages(): array
     {
         return $this->programmingLanguages;
     }
 
-    public function addProgrammingLanguage(ProgrammingLanguageDTO $programmingLanguage): static
+    public function setProgrammingLanguages(array $programmingLanguages): self
     {
-        if (!$this->programmingLanguages->contains($programmingLanguage)) {
-            $this->programmingLanguages->add($programmingLanguage);
+        $this->programmingLanguages = $programmingLanguages;
+
+        return $this;
+    }
+
+    public function addProgrammingLanguage(?string $programmingLanguage): self
+    {
+        if (!in_array($programmingLanguage, $this->programmingLanguages, true)) {
+            $this->programmingLanguages[] = $programmingLanguage;
         }
 
         return $this;
     }
 
-    public function removeProgrammingLanguage(ProgrammingLanguageDTO $programmingLanguage): static
+    public function getTools(): array
     {
-        $this->programmingLanguages->removeElement($programmingLanguage);
+        return $this->tools;
+    }
 
+    public function setTools(array $tools): self
+    {
+        $this->tools = $tools;
         return $this;
     }
 
-
-    public function getTasks(): Collection
+    public function addTool(?string $tool): self
     {
-        return $this->tasks;
-    }
-
-    public function addTask(TaskDTO $task): static
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
+        if (!in_array($tool, $this->tools, true)) {
+            $this->tools[] = $tool;
         }
-
-        return $this;
-    }
-
-    public function removeTask(TaskDTO $task): static
-    {
-        $this->tasks->removeElement($task);
-        return $this;
-    }
-
-    public function getCompetences(): Collection
-    {
-        return $this->competences;
-    }
-
-    public function addCompetence(CompetenceDTO $competence): static
-    {
-        if (!$this->competences->contains($competence)) {
-            $this->competences->add($competence);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetence(CompetenceDTO $competence): static
-    {
-        $this->competences->removeElement($competence);
-
         return $this;
     }
 
@@ -174,41 +122,38 @@ class ResumeDTO
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getName(): ?string
     {
-        return $this->firstname;
+        return $this->name;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setName(string $name): static
     {
-        $this->firstname = $firstname;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+
+    public function getPositions(): array
     {
-        return $this->lastname;
+        return $this->positions;
     }
 
-    public function setLastname(string $lastname): static
+    public function setPositions(array $positions): self
     {
-        $this->lastname = $lastname;
-
+        $this->positions = $positions;
         return $this;
     }
 
-    public function getPosition(): ?string
+    public function addPosition(?string $position): self
     {
-        return $this->position;
-    }
-
-    public function setPosition(?string $position): static
-    {
-        $this->position = $position;
-
+        if (!in_array($position, $this->positions, true)) {
+            $this->positions[] = $position;
+        }
         return $this;
     }
+
 
     public function getPhoto(): ?string
     {
