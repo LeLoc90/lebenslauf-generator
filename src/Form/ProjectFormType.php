@@ -23,10 +23,12 @@ class ProjectFormType extends BaseForm
             ->add('Title', TextType::class,
                 [
                     'label' => 'Projektname',
+                    'row_attr' => ['class' => 'form-group'],
                 ])
             ->add('description', TextareaType::class,
                 [
                     'label' => 'Beschreibung',
+                    'row_attr' => ['class' => 'form-group'],
                 ])
             ->add('technologies', ChoiceType::class,
                 [
@@ -54,14 +56,18 @@ class ProjectFormType extends BaseForm
                         'Git' => 'Git'
                     ],
                     'autocomplete' => true,
+                    'multiple' => true,
+                    'row_attr' => ['class' => 'form-group'],
                 ])
-            ->add('tasks', TextareaType::class,
+            ->add('task', TextareaType::class,
                 [
                     'label' => 'Aufgabenbereich',
+                    'row_attr' => ['class' => 'form-group'],
                 ])
             ->add('workflow', TextareaType::class,
                 [
                     'label' => 'Workflow',
+                    'row_attr' => ['class' => 'form-group'],
                 ]);
 
     }

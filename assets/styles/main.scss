@@ -1,0 +1,152 @@
+/* ================================================
+ ================== VARIABLES ====================
+ ================================================= */
+
+// === Colors ===
+$primary: #003e7e;
+$secondary: #4c5166;
+$black: #3d3d3d;
+$white: #fff;
+
+$color-text: #333;
+$color-body-bg: #f9f9fa;
+$color-input-placeholder: #595959;
+
+// === Sizing ===
+$font-size-form-label: .85em;
+
+// === Shadows ===
+$shadow-s: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+$shadow-m: 12px 14px 24px 2px rgba(0, 0, 0, 0.05);
+
+/* ================================================
+ ================== STYLINGS ====================
+ ================================================= */
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 100%;
+  line-height: 1.5;
+  color: $color-text;
+  background-color: $color-body-bg;
+}
+
+.form {
+  &-container {
+    padding: 1.5rem 2rem;
+    background-color: $white;
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-s;
+  }
+
+  &-group {
+    --input-max-height: 3.125rem;
+    margin-bottom: 1.5rem;
+
+    & input, & .ts-control:not(:has(.item)) {
+      max-height: var(--input-max-height);
+      font-size: 1rem;
+    }
+
+    & *::placeholder {
+      color: rgba($color-input-placeholder, .75);
+    }
+
+    & input:is([type='time'], [type='date']):not([value]), select:has(option[value='0'][selected='selected']) {
+      color: rgba($color-input-placeholder, .75);
+    }
+
+    & .ts {
+      &-control {
+        padding: 1rem;
+        border: 1.5px solid rgba($color-text, .75);
+        border-radius: 0.375rem;
+        position: relative;
+        cursor: pointer;
+
+        & > * {
+          cursor: pointer;
+        }
+
+        &::after {
+          content: '▼';
+          font-weight: 900;
+          position: absolute;
+          right: 1rem;
+          top: 50%;
+          transform: translateY(-50%) scaleX(1.5);
+          color: rgba($color-text, .75);
+        }
+
+        &:has(.item) {
+          padding: .75rem 1rem !important;
+
+          & *::placeholder {
+            color: transparent;
+          }
+        }
+      }
+
+      &-dropdown-content {
+        background-color: $white;
+      }
+    }
+  }
+
+  &-collection {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & fieldset {
+      padding: 1.25rem;
+      padding-bottom: 0;
+      background-color: rgba($secondary, .035);
+      border-radius: $border-radius-lg;
+
+
+      &:not(:last-child) {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    & > :has(.form-button--delete-collection) {
+      text-align: right;
+    }
+  }
+
+  &-label {
+    font-size: $font-size-form-label;
+  }
+
+  &-control, &-select:not(:has(.ts-control)) {
+    padding: .75rem 1rem;
+    border: 1.5px solid rgba($color-text, .75);
+  }
+
+  &-select:has(.ts-control) {
+    padding: 0 !important;
+    height: auto;
+    box-shadow: none;
+    display: flex;
+  }
+
+  &-button {
+    &--add-collection {
+      @extend .btn-outline-secondary;
+      width: 100%;
+      border-style: dashed;
+      font-weight: $font-weight-semibold;
+    }
+
+    &--delete-collection {
+      @extend .btn-danger, .btn-sm;
+      font-weight: $font-weight-semibold;
+      margin-left: auto;
+    }
+  }
+}
+
+.col-form-label {
+  font-size: $font-size-form-label;
+}

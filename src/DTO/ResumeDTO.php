@@ -2,14 +2,15 @@
 
 namespace App\DTO;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class ResumeDTO
 {
-    private ?string $introduction = null;
-
     private ?string $name = null;
+
+    private ?DateTime $birthdate = null;
 
     private array $positions = [];
 
@@ -28,19 +29,6 @@ class ResumeDTO
         $this->languages = new ArrayCollection();
         $this->projects = new ArrayCollection();
     }
-
-    public function getIntroduction(): ?string
-    {
-        return $this->introduction;
-    }
-
-    public function setIntroduction(string $introduction): static
-    {
-        $this->introduction = $introduction;
-
-        return $this;
-    }
-
 
     public function getLanguages(): Collection
     {
@@ -165,5 +153,15 @@ class ResumeDTO
         $this->photo = $photo;
 
         return $this;
+    }
+
+    public function getBirthdate(): ?DateTime
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(?DateTime $birthdate): void
+    {
+        $this->birthdate = $birthdate;
     }
 }

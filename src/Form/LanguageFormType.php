@@ -19,11 +19,11 @@ class LanguageFormType extends BaseForm
     public function __construct()
     {
         $this->languages = Languages::getNames();
-        $default = ['' => null];
+        $default = ['Auswählen' => null];
         $germanName = $this->languages['de'];
         $englishName = $this->languages['en'];
         unset($this->languages['de'], $this->languages['en']);
-        $languages = array_combine($this->languages, $this->languages);
+        $this->languages = array_combine($this->languages, $this->languages);
         $german = [$germanName => $germanName];
         $english = [$englishName => $englishName];
         $this->languages = $default + $german + $english + $this->languages;
@@ -38,11 +38,13 @@ class LanguageFormType extends BaseForm
             ->add('title', ChoiceType::class,
                 [
                     'choices' => $this->languages,
-                    'label' => 'Sprache',
+                    'label_attr' => ['hidden' => true],
+                    'row_attr' => ['class' => 'form-group'],
                 ])
             ->add('level', RangeType::class,
                 [
                     'label' => 'Level',
+                    'row_attr' => ['class' => 'form-group'],
                     'attr' => [
                         'min' => 0,
                         'max' => 10,

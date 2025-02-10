@@ -2,14 +2,13 @@
 
     <div class="container-fluid p-5">
         <div class="row">
-            <div class="col">
+            <div class="form-container col-5">
                 {{ form(form) }}
-
             </div>
-            <div class="col">
+            <div class="col-7">
 
                 {{ dump(this.formData) }}
-                <p>Introduction: {{ this.formData.introduction }}</p>
+                <p>Namen: {{ this.formData.name }}</p>
 
                 {% for position in this.formData.positions %}
                     <p>Position: {{ position }}</p>

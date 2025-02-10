@@ -23,8 +23,8 @@ class ResumeCreator extends AbstractController
 
     #[LiveProp(writable: true)]
     public array $formData = [
-        "introduction" => "",
         "name" => "",
+        "birthdate" => "",
         "positions" => [],
         "languages" => [],
         "programmingLanguages" => [],

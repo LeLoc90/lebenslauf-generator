@@ -6,8 +6,8 @@ namespace App\Form;
 
 use App\DTO\ResumeDTO;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,16 +22,32 @@ class ResumeFormType extends BaseForm
         $builder = new DynamicFormBuilder($builder);
 
         $builder
-            ->add('introduction', TextareaType::class,
-                [
-                    'label' => 'Einleitung',
-                ])
             ->add('name', TextType::class,
                 [
-                    'label' => 'Namen',
+                    'label' => 'NAMEN',
+                    'label_attr' => [
+                        'class' => '',
+                    ],
+                    'row_attr' => [
+                        "class" => "form-group",
+                    ],
+                    'attr' => [
+                        'placeholder' => 'Namen',
+                    ],
                 ])
+            ->add('birthdate', DateType::class, [
+                'label' => 'GEBRUTSDATUM',
+                'widget' => 'single_text',
+                'row_attr' => [
+                    "class" => "form-group",
+                ],
+                'attr' => [
+                    'placeholder' => 'Geburtsdatum',
+                ],
+            ])
             ->add('positions', ChoiceType::class, [
                     'choices' => [
+                        'Auswählen' => '',
                         'Frontend-Entwickler' => 'Frontend-Entwickler',
                         'Backend-Entwickler' => 'Backend-Entwickler',
                         'Fullstack-Entwickler' => 'Fullstack-Entwickler',
@@ -42,10 +58,34 @@ class ResumeFormType extends BaseForm
                         'UI/UX-Designer' => 'UI/UX Designer',
                         'Datenbank-Administrator' => 'Datenbank Administrator',
                         'QA-Tester' => 'QA Tester'
-                    ], 'multiple' => true, 'autocomplete' => true,]
+                    ], 'multiple' => true, 'autocomplete' => true,
+                    'label' => 'POSITIONEN',
+                    'row_attr' => [
+                        "class" => "form-group",
+                    ],]
             )
             ->add('languages', LiveCollectionType::class, [
-                'entry_type' => LanguageFormType::class
+                'entry_type' => LanguageFormType::class,
+                'label' => 'SPRACHEN',
+                'row_attr' => [
+                    "class" => "form-group",
+                ],
+                'attr' => [
+                    'class' => 'form-collection',
+                ],
+
+                'button_delete_options' => [
+                    'label' => 'X',
+                    'attr' => [
+                        'class' => 'form-button--delete-collection',
+                    ],
+                ],
+                'button_add_options' => [
+                    'label' => '+ Hinzufügen',
+                    'attr' => [
+                        'class' => 'form-button--add-collection',
+                    ],
+                ]
             ])
             ->add('programmingLanguages', ChoiceType::class,
                 [
@@ -68,6 +108,10 @@ class ResumeFormType extends BaseForm
                         'Dart' => 'Dart'
                     ], 'multiple' => true,
                     'autocomplete' => true,
+                    'label' => 'PROGRAMMIERSPRACHEN',
+                    'row_attr' => [
+                        "class" => "form-group",
+                    ]
                 ]
             )
             ->add('tools', ChoiceType::class,
@@ -93,16 +137,42 @@ class ResumeFormType extends BaseForm
                         'Symfony' => 'Symfony',
                     ], 'multiple' => true,
                     'autocomplete' => true,
+                    'label' => 'HANDWERKZEUGE',
+                    'row_attr' => [
+                        "class" => "form-group",
+                    ]
                 ]
             )
             ->add('projects', LiveCollectionType::class, [
-                'entry_type' => ProjectFormType::class
+                'entry_type' => ProjectFormType::class,
+                'label' => 'PROJEKTE',
+                'row_attr' => [
+                    "class" => "form-group",
+                ],
+                'attr' => [
+                    'class' => 'form-collection',
+                ],
+                'button_delete_options' => [
+                    'label' => 'X',
+                    'attr' => [
+                        'class' => 'form-button--delete-collection',
+                    ],
+                ],
+                'button_add_options' => [
+                    'label' => '+ Hinzufügen',
+                    'attr' => [
+                        'class' => 'form-button--add-collection',
+                    ],
+                ]
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Photo (JPG, PNG, GIF)',
+                'label' => 'FOTO (jpg, png, gif)',
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['accept' => '.jpg, .jpeg, .png, .gif'],
+                'row_attr' => [
+                    "class" => "form-group",
+                ]
             ]);
 
     }
