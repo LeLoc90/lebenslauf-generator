@@ -10,6 +10,11 @@ services:
       - POSTGRES_DB=lebenslauf
     ports:
       - "6000:5432"
+
+###> sensiolabs/gotenberg-bundle ###
+  gotenberg:
+    image: 'gotenberg/gotenberg:8'
+###< sensiolabs/gotenberg-bundle ###
 networks:
   default:
     name: lebenslauf

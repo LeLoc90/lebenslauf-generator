@@ -1,28 +1,6 @@
-/* ================================================
- ================== VARIABLES ====================
- ================================================= */
-
-// === Colors ===
-$primary: #003e7e;
-$secondary: #4c5166;
-$black: #3d3d3d;
-$white: #fff;
-
-$color-text: #333;
-$color-body-bg: #f9f9fa;
-$color-input-placeholder: #595959;
-
-// === Sizing ===
-$font-size-form-label: .85em;
-
-// === Shadows ===
-$shadow-s: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-$shadow-m: 12px 14px 24px 2px rgba(0, 0, 0, 0.05);
-
-/* ================================================
- ================== STYLINGS ====================
- ================================================= */
-
+/* =======================================================
+===================== Base Styles ========================
+======================================================= */
 
 body {
   font-family: 'Roboto', sans-serif;
@@ -31,6 +9,10 @@ body {
   color: $color-text;
   background-color: $color-body-bg;
 }
+
+/* =======================================================
+===================== Form ========================
+======================================================= */
 
 .form {
   &-container {
@@ -84,6 +66,16 @@ body {
 
           & *::placeholder {
             color: transparent;
+          }
+        }
+
+        & > .item[data-value] {
+          background-image: linear-gradient(to bottom, $tertiary, $primary);
+          border-color: $tertiary;
+          font-size: .9rem;
+
+          & > a.remove {
+            border-left: 1px solid $white;
           }
         }
       }
@@ -210,4 +202,24 @@ body {
   & > textarea {
     min-height: 80px;
   }
+}
+
+/* =======================================================
+===================== Template Switch ====================
+======================================================= */
+.template-switch {
+  padding: 0;
+
+  & > .form-check-label {
+    cursor: pointer;
+    padding: .25rem 1rem;
+    border-radius: 9999px;
+    transition: all .1s linear;
+  }
+
+  & > .form-check-input:checked + .form-check-label {
+    color: $white;
+    background-color: $primary;
+  }
+
 }

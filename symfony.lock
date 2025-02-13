@@ -40,6 +40,18 @@
             "tests/bootstrap.php"
         ]
     },
+    "sensiolabs/gotenberg-bundle": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "c17b12606882eedea4ada9f5c6b00b6bcbc3011b"
+        },
+        "files": [
+            "config/packages/gotenberg.yaml"
+        ]
+    },
     "symfony/console": {
         "version": "7.2",
         "recipe": {
