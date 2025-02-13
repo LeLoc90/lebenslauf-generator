@@ -25,6 +25,8 @@ class ResumeCreator extends AbstractController
     public array $formData = [
         "name" => "",
         "birthdate" => "",
+        "schoolGraduation" => "",
+        "trainingGraduation" => "",
         "positions" => [],
         "languages" => [],
         "programmingLanguages" => [],

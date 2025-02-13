@@ -20,15 +20,16 @@ class ProjectFormType extends BaseForm
         $builder = new DynamicFormBuilder($builder);
 
         $builder
-            ->add('Title', TextType::class,
+            ->add('title', TextType::class,
                 [
                     'label' => 'Projektname',
-                    'row_attr' => ['class' => 'form-group'],
+                    'row_attr' => ['class' => 'form-group form-floating'],
                 ])
             ->add('description', TextareaType::class,
                 [
                     'label' => 'Beschreibung',
-                    'row_attr' => ['class' => 'form-group'],
+                    'row_attr' => ['class' => 'form-group form-floating'],
+                    'attr' => ['rows' => 6],
                 ])
             ->add('technologies', ChoiceType::class,
                 [
@@ -55,19 +56,25 @@ class ProjectFormType extends BaseForm
                         'Node.js' => 'Node-js',
                         'Git' => 'Git'
                     ],
+                    'choice_attr' => function ($choice) {
+                        return null === $choice ? ['disabled' => true] : [];
+                    },
                     'autocomplete' => true,
+                    'label' => 'Technologien',
                     'multiple' => true,
-                    'row_attr' => ['class' => 'form-group'],
+                    'row_attr' => ['class' => 'form-group form-floating'],
                 ])
             ->add('task', TextareaType::class,
                 [
                     'label' => 'Aufgabenbereich',
-                    'row_attr' => ['class' => 'form-group'],
+                    'row_attr' => ['class' => 'form-group form-floating'],
+                    'attr' => ['rows' => 6],
                 ])
             ->add('workflow', TextareaType::class,
                 [
                     'label' => 'Workflow',
-                    'row_attr' => ['class' => 'form-group'],
+                    'row_attr' => ['class' => 'form-group form-floating'],
+                    'attr' => ['rows' => 6],
                 ]);
 
     }

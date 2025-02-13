@@ -39,6 +39,7 @@
         "symfony/twig-bundle": "7.2.*",
         "symfony/uid": "7.2.*",
         "symfony/ux-autocomplete": "^2.22",
+        "symfony/ux-dropzone": "^2.23",
         "symfony/ux-live-component": "^2.22",
         "symfony/ux-turbo": "^2.22",
         "symfony/ux-twig-component": "^2.22",

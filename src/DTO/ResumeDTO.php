@@ -11,6 +11,8 @@ class ResumeDTO
     private ?string $name = null;
 
     private ?DateTime $birthdate = null;
+    private ?string $schoolGraduation = null;
+    private ?string $trainingGraduation = null;
 
     private array $positions = [];
 
@@ -163,5 +165,25 @@ class ResumeDTO
     public function setBirthdate(?DateTime $birthdate): void
     {
         $this->birthdate = $birthdate;
+    }
+
+    public function getSchoolGraduation(): ?string
+    {
+        return $this->schoolGraduation;
+    }
+
+    public function setSchoolGraduation(?string $schoolGraduation): void
+    {
+        $this->schoolGraduation = $schoolGraduation;
+    }
+
+    public function getTrainingGraduation(): ?string
+    {
+        return $this->trainingGraduation;
+    }
+
+    public function setTrainingGraduation(?string $trainingGraduation): void
+    {
+        $this->trainingGraduation = $trainingGraduation;
     }
 }

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lebenslauf – {{ this.formData.name|default('Unbekannter Name') }}</title>
+    <link rel="stylesheet" href="{{ asset('styles/resume_template.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="resume-container">
+    <!-- Header mit Foto und persönlichen Daten -->
+    <header class="resume-header">
+        <div class="resume-photo">
+            {#            {% if this.formData.photo %} #}
+            {#                <img src="{{ asset(this.formData.photo) }}" alt="Foto von {{ this.formData.name }}"> #}
+            {#            {% else %} #}
+            <div class="placeholder-photo" aria-label="Kein Foto verfügbar">Foto</div>
+            {#            {% endif %} #}
+        </div>
+        <div class="resume-info">
+            <h1 class="name">{{ this.formData.name|default('Unbekannter Name') }}</h1>
+            {% if this.formData.birthdate %}
+                <p class="birthdate">{{ this.formData.birthdate|date('d.m.Y') }}</p>
+            {% endif %}
+            {% if this.formData.positions is not empty %}
+                <div class="positions">
+                    <ul>
+                        {% for position in this.formData.positions %}
+                            <li>{{ position }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Profil / Einführung -->
+    <section class="resume-section profile">
+        <h2>Profil</h2>
+        {% if this.formData.schoolGraduation %}
+            <h4>Schulabschluss</h4>
+            <p class="">{{ this.formData.schoolGraduation|default('Keine Angaben') }}</p>
+        {% endif %}
+        {% if this.formData.trainingGraduation %}
+            <h4>Ausbildungsabschluss</h4>
+            <p class="">{{ this.formData.trainingGraduation|default('Keine Angaben') }}</p>
+        {% endif %}
+    </section>
+
+    <!-- Sprachkenntnisse -->
+    <section class="resume-section languages">
+        <h2>Sprachkenntnisse</h2>
+        {% if this.formData.languages is not empty %}
+            <ul>
+                {% for language in this.formData.languages %}
+                    <li>{{ language.title|default('Keine Angabe') }} – Level: {{ language.level|default('0') }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Keine Sprachkenntnisse angegeben.</p>
+        {% endif %}
+    </section>
+
+    <!-- Fachkenntnisse: Programmierung und Tools -->
+    <section class="resume-section skills">
+        <h2>Fachkenntnisse</h2>
+        <div class="skill-group">
+            <h4>Programmiersprachen</h4>
+            {% if this.formData.programmingLanguages is not empty %}
+                <ul>
+                    {% for pl in this.formData.programmingLanguages %}
+                        <li>{{ pl }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Angaben.</p>
+            {% endif %}
+        </div>
+        <div class="skill-group">
+            <h4>Tools &amp; Methoden</h4>
+            {% if this.formData.tools is not empty %}
+                <ul>
+                    {% for tool in this.formData.tools %}
+                        <li>{{ tool }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Angaben.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Projekte -->
+    <section class="resume-section projects">
+        <h2>Projekte</h2>
+        {% if this.formData.projects is not empty %}
+            {% for project in this.formData.projects %}
+                <article class="project">
+                    <h4 class="project-title">{{ project.title|default('Keine Angabe') }}</h4>
+                    <p class="project-description">{{ project.description|default('Keine Angabe') }}</p>
+                    {% set technologies = project.technologies|default([]) %}
+                    <p class="project-technologies">
+                        <strong>Technologien:</strong>
+                        {% if technologies is not empty %}
+                            {{ technologies|join(', ') }}
+                        {% else %}
+                            Keine Angabe
+                        {% endif %}
+                    </p>
+                    {% if project.task is defined and project.task is not empty %}
+                        <p class="project-task">
+                            <strong>Aufgabenbereich:</strong> {{ project.task|default('Keine Angabe') }}</p>
+                    {% endif %}
+                    {% if project.workflow is defined and project.workflow is not empty %}
+                        <p class="project-workflow">
+                            <strong>Workflow:</strong> {{ project.workflow|default('Keine Angabe') }}</p>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        {% else %}
+            <p>Keine Projekte angegeben.</p>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>

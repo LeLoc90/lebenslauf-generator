@@ -6,16 +6,9 @@
                 {{ form(form) }}
             </div>
             <div class="col-7">
-
-                {{ dump(this.formData) }}
-                <p>Namen: {{ this.formData.name }}</p>
-
-                {% for position in this.formData.positions %}
-                    <p>Position: {{ position }}</p>
-                {% endfor %}
+                {{ include('resume/resume_template.html.twig') }}
             </div>
         </div>
     </div>
-
 
 </div>

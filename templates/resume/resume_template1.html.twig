@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lebenslauf – {{ this.formData.name|default('Unbekannter Name') }}</title>
+    <link rel="stylesheet" href="{{ asset('styles/resume_template.css') }}">
+    <!-- Google Fonts für moderne Typografie -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="resume-grid">
+    <!-- Linke Seite: Sidebar (Profil, Sprachen, Skills) -->
+    <aside class="resume-sidebar">
+        <!-- Profil-Karte -->
+        <div class="card profile-card">
+            <div class="photo">
+                {#                {% if this.formData.photo %} #}
+                {#                    <img src="{{ asset(this.formData.photo) }}" alt="Foto von {{ this.formData.name }}"> #}
+                {#                {% else %} #}
+                <div class="placeholder-photo" aria-label="Kein Foto verfügbar">Foto</div>
+                {#                {% endif %} #}
+            </div>
+            <div class="profile-details">
+                <h1 class="name">{{ this.formData.name|default('Unbekannter Name') }}</h1>
+                {% if this.formData.birthdate %}
+                    <p class="birthdate">{{ this.formData.birthdate|date('d.m.Y') }}</p>
+                {% endif %}
+                {% if this.formData.positions is not empty %}
+                    <ul class="positions">
+                        {% for position in this.formData.positions %}
+                            <li>{{ position }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sprachen-Karte -->
+        <div class="card languages-card">
+            <h2>Sprachkenntnisse</h2>
+            {% if this.formData.languages is not empty %}
+                <ul>
+                    {% for language in this.formData.languages %}
+                        <li>{{ language.title|default('Keine Angabe') }} – Level: {{ language.level|default('0') }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Sprachkenntnisse angegeben.</p>
+            {% endif %}
+        </div>
+
+        <!-- Skills-Karte -->
+        <div class="card skills-card">
+            <h2>Fachkenntnisse</h2>
+            <h3>Programmiersprachen</h3>
+            {% if this.formData.programmingLanguages is not empty %}
+                <ul>
+                    {% for pl in this.formData.programmingLanguages %}
+                        <li>{{ pl }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Angaben.</p>
+            {% endif %}
+            <h3>Tools &amp; Methoden</h3>
+            {% if this.formData.tools is not empty %}
+                <ul>
+                    {% for tool in this.formData.tools %}
+                        <li>{{ tool }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Angaben.</p>
+            {% endif %}
+        </div>
+    </aside>
+
+    <!-- Rechte Seite: Hauptinhalt (Berufserfahrung & Ausbildung) -->
+    <main class="resume-content">
+        <!-- Berufserfahrung -->
+        <div class="card experience-card">
+            <h2>Berufserfahrung</h2>
+            {% if this.formData.projects is not empty %}
+                {% for project in this.formData.projects %}
+                    <div class="experience-item">
+                        <h3 class="project-title">{{ project.title|default('Keine Angabe') }}</h3>
+                        <p class="project-description">{{ project.description|default('Keine Angabe') }}</p>
+                        {% set technologies = project.technologies|default([]) %}
+                        <p class="project-technologies">
+                            <strong>Technologien:</strong>
+                            {% if technologies is not empty %}
+                                {{ technologies|join(', ') }}
+                            {% else %}
+                                Keine Angabe
+                            {% endif %}
+                        </p>
+                        {% if project.task is defined and project.task is not empty %}
+                            <p class="project-task">
+                                <strong>Aufgabenbereich:</strong> {{ project.task|default('Keine Angabe') }}</p>
+                        {% endif %}
+                        {% if project.workflow is defined and project.workflow is not empty %}
+                            <p class="project-workflow">
+                                <strong>Workflow:</strong> {{ project.workflow|default('Keine Angabe') }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Keine Berufserfahrung angegeben.</p>
+            {% endif %}
+        </div>
+
+        <!-- Ausbildung & Bildung (optional, falls vorhanden) -->
+        <div class="card education-card">
+            <h2>Ausbildung &amp; Bildung</h2>
+            {% if this.formData.education is defined and this.formData.education is not empty %}
+                <ul>
+                    {% for edu in this.formData.education %}
+                        <li>
+                            <strong>{{ edu.degree|default('Abschluss') }}</strong>
+                            – {{ edu.institution|default('Institution') }}
+                            <span class="edu-date">{{ edu.date|default('Datum') }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Keine Ausbildung / Bildung angegeben.</p>
+            {% endif %}
+        </div>
+    </main>
+</div>
+</body>
+</html>

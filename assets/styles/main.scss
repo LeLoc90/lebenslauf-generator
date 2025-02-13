@@ -60,7 +60,7 @@ body {
     & .ts {
       &-control {
         padding: 1rem;
-        border: 1.5px solid rgba($color-text, .75);
+        border: 1px solid rgba($color-text, .75);
         border-radius: 0.375rem;
         position: relative;
         cursor: pointer;
@@ -80,7 +80,7 @@ body {
         }
 
         &:has(.item) {
-          padding: .75rem 1rem !important;
+          padding: .75rem 1.25rem .75rem .5rem !important;
 
           & *::placeholder {
             color: transparent;
@@ -96,39 +96,93 @@ body {
 
   &-collection {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    padding: 1.25rem;
+    padding-bottom: 0;
+    background-color: rgba($secondary, .035);
+    border-radius: $border-radius-lg;
 
-    & fieldset {
-      padding: 1.25rem;
-      padding-bottom: 0;
-      background-color: rgba($secondary, .035);
-      border-radius: $border-radius-lg;
-
-
-      &:not(:last-child) {
-        margin-bottom: 1.5rem;
-      }
+    &:not(:has(*)) {
+      display: none;
     }
+
+
+    &:not(:last-child) {
+      margin-bottom: 1.5rem;
+    }
+
 
     & > :has(.form-button--delete-collection) {
       text-align: right;
+    }
+
+    &--language {
+      flex-direction: row;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+
+      & > :has(.form-collection-entry) {
+        flex: 1;
+        min-width: 80%;
+      }
+
+    }
+
+    &-entry {
+      & .ts-control {
+        max-height: unset !important;
+        padding-top: 1.5rem;
+
+        &:has(.item) {
+          padding-top: 2rem !important;
+        }
+      }
+
+      &--language {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        width: 100%;
+
+        & > .form-group {
+          flex: 1;
+          margin-bottom: 0;
+
+          &:not(:first-child) {
+            max-width: 30%;
+          }
+
+          & .form-select {
+            padding-top: 1.625rem;
+            padding-bottom: 0.625rem;
+          }
+        }
+      }
     }
   }
 
   &-label {
     font-size: $font-size-form-label;
+    font-weight: $font-weight-semibold;
   }
 
   &-control, &-select:not(:has(.ts-control)) {
     padding: .75rem 1rem;
-    border: 1.5px solid rgba($color-text, .75);
+    border: 1px solid rgba($color-text, .75);
   }
 
-  &-select:has(.ts-control) {
-    padding: 0 !important;
-    height: auto;
-    box-shadow: none;
-    display: flex;
+  &-select {
+    &:has(.ts-control) {
+      padding: 0;
+      height: auto;
+      box-shadow: none;
+      display: flex;
+    }
+
+    & > option[value=''] {
+      display: none;
+    }
   }
 
   &-button {
@@ -148,5 +202,12 @@ body {
 }
 
 .col-form-label {
+  font-weight: $font-weight-semibold;
   font-size: $font-size-form-label;
+}
+
+.form-group.form-floating {
+  & > textarea {
+    min-height: 80px;
+  }
 }

@@ -7,10 +7,10 @@ namespace App\Form;
 use App\DTO\ResumeDTO;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
@@ -45,11 +45,44 @@ class ResumeFormType extends BaseForm
                     'placeholder' => 'Geburtsdatum',
                 ],
             ])
+            ->add('schoolGraduation', ChoiceType::class, [
+                'choices' => [
+                    'Auswählen' => '',
+                    'Hauptschule' => 'Hauptschule',
+                    'Realschule' => 'Realschule',
+                    'Gymnasium' => 'Gymnasium',
+                    'Fachhochschulreife' => 'Fachhochschulreife',
+                    'Abitur' => 'Abitur',
+                    'Bachelor' => 'Bachelor',
+                    'Master' => 'Master',
+                ],
+                'label' => 'SCHULABSCHLUSS',
+                'row_attr' => [
+                    "class" => "form-group",
+                ]
+            ])
+            ->add('trainingGraduation', ChoiceType::class, [
+                'choices' => [
+                    'Auswählen' => '',
+                    'Fachinformatiker Anwendungsentwickler' => 'Fachinformatiker Anwendungsentwickler',
+                    'Fachinformatiker Systemintegration' => 'Fachinformatiker Systemintegration',
+                    'Fachinformatiker Daten- und Prozessanalyse' => 'Fachinformatiker Daten- und Prozessanalyse',
+                    'IT-Systemelektroniker' => 'IT-Systemelektroniker',
+                    'IT-Systemkaufmann' => 'IT-Systemkaufmann',
+                ],
+                'label' => 'AUSBILDUNGSABSCHLUSS',
+                'row_attr' => [
+                    "class" => "form-group",
+                ]])
             ->add('positions', ChoiceType::class, [
                     'choices' => [
                         'Auswählen' => '',
+                        'Lead-Entwickler' => 'Lead-Entwickler',
+                        'Teamleiter' => 'Teamleiter',
                         'Frontend-Entwickler' => 'Frontend-Entwickler',
+                        'Senior Frontend-Entwickler' => 'Senior Frontend-Entwickler',
                         'Backend-Entwickler' => 'Backend-Entwickler',
+                        'Senior Backend-Entwickler' => 'Senior Backend-Entwickler',
                         'Fullstack-Entwickler' => 'Fullstack-Entwickler',
                         'DevOps-Ingenieur' => 'DevOps-Ingenieur',
                         'Software-Architekt' => 'Software-Architekt',
@@ -59,6 +92,9 @@ class ResumeFormType extends BaseForm
                         'Datenbank-Administrator' => 'Datenbank Administrator',
                         'QA-Tester' => 'QA Tester'
                     ], 'multiple' => true, 'autocomplete' => true,
+                    'choice_attr' => function ($choice) {
+                        return null === $choice ? ['disabled' => true] : [];
+                    },
                     'label' => 'POSITIONEN',
                     'row_attr' => [
                         "class" => "form-group",
@@ -68,10 +104,14 @@ class ResumeFormType extends BaseForm
                 'entry_type' => LanguageFormType::class,
                 'label' => 'SPRACHEN',
                 'row_attr' => [
-                    "class" => "form-group",
+                    "class" => "form-collections",
                 ],
                 'attr' => [
-                    'class' => 'form-collection',
+                    'class' => 'form-collection form-collection--language',
+                ],
+                'entry_options' => [
+                    'attr' => ['class' => 'form-collection-entry form-collection-entry--language'],
+                    'label_attr' => ['hidden' => true],
                 ],
 
                 'button_delete_options' => [
@@ -107,6 +147,9 @@ class ResumeFormType extends BaseForm
                         'Rust' => 'Rust',
                         'Dart' => 'Dart'
                     ], 'multiple' => true,
+                    'choice_attr' => function ($choice) {
+                        return null === $choice ? ['disabled' => true] : [];
+                    },
                     'autocomplete' => true,
                     'label' => 'PROGRAMMIERSPRACHEN',
                     'row_attr' => [
@@ -136,6 +179,9 @@ class ResumeFormType extends BaseForm
                         'Laravel' => 'Laravel',
                         'Symfony' => 'Symfony',
                     ], 'multiple' => true,
+                    'choice_attr' => function ($choice) {
+                        return null === $choice ? ['disabled' => true] : [];
+                    },
                     'autocomplete' => true,
                     'label' => 'HANDWERKZEUGE',
                     'row_attr' => [
@@ -146,6 +192,10 @@ class ResumeFormType extends BaseForm
             ->add('projects', LiveCollectionType::class, [
                 'entry_type' => ProjectFormType::class,
                 'label' => 'PROJEKTE',
+                'entry_options' => [
+                    'attr' => ['class' => 'form-collection-entry'],
+                    'label_attr' => ['hidden' => true],
+                ],
                 'row_attr' => [
                     "class" => "form-group",
                 ],
@@ -165,11 +215,12 @@ class ResumeFormType extends BaseForm
                     ],
                 ]
             ])
-            ->add('photo', FileType::class, [
+            ->add('photo', DropzoneType::class, [
                 'label' => 'FOTO (jpg, png, gif)',
                 'mapped' => false,
                 'required' => false,
-                'attr' => ['accept' => '.jpg, .jpeg, .png, .gif'],
+                'attr' => ['accept' => '.jpg, .jpeg, .png, .gif',
+                    'placeholder' => 'Ziehen und Ablegen ein Photo oder klicken Sie hier'],
                 'row_attr' => [
                     "class" => "form-group",
                 ]

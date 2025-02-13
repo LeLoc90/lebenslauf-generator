@@ -6,9 +6,7 @@ namespace App\Form;
 
 use App\DTO\LanguageDTO;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
@@ -18,15 +16,6 @@ class LanguageFormType extends BaseForm
 
     public function __construct()
     {
-        $this->languages = Languages::getNames();
-        $default = ['Auswählen' => null];
-        $germanName = $this->languages['de'];
-        $englishName = $this->languages['en'];
-        unset($this->languages['de'], $this->languages['en']);
-        $this->languages = array_combine($this->languages, $this->languages);
-        $german = [$germanName => $germanName];
-        $english = [$englishName => $englishName];
-        $this->languages = $default + $german + $english + $this->languages;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -37,19 +26,40 @@ class LanguageFormType extends BaseForm
         $builder
             ->add('title', ChoiceType::class,
                 [
-                    'choices' => $this->languages,
-                    'label_attr' => ['hidden' => true],
-                    'row_attr' => ['class' => 'form-group'],
-                ])
-            ->add('level', RangeType::class,
-                [
-                    'label' => 'Level',
-                    'row_attr' => ['class' => 'form-group'],
-                    'attr' => [
-                        'min' => 0,
-                        'max' => 10,
-                        'step' => 1,
+                    'choices' => [
+                        'Auswählen' => '',
+                        'Arabisch' => 'Arabisch',
+                        'Chinesisch' => 'Chinesisch',
+                        'Deutsch' => 'Deutsch',
+                        'Englisch' => 'Englisch',
+                        'Französisch' => 'Französisch',
+                        'Italienisch' => 'Italienisch',
+                        'Japanisch' => 'Japanisch',
+                        'Koreanisch' => 'Koreanisch',
+                        'Niederländisch' => 'Niederländisch',
+                        'Polnisch' => 'Polnisch',
+                        'Portugiesisch' => 'Portugiesisch',
+                        'Russisch' => 'Russisch',
+                        'Schwedisch' => 'Schwedisch',
+                        'Spanisch' => 'Spanisch',
+                        'Türkisch' => 'Türkisch',
+                        'Vietnamesisch' => 'Vietnamesisch',
                     ],
+                    'preferred_choices' => ['Deutsch', 'Englisch'],
+                    'label' => 'Sprache',
+                    'row_attr' => ['class' => 'form-group form-floating'],
+                ])
+            ->add('level', ChoiceType::class,
+                [
+                    'choices' => [
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                    ],
+                    'label' => 'Level',
+                    'row_attr' => ['class' => 'form-group form-floating'],
                 ]);
     }
 
