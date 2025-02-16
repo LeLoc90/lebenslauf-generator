@@ -10,6 +10,8 @@ class ProjectDTO
 
     private ?string $title = null;
 
+    private ?int $year = null;
+
     private ?string $description = null;
 
     private array $technologies = [];
@@ -83,6 +85,16 @@ class ProjectDTO
         }
 
         return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): void
+    {
+        $this->year = $year;
     }
 
 }

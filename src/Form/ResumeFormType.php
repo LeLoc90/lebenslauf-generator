@@ -34,6 +34,7 @@ class ResumeFormType extends BaseForm
                     'attr' => [
                         'placeholder' => 'Namen',
                     ],
+                    'required' => false,
                 ])
             ->add('birthdate', DateType::class, [
                 'label' => 'GEBRUTSDATUM',
@@ -44,6 +45,8 @@ class ResumeFormType extends BaseForm
                 'attr' => [
                     'placeholder' => 'Geburtsdatum',
                 ],
+                'required' => false,
+
             ])
             ->add('schoolGraduation', ChoiceType::class, [
                 'choices' => [
@@ -59,7 +62,9 @@ class ResumeFormType extends BaseForm
                 'label' => 'SCHULABSCHLUSS',
                 'row_attr' => [
                     "class" => "form-group",
-                ]
+                ],
+                'required' => false,
+
             ])
             ->add('trainingGraduation', ChoiceType::class, [
                 'choices' => [
@@ -71,6 +76,7 @@ class ResumeFormType extends BaseForm
                     'IT-Systemkaufmann' => 'IT-Systemkaufmann',
                 ],
                 'label' => 'AUSBILDUNGSABSCHLUSS',
+                'required' => false,
                 'row_attr' => [
                     "class" => "form-group",
                 ]])
@@ -96,6 +102,7 @@ class ResumeFormType extends BaseForm
                         return null === $choice ? ['disabled' => true] : [];
                     },
                     'label' => 'POSITIONEN',
+                    'required' => false,
                     'row_attr' => [
                         "class" => "form-group",
                     ],]
@@ -113,7 +120,6 @@ class ResumeFormType extends BaseForm
                     'attr' => ['class' => 'form-collection-entry form-collection-entry--language'],
                     'label_attr' => ['hidden' => true],
                 ],
-
                 'button_delete_options' => [
                     'label' => 'X',
                     'attr' => [
@@ -152,6 +158,7 @@ class ResumeFormType extends BaseForm
                     },
                     'autocomplete' => true,
                     'label' => 'PROGRAMMIERSPRACHEN',
+                    'required' => false,
                     'row_attr' => [
                         "class" => "form-group",
                     ]
@@ -184,6 +191,7 @@ class ResumeFormType extends BaseForm
                     },
                     'autocomplete' => true,
                     'label' => 'HANDWERKZEUGE',
+                    'required' => false,
                     'row_attr' => [
                         "class" => "form-group",
                     ]

@@ -141,6 +141,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-autocomplete" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfonycasts/dynamic-forms" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-dropzone" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sensiolabs/gotenberg-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

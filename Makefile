@@ -17,7 +17,7 @@ enter: ## Enter php container
 	@bash
 
 start: ## Start Containers
-	@#docker compose up -d
+	@docker compose up -d
 	symfony server:start -d --no-tls --port=8500
 	npm run dev-server
 	symfony server:log

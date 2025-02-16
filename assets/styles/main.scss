@@ -88,21 +88,16 @@ body {
 
   &-collection {
     display: flex;
-    flex-direction: column;
-    padding: 1.25rem;
-    padding-bottom: 0;
-    background-color: rgba($secondary, .035);
-    border-radius: $border-radius-lg;
+    flex-wrap: wrap;
+    column-gap: .5rem;
 
     &:not(:has(*)) {
       display: none;
     }
 
-
     &:not(:last-child) {
       margin-bottom: 1.5rem;
     }
-
 
     & > :has(.form-button--delete-collection) {
       text-align: right;
@@ -113,15 +108,19 @@ body {
       align-items: center;
       gap: .5rem;
       flex-wrap: wrap;
-
-      & > :has(.form-collection-entry) {
-        flex: 1;
-        min-width: 80%;
-      }
-
     }
 
+    & :has(.form-collection-entry) {
+      flex: 1;
+      min-width: 80%;
+    }
+
+
     &-entry {
+      background-color: rgba($secondary, .035);
+      border-radius: $border-radius-lg;
+      padding: 1.25rem;
+
       & .ts-control {
         max-height: unset !important;
         padding-top: 1.5rem;

@@ -149,6 +149,7 @@
       <path value="$PROJECT_DIR$/vendor/symfonycasts/dynamic-forms" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-autocomplete" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-dropzone" />
+      <path value="$PROJECT_DIR$/vendor/sensiolabs/gotenberg-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

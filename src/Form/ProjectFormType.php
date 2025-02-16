@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\DTO\ProjectDTO;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,11 @@ class ProjectFormType extends BaseForm
             ->add('title', TextType::class,
                 [
                     'label' => 'Projektname',
+                    'row_attr' => ['class' => 'form-group form-floating'],
+                ])
+            ->add('year', NumberType::class,
+                [
+                    'label' => 'Jahr',
                     'row_attr' => ['class' => 'form-group form-floating'],
                 ])
             ->add('description', TextareaType::class,

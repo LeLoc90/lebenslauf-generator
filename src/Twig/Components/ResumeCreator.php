@@ -34,8 +34,88 @@ class ResumeCreator extends AbstractController
         "projects" => [],
     ];
 
+    /*    #[LiveProp(writable: true)]
+        public array $formData = [
+            "name" => "Maxx Mustermann",
+            "birthdate" => "1999-11-11T00:00:00+00:00",
+            "schoolGraduation" => "Abitur",
+            "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
+            "positions" => [
+                "Lead-Entwickler",
+                "Frontend-Entwickler"
+            ],
+            "photo" => null,
+            "languages" => [
+                [
+                    "id" => null,
+                    "title" => "Deutsch",
+                    "level" => 5
+                ],
+                [
+                    "id" => null,
+                    "title" => "Englisch",
+                    "level" => 4
+                ]
+            ],
+            "programmingLanguages" => [
+                "HTML",
+                "CSS",
+                "PHP",
+                "JavaScript"
+            ],
+            "tools" => [
+                "Scrum",
+                "Jira",
+                "Docker",
+                "Atlassian Stack",
+                "PHPStorm"
+            ],
+            "projects" => [
+                [
+                    "id" => null,
+                    "title" => "Projekt 1",
+                    'year' => 2021,
+                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "technologies" => [
+                        "Technology1",
+                        "Technology2",
+                        "Technology3",
+                        "Technology4",
+                        "Technology5"
+                    ],
+                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+                ],
+                [
+                    "id" => null,
+                    "title" => "Projekt 2",
+                    "year" => 2022,
+                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "technologies" => [
+                        "Technology1",
+                        "Technology2",
+                        "Technology3",
+                        "Technology4"
+                    ],
+                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+                ]
+            ]
+        ];*/
+
+
     #[LiveProp]
     public ?ResumeDTO $initialFormData = null;
+
+//    #[LiveAction]
+//    public function save()
+//    {
+//        $this->submitForm();
+//
+//        $data = $this->getForm()->getData();
+//        dd($data);
+//        return $this->redirectToRoute('create-resume');
+//    }
 
     protected function instantiateForm(): FormInterface
     {
