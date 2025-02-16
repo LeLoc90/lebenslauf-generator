@@ -84,10 +84,10 @@
                 </section>
             </div>
             <aside class="sidebar">
-                <img src="{{ asset('build/images/profile.png') }}" class="sidebarImage" alt="Foto">
+                <img src="{{ asset(this.formData.photo) }}" class="sidebarImage" alt="Foto">
                 <p class="sidebarHeading">Persönliche Daten</p>
                 <p class="sidebarText">Name: {{ formData.name }}</p>
-                <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y') }}</p>
+                <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>
 
                 <div class="sidebarLanguages">
                     {% if formData.languages is not empty %}

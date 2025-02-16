@@ -6,9 +6,13 @@ namespace App\Twig\Components;
 
 use App\DTO\ResumeDTO;
 use App\Form\ResumeFormType;
+use App\Service\FileUploader;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -32,6 +36,7 @@ class ResumeCreator extends AbstractController
         "programmingLanguages" => [],
         "tools" => [],
         "projects" => [],
+        "photo" => ""
     ];
 
     /*    #[LiveProp(writable: true)]
@@ -102,20 +107,24 @@ class ResumeCreator extends AbstractController
                 ]
             ]
         ];*/
-
-
     #[LiveProp]
     public ?ResumeDTO $initialFormData = null;
 
-//    #[LiveAction]
-//    public function save()
-//    {
-//        $this->submitForm();
-//
-//        $data = $this->getForm()->getData();
-//        dd($data);
-//        return $this->redirectToRoute('create-resume');
-//    }
+    #[LiveAction]
+    public function uploadPhoto(Request $request, FileUploader $fileUploader)
+    {
+        $uploadedFile = $request->files->get('resume_form')['photo'] ?? null;
+        if ($uploadedFile) {
+            try {
+                $fileName = $fileUploader->upload($uploadedFile);
+                // Set the relative path (without a leading slash, so asset() works correctly)
+                $this->formData['photo'] = 'build/images/' . $fileName;
+            } catch (Exception $e) {
+                return $this->json(['error' => $e->getMessage()], 500);
+            }
+        }
+    }
+
 
     protected function instantiateForm(): FormInterface
     {
@@ -126,7 +135,12 @@ class ResumeCreator extends AbstractController
     public function updateResume(): void
     {
         if ($this->formValues) {
-            $this->formData = $this->formValues;
+            // Remove the photo field from formValues so that the fake path doesn't override our LiveProp.
+            if (isset($this->formValues['photo'])) {
+                unset($this->formValues['photo']);
+            }
+            // Merge any other form values into formData.
+            $this->formData = array_merge($this->formData, $this->formValues);
         }
     }
 }

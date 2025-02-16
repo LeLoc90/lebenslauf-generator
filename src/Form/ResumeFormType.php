@@ -228,7 +228,8 @@ class ResumeFormType extends BaseForm
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['accept' => '.jpg, .jpeg, .png, .gif',
-                    'placeholder' => 'Ziehen und Ablegen ein Photo oder klicken Sie hier'],
+                    'placeholder' => 'Ziehen und Ablegen ein Photo oder klicken Sie hier',
+                    'data-controller' => 'photoDropzone'],
                 'row_attr' => [
                     "class" => "form-group",
                 ]
