@@ -19,16 +19,14 @@ html {
 
 .sheetLayout {
     width: 100%;
-    height: 297mm;
     margin: auto;
     background-color: #fff;
     page-break-after: always;
-    overflow-y: auto;
 }
 
 .sheetContent {
     width: 100%;
-    height: 100%;
+    height: 297mm;
 }
 
 .pageHeader {
@@ -86,7 +84,6 @@ html {
 }
 
 .sidebar {
-    min-height: 100%;
     width: 35%;
     padding: 4rem 1.25rem;
     display: flex;
@@ -101,7 +98,8 @@ html {
     }
 
     .sidebarHeading {
-        padding: 0 .15rem;
+        padding: 0.25rem 0;
+        margin-bottom: 1rem;
         font-size: 1.15em;
         font-weight: bold;
         border-bottom: 2px solid #fff;
@@ -109,7 +107,7 @@ html {
     }
 
     .sidebarText {
-        margin: 0;
+        margin: 0 0 .35rem;
         font-weight: 500;
     }
 
@@ -178,6 +176,7 @@ html {
         }
 
         .contentList {
+            padding: 1rem 1.75rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;

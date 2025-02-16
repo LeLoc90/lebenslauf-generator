@@ -8,6 +8,10 @@ use App\DTO\ResumeDTO;
 use App\Form\ResumeFormType;
 use App\Service\FileUploader;
 use Exception;
+use Gotenberg\Exceptions\GotenbergApiErrored;
+use Gotenberg\Exceptions\NoOutputFileInResponse;
+use Gotenberg\Gotenberg;
+use Gotenberg\Stream;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +21,10 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 #[AsLiveComponent]
 class ResumeCreator extends AbstractController
@@ -26,95 +34,98 @@ class ResumeCreator extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp(writable: true)]
-    public array $formData = [
-        "name" => "",
-        "birthdate" => "",
-        "schoolGraduation" => "",
-        "trainingGraduation" => "",
-        "positions" => [],
-        "languages" => [],
-        "programmingLanguages" => [],
-        "tools" => [],
-        "projects" => [],
-    ];
-
-    #[LiveProp(writable: true)]
     public ?string $photo = "";
 
+//    #[LiveProp(writable: true)]
+//    public array $formData = [
+//        "name" => "",
+//        "birthdate" => "",
+//        "schoolGraduation" => "",
+//        "trainingGraduation" => "",
+//        "positions" => [],
+//        "languages" => [],
+//        "programmingLanguages" => [],
+//        "tools" => [],
+//        "projects" => [],
+//    ];
     #[LiveProp(writable: true)]
     public ?string $photoForPDF = "";
-
-
-    /*    #[LiveProp(writable: true)]
-        public array $formData = [
-            "name" => "Maxx Mustermann",
-            "birthdate" => "1999-11-11T00:00:00+00:00",
-            "schoolGraduation" => "Abitur",
-            "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
-            "positions" => [
-                "Lead-Entwickler",
-                "Frontend-Entwickler"
+    #[LiveProp(writable: true)]
+    public array $formData = [
+        "name" => "Maxx Mustermann",
+        "birthdate" => "1999-11-11T00:00:00+00:00",
+        "schoolGraduation" => "Abitur",
+        "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
+        "positions" => [
+            "Lead-Entwickler",
+            "Frontend-Entwickler"
+        ],
+        "photo" => null,
+        "languages" => [
+            [
+                "id" => null,
+                "title" => "Deutsch",
+                "level" => 5
             ],
-            "photo" => null,
-            "languages" => [
-                [
-                    "id" => null,
-                    "title" => "Deutsch",
-                    "level" => 5
-                ],
-                [
-                    "id" => null,
-                    "title" => "Englisch",
-                    "level" => 4
-                ]
-            ],
-            "programmingLanguages" => [
-                "HTML",
-                "CSS",
-                "PHP",
-                "JavaScript"
-            ],
-            "tools" => [
-                "Scrum",
-                "Jira",
-                "Docker",
-                "Atlassian Stack",
-                "PHPStorm"
-            ],
-            "projects" => [
-                [
-                    "id" => null,
-                    "title" => "Projekt 1",
-                    'year' => 2021,
-                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "technologies" => [
-                        "Technology1",
-                        "Technology2",
-                        "Technology3",
-                        "Technology4",
-                        "Technology5"
-                    ],
-                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-                ],
-                [
-                    "id" => null,
-                    "title" => "Projekt 2",
-                    "year" => 2022,
-                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "technologies" => [
-                        "Technology1",
-                        "Technology2",
-                        "Technology3",
-                        "Technology4"
-                    ],
-                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-                ]
+            [
+                "id" => null,
+                "title" => "Englisch",
+                "level" => 4
             ]
-        ];*/
+        ],
+        "programmingLanguages" => [
+            "HTML",
+            "CSS",
+            "PHP",
+            "JavaScript"
+        ],
+        "tools" => [
+            "Scrum",
+            "Jira",
+            "Docker",
+            "Atlassian Stack",
+            "PHPStorm"
+        ],
+        "projects" => [
+            [
+                "id" => null,
+                "title" => "Projekt 1",
+                'year' => 2021,
+                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                "technologies" => [
+                    "Technology1",
+                    "Technology2",
+                    "Technology3",
+                    "Technology4",
+                    "Technology5"
+                ],
+                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+            ],
+            [
+                "id" => null,
+                "title" => "Projekt 2",
+                "year" => 2022,
+                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                "technologies" => [
+                    "Technology1",
+                    "Technology2",
+                    "Technology3",
+                    "Technology4"
+                ],
+                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+            ]
+        ]
+    ];
     #[LiveProp]
     public ?ResumeDTO $initialFormData = null;
+
+    public function __construct(
+        protected Environment $environment,
+    )
+    {
+    }
 
     #[LiveAction]
     public function uploadPhoto(Request $request, FileUploader $fileUploader)
@@ -135,13 +146,45 @@ class ResumeCreator extends AbstractController
                     throw new Exception("Failed to copy file to assets/images directory");
                 }
 
-//                store the PDF-specific path in formData.
+                // store the PDF-specific path in formData.
                 $this->photoForPDF = 'assets/images/' . $fileName;
 
             } catch (Exception $e) {
                 return $this->json(['error' => $e->getMessage()], 500);
             }
         }
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws GotenbergApiErrored
+     * @throws NoOutputFileInResponse
+     */
+    #[LiveAction]
+    public function pdfGenerator(FileUploader $fileUploader)
+    {
+        $data = $this->formData;
+        $renderedForm = $this->environment->render('resumes/pdf_template.html.twig', [
+            'formData' => $data,
+        ]);
+        $tmp = tmpfile();
+        fwrite($tmp, $renderedForm);
+
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $pdfPath = $projectDir . '/public/pdfs';
+        $assetPath = $projectDir . '/assets/images';
+
+        $request = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
+            ->pdf()
+            ->margins(0, 0, 0, 0)
+            ->paperSize('210mm', '297mm')
+            ->assets(Stream::path($assetPath . '/coding.jpg'))
+            ->assets(Stream::path($assetPath . '/profile.png'))
+            ->html(Stream::path(stream_get_meta_data($tmp)['uri'], 'resume.pdf'));
+
+        $filename = Gotenberg::save($request, $pdfPath);
     }
 
 
