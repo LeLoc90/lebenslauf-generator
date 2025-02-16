@@ -84,7 +84,11 @@
                 </section>
             </div>
             <aside class="sidebar">
-                <img src="{{ asset(this.formData.photo) }}" class="sidebarImage" alt="Foto">
+                {% if this.photo != '' %}
+                    <img src="{{ asset(this.photo) }}" class="sidebarImage" alt="Foto">
+                {% else %}
+                    <img src="{{ asset('build/images/profilePlaceholder.png') }}" class="sidebarImage" alt="Foto">
+                {% endif %}
                 <p class="sidebarHeading">Persönliche Daten</p>
                 <p class="sidebarText">Name: {{ formData.name }}</p>
                 <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>

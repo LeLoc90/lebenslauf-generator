@@ -20,6 +20,9 @@ export default class extends Controller {
 
     _onChange(event) {
         // The dropzone just changed
+        const previewEL = event.currentTarget.querySelector('.dropzone-preview-image')
+        const duplicate = previewEL.cloneNode(true);
+        previewEL.parentNode.replaceChild(duplicate, previewEL);
     }
 
     _onClear(event) {

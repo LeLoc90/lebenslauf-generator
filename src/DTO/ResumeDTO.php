@@ -16,7 +16,6 @@ class ResumeDTO
 
     private array $positions = [];
 
-    private ?string $photo = null;
 
     private Collection $languages;
 

@@ -36,8 +36,14 @@ class ResumeCreator extends AbstractController
         "programmingLanguages" => [],
         "tools" => [],
         "projects" => [],
-        "photo" => ""
     ];
+
+    #[LiveProp(writable: true)]
+    public ?string $photo = "";
+
+    #[LiveProp(writable: true)]
+    public ?string $photoForPDF = "";
+
 
     /*    #[LiveProp(writable: true)]
         public array $formData = [
@@ -118,7 +124,20 @@ class ResumeCreator extends AbstractController
             try {
                 $fileName = $fileUploader->upload($uploadedFile);
                 // Set the relative path (without a leading slash, so asset() works correctly)
-                $this->formData['photo'] = 'build/images/' . $fileName;
+                $this->photo = 'build/images/' . $fileName;
+
+                // Now copy the file from public/build/images to assets/images for PDF generation.
+                $projectDir = $this->getParameter('kernel.project_dir');
+                $sourcePath = $projectDir . '/public/build/images/' . $fileName;
+                $destinationPath = $projectDir . '/assets/images/' . $fileName;
+
+                if (!copy($sourcePath, $destinationPath)) {
+                    throw new Exception("Failed to copy file to assets/images directory");
+                }
+
+//                store the PDF-specific path in formData.
+                $this->photoForPDF = 'assets/images/' . $fileName;
+
             } catch (Exception $e) {
                 return $this->json(['error' => $e->getMessage()], 500);
             }
@@ -135,12 +154,7 @@ class ResumeCreator extends AbstractController
     public function updateResume(): void
     {
         if ($this->formValues) {
-            // Remove the photo field from formValues so that the fake path doesn't override our LiveProp.
-            if (isset($this->formValues['photo'])) {
-                unset($this->formValues['photo']);
-            }
-            // Merge any other form values into formData.
-            $this->formData = array_merge($this->formData, $this->formValues);
+            $this->formData = $this->formValues;
         }
     }
 }
