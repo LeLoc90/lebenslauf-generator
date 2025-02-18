@@ -36,88 +36,88 @@ class ResumeCreator extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $photo = "";
 
-//    #[LiveProp(writable: true)]
-//    public array $formData = [
-//        "name" => "",
-//        "birthdate" => "",
-//        "schoolGraduation" => "",
-//        "trainingGraduation" => "",
-//        "positions" => [],
-//        "languages" => [],
-//        "programmingLanguages" => [],
-//        "tools" => [],
-//        "projects" => [],
-//    ];
-    #[LiveProp(writable: true)]
-    public ?string $photoForPDF = "";
     #[LiveProp(writable: true)]
     public array $formData = [
-        "name" => "Maxx Mustermann",
-        "birthdate" => "1999-11-11T00:00:00+00:00",
-        "schoolGraduation" => "Abitur",
-        "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
-        "positions" => [
-            "Lead-Entwickler",
-            "Frontend-Entwickler"
-        ],
-        "photo" => null,
-        "languages" => [
-            [
-                "id" => null,
-                "title" => "Deutsch",
-                "level" => 5
-            ],
-            [
-                "id" => null,
-                "title" => "Englisch",
-                "level" => 4
-            ]
-        ],
-        "programmingLanguages" => [
-            "HTML",
-            "CSS",
-            "PHP",
-            "JavaScript"
-        ],
-        "tools" => [
-            "Scrum",
-            "Jira",
-            "Docker",
-            "Atlassian Stack",
-            "PHPStorm"
-        ],
-        "projects" => [
-            [
-                "id" => null,
-                "title" => "Projekt 1",
-                'year' => 2021,
-                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "technologies" => [
-                    "Technology1",
-                    "Technology2",
-                    "Technology3",
-                    "Technology4",
-                    "Technology5"
-                ],
-                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-            ],
-            [
-                "id" => null,
-                "title" => "Projekt 2",
-                "year" => 2022,
-                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "technologies" => [
-                    "Technology1",
-                    "Technology2",
-                    "Technology3",
-                    "Technology4"
-                ],
-                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-            ]
-        ]
+        "name" => "",
+        "birthdate" => "",
+        "schoolGraduation" => "",
+        "trainingGraduation" => "",
+        "positions" => [],
+        "languages" => [],
+        "programmingLanguages" => [],
+        "tools" => [],
+        "projects" => [],
     ];
+    #[LiveProp(writable: true)]
+    public ?string $photoForPDF = "";
+    /*    #[LiveProp(writable: true)]
+        public array $formData = [
+            "name" => "Maxx Mustermann",
+            "birthdate" => "1999-11-11T00:00:00+00:00",
+            "schoolGraduation" => "Abitur",
+            "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
+            "positions" => [
+                "Lead-Entwickler",
+                "Frontend-Entwickler"
+            ],
+            "photo" => null,
+            "languages" => [
+                [
+                    "id" => null,
+                    "title" => "Deutsch",
+                    "level" => 5
+                ],
+                [
+                    "id" => null,
+                    "title" => "Englisch",
+                    "level" => 4
+                ]
+            ],
+            "programmingLanguages" => [
+                "HTML",
+                "CSS",
+                "PHP",
+                "JavaScript"
+            ],
+            "tools" => [
+                "Scrum",
+                "Jira",
+                "Docker",
+                "Atlassian Stack",
+                "PHPStorm"
+            ],
+            "projects" => [
+                [
+                    "id" => null,
+                    "title" => "Projekt 1",
+                    'year' => 2021,
+                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "technologies" => [
+                        "Technology1",
+                        "Technology2",
+                        "Technology3",
+                        "Technology4",
+                        "Technology5"
+                    ],
+                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+                ],
+                [
+                    "id" => null,
+                    "title" => "Projekt 2",
+                    "year" => 2022,
+                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "technologies" => [
+                        "Technology1",
+                        "Technology2",
+                        "Technology3",
+                        "Technology4"
+                    ],
+                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+                ]
+            ]
+        ];*/
     #[LiveProp]
     public ?ResumeDTO $initialFormData = null;
 
@@ -147,7 +147,7 @@ class ResumeCreator extends AbstractController
                 }
 
                 // store the PDF-specific path in formData.
-                $this->photoForPDF = 'assets/images/' . $fileName;
+                $this->photoForPDF = $fileName;
 
             } catch (Exception $e) {
                 return $this->json(['error' => $e->getMessage()], 500);
@@ -167,6 +167,7 @@ class ResumeCreator extends AbstractController
     {
         $data = $this->formData;
         $renderedForm = $this->environment->render('resumes/pdf_template.html.twig', [
+            'profilePhoto' => $this->photoForPDF,
             'formData' => $data,
         ]);
         $tmp = tmpfile();
@@ -182,6 +183,7 @@ class ResumeCreator extends AbstractController
             ->paperSize('210mm', '297mm')
             ->assets(Stream::path($assetPath . '/coding.jpg'))
             ->assets(Stream::path($assetPath . '/profile.png'))
+            ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
             ->html(Stream::path(stream_get_meta_data($tmp)['uri'], 'resume.pdf'));
 
         $filename = Gotenberg::save($request, $pdfPath);
