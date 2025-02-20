@@ -70,7 +70,8 @@
 
                 <h5 class="contentSubhead">Sprachen</h5>
                 {% if formData.languages is not empty %}
-                    {% set level = {
+                    {% set levelMapping = {
+                        '0':'',
                         '1':'Anfänger',
                         '2':'Grundkenntnisse',
                         '3':'Gute Kenntnisse',
@@ -78,9 +79,10 @@
                         '5': 'Muttersprache oder gleichwertig'
                     } %}
                     {% for lang in formData.languages %}
+                        {% set level = lang.level|default(0) %}
                         <div class="contentRow">
                             <span>{{ lang.title|default('') }}</span>
-                            <span>{{ level[lang.level] }}</span>
+                            <span>{{ levelMapping[level] }}</span>
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -122,7 +124,7 @@
                     <div class="pageHeaderContent pageHeaderProject">
                         <p class="pageProjectTitle">{{ project.year|default('') }}</p>
                         <p class="pageProjectTitle">|</p>
-                        <p class="pageProjectTitle">{{ project.title }}</p>
+                        <p class="pageProjectTitle">{{ project.title|default('') }}</p>
                     </div>
                 </header>
 

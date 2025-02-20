@@ -52,6 +52,8 @@ class ResumeCreator extends AbstractController
     ];
     #[LiveProp(writable: true)]
     public ?string $photoForPDF = "";
+
+
     /*    #[LiveProp(writable: true)]
         public array $formData = [
             "name" => "Maxx Mustermann",
@@ -120,6 +122,8 @@ class ResumeCreator extends AbstractController
                 ]
             ]
         ];*/
+
+
     #[LiveProp]
     public ?ResumeDTO $initialFormData = null;
 
@@ -139,7 +143,7 @@ class ResumeCreator extends AbstractController
                 // Set the relative path (without a leading slash, so asset() works correctly)
                 $this->photo = 'build/images/' . $fileName;
 
-                // Now copy the file from public/build/images to assets/images for PDF generation.
+                // copy the file from public/build/images to assets/images for PDF generation.
                 $projectDir = $this->getParameter('kernel.project_dir');
                 $sourcePath = $projectDir . '/public/build/images/' . $fileName;
                 $destinationPath = $projectDir . '/assets/images/' . $fileName;
@@ -168,7 +172,8 @@ class ResumeCreator extends AbstractController
     public function pdfGenerator(FileUploader $fileUploader)
     {
         $data = $this->formData;
-        $renderedForm = $this->environment->render('resumes/pdf_template_1.html.twig', [
+        $templateName = 'resumes/pdf_template_' . $this->template . '.html.twig';
+        $renderedForm = $this->environment->render($templateName, [
             'profilePhoto' => $this->photoForPDF,
             'formData' => $data,
         ]);
@@ -184,7 +189,6 @@ class ResumeCreator extends AbstractController
             ->margins(0, 0, 0, 0)
             ->paperSize('210mm', '297mm')
             ->assets(Stream::path($assetPath . '/coding.jpg'))
-            ->assets(Stream::path($assetPath . '/profile.png'))
             ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
             ->html(Stream::path(stream_get_meta_data($tmp)['uri'], 'resume.pdf'));
 
