@@ -11,13 +11,15 @@
         <div class="d-flex justify-content-around align-items-center gap-3 bg-white px-4 py-2 mx-auto border border-opacity-25 border-primary border-2 rounded-pill ">
             {{ icons.design|raw }}
             <div class="form-check template-switch">
-                <input class="form-check-input input-hidden" hidden type="radio" name="cvTemplate" id="cvTemplate1">
+                <input class="form-check-input input-hidden" hidden type="radio" name="cvTemplate" id="cvTemplate1"
+                       value="1" data-model="on(change)|template">
                 <label class="form-check-label" for="cvTemplate1">
                     Vorlage 1
                 </label>
             </div>
             <div class="form-check template-switch">
-                <input class="form-check-input" hidden type="radio" name="cvTemplate" id="cvTemplate2" checked>
+                <input class="form-check-input" hidden type="radio" name="cvTemplate" id="cvTemplate2" value="2"
+                       data-model="on(change)|template">
                 <label class="form-check-label" for="cvTemplate2">
                     Vorlage 2
                 </label>
@@ -51,7 +53,11 @@
             </div>
             <div class="col-7 ps-4 pe-0">
                 <div class="p-2 bg-secondary">
-                    {% include('resumes/live_template.html.twig') %}
+                    {% if this.template == 1 %}
+                        {% include('resumes/live_template_1.html.twig') %}
+                    {% elseif this.template == 2 %}
+                        {% include('resumes/live_template_2.html.twig') %}
+                    {% endif %}
                 </div>
             </div>
         </div>

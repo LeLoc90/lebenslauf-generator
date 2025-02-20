@@ -34,6 +34,8 @@ class ResumeCreator extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp(writable: true)]
+    public int $template = 2;
+    #[LiveProp(writable: true)]
     public ?string $photo = "";
 
     #[LiveProp(writable: true)]
@@ -58,7 +60,7 @@ class ResumeCreator extends AbstractController
             "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
             "positions" => [
                 "Lead-Entwickler",
-                "Frontend-Entwickler"
+                "Frontend-Entwickler",
             ],
             "photo" => null,
             "languages" => [
@@ -166,7 +168,7 @@ class ResumeCreator extends AbstractController
     public function pdfGenerator(FileUploader $fileUploader)
     {
         $data = $this->formData;
-        $renderedForm = $this->environment->render('resumes/pdf_template.html.twig', [
+        $renderedForm = $this->environment->render('resumes/pdf_template_1.html.twig', [
             'profilePhoto' => $this->photoForPDF,
             'formData' => $data,
         ]);
