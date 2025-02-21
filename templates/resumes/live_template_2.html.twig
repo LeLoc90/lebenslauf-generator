@@ -12,8 +12,8 @@
     <div class="sheetContent">
         <header class="pageHeader">
             <div class="pageHeaderImage">
-                {% if this.photo != '' %}
-                    <img src="{{ asset(this.photo) }}" alt="Foto">
+                {% if this.photoLiveSrc != '' %}
+                    <img src="{{ asset(this.photoLiveSrc) }}" alt="Foto">
                 {% else %}
                     <img src="{{ asset('build/images/profilePlaceholder.png') }}" alt="Foto">
                 {% endif %}

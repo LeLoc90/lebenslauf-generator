@@ -36,7 +36,7 @@ class ResumeCreator extends AbstractController
     #[LiveProp(writable: true)]
     public int $template = 2;
     #[LiveProp(writable: true)]
-    public ?string $photo = "";
+    public ?string $photoLiveSrc = "";
 
     #[LiveProp(writable: true)]
     public array $formData = [
@@ -141,7 +141,7 @@ class ResumeCreator extends AbstractController
             try {
                 $fileName = $fileUploader->upload($uploadedFile);
                 // Set the relative path (without a leading slash, so asset() works correctly)
-                $this->photo = 'build/images/' . $fileName;
+                $this->photoLiveSrc = 'build/images/' . $fileName;
 
                 // copy the file from public/build/images to assets/images for PDF generation.
                 $projectDir = $this->getParameter('kernel.project_dir');
@@ -171,30 +171,63 @@ class ResumeCreator extends AbstractController
     #[LiveAction]
     public function pdfGenerator(FileUploader $fileUploader)
     {
+        $renderedForm = $this->getTemplateHTML();
+
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $pdfPath = $projectDir . '/public/pdfs';
+
+        $gotenbergRequest = $this->createGotenbergRequest($renderedForm);
+        $filename = Gotenberg::save($gotenbergRequest, $pdfPath);
+
+        $fullPath = $pdfPath . '/' . $filename;
+
+        if (file_exists($fullPath)) {
+            $this->addFlash('success', 'PDF wird erstellt, bitte warten!');
+        } else {
+            $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
+        }
+    }
+
+    private function getTemplateHTML(): string
+    {
         $data = $this->formData;
         $templateName = 'resumes/pdf_template_' . $this->template . '.html.twig';
+
+        if (!$this->photoForPDF) {
+            $this->photoForPDF = 'profilePlaceholder.png';
+        }
+
         $renderedForm = $this->environment->render($templateName, [
             'profilePhoto' => $this->photoForPDF,
             'formData' => $data,
         ]);
-        $tmp = tmpfile();
-        fwrite($tmp, $renderedForm);
-
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $pdfPath = $projectDir . '/public/pdfs';
-        $assetPath = $projectDir . '/assets/images';
-
-        $request = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
-            ->pdf()
-            ->margins(0, 0, 0, 0)
-            ->paperSize('210mm', '297mm')
-            ->assets(Stream::path($assetPath . '/coding.jpg'))
-            ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
-            ->html(Stream::path(stream_get_meta_data($tmp)['uri'], 'resume.pdf'));
-
-        $filename = Gotenberg::save($request, $pdfPath);
+        return $renderedForm;
     }
 
+    private function createGotenbergRequest(string $renderedForm)
+    {
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $assetPath = $projectDir . '/assets/images';
+        $outputFileName = 'Lebenslauf_' . str_replace(' ', '_', $this->formData['name']) . time();
+
+        $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
+            ->pdf()
+            ->outputFilename($outputFileName)
+            ->margins(0, 0, 0, 0)
+            ->paperSize('210mm', '297mm');
+
+        if ($this->template == 1) {
+            $request = $baseRequest
+                ->assets(Stream::path($assetPath . '/coding.jpg'))
+                ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        } else if ($this->template == 2) {
+            $request = $baseRequest
+                ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        }
+        return $request;
+    }
 
     protected function instantiateForm(): FormInterface
     {

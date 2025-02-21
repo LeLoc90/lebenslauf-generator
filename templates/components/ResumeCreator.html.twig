@@ -7,6 +7,12 @@
 } %}
 
 <div {{ attributes }}>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-info position-fixed top-0 end-0 alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
     <div class="container-fluid mb-5 d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-around align-items-center gap-3 bg-white px-4 py-2 mx-auto border border-opacity-25 border-primary border-2 rounded-pill ">
             {{ icons.design|raw }}
@@ -25,7 +31,8 @@
                 </label>
             </div>
         </div>
-        <button class="btn btn-primary" data-action="live#action" data-live-action-param="pdfGenerator">
+        <button class="btn btn-primary" data-action="live#action"
+                data-live-action-param="pdfGenerator">
             {{ icons.download|raw }}
             PDF Herunterladen
         </button>
@@ -41,10 +48,11 @@
                     {{ form_label(form.photo) }}
                     {{ form_widget(form.photo) }}
 
-                    <button type="button" class="btn btn-sm btn-primary mt-2" data-action="live#action"
+                    <button type="button" class="button-upload btn btn-sm btn-primary disabled mt-2"
+                            data-action="live#action"
                             data-live-action-param="files|uploadPhoto">
                         {{ icons.upload|raw }}
-                        Upload
+                        Hochladen
                     </button>
                 </div>
 
