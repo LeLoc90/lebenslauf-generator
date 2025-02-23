@@ -14,4 +14,27 @@ class MainController extends AbstractController
     {
         return $this->render('pages/resume.html.twig');
     }
+
+    public function getPdfs()
+    {
+        // Get the project directory and the absolute path of the pdf folder.
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $pdfDirectory = $projectDir . '/public/pdfs';
+
+        // Use glob() to find all PDF files in the directory.
+        $files = glob($pdfDirectory . '/*.pdf');
+        $pdfs = [];
+
+        // Convert each file path into a relative path for asset() usage.
+        foreach ($files as $file) {
+            // Remove the projectDir/public part to get the relative path.
+            $relativePath = str_replace($projectDir . '/public/', '', $file);
+            $pdfs[] = $relativePath;
+        }
+
+        // Render a template that lists the PDF files.
+        return $this->render('pages/pdfs_list.html.twig', [
+            'pdfs' => $pdfs,
+        ]);
+    }
 }

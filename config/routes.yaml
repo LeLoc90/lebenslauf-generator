@@ -10,7 +10,7 @@ create-resume:
   methods: [ GET, POST ]
   controller: App\Controller\MainController::createResume
 
-render-template:
-  path: /resume/template
+get-pdfs:
+  path: /pdfs
   methods: [ GET ]
-  controller: App\Controller\MainController::renderTemplate
+  controller: App\Controller\MainController::getPdfs

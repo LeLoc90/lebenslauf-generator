@@ -1,0 +1,23 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Lebenslauf Generator{% endblock %}
+
+{% block body %}
+    {% if pdfs is not empty %}
+        <ul class="pdf-list container-xl w-100 d-flex flex-wrap justify-content-center align-items-center gap-5">
+            {% for pdf in pdfs %}
+                <li class="pdf-item p-4 d-flex flex-column gap-4 justify-content-center shadow-sm border border-secondary border-1 rounded-3 bg-white">
+                    <div class="pdf-preview px-2 pt-2 bg-secondary">
+                        <iframe src="{{ asset(pdf) }}" height="300"></iframe>
+                    </div>
+                    <a href="{{ asset(pdf) }}" download class="btn btn-primary">
+                        {{ icons.download|raw }}
+                        Herunterladen
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Keine PDF Dateien gefunden.</p>
+    {% endif %}
+{% endblock %}

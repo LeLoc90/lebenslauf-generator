@@ -10,6 +10,24 @@ body {
   background-color: $color-body-bg;
 }
 
+header {
+
+  .header-download {
+    text-decoration: none;
+    font-size: 1.05em;
+    border-left: 2px solid #fff;
+    padding-left: 1rem;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 /* =======================================================
 ===================== Form ========================
 ======================================================= */

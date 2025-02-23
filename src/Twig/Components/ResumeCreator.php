@@ -34,9 +34,12 @@ class ResumeCreator extends AbstractController
     use ComponentWithFormTrait;
 
     #[LiveProp(writable: true)]
-    public int $template = 2;
+    public int $template = 1;
     #[LiveProp(writable: true)]
     public ?string $photoLiveSrc = "";
+
+    #[LiveProp(writable: true, onUpdated: 'updateIsConverting')]
+    public bool $isConverting = false;
 
     #[LiveProp(writable: true)]
     public array $formData = [
@@ -178,7 +181,6 @@ class ResumeCreator extends AbstractController
 
         $gotenbergRequest = $this->createGotenbergRequest($renderedForm);
         $filename = Gotenberg::save($gotenbergRequest, $pdfPath);
-
         $fullPath = $pdfPath . '/' . $filename;
 
         if (file_exists($fullPath)) {
