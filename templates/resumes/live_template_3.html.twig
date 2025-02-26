@@ -1,0 +1,183 @@
+{% set icons = {
+    user: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/></svg>',
+    skill : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M80-680v-80q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v80h-80v-80H160v80H80Zm240 560v-80H160q-33 0-56.5-23.5T80-280v-80h80v80h640v-80h80v80q0 33-23.5 56.5T800-200H640v80H320Zm160-400Zm-288 0 104-104-56-56L80-520l160 160 56-56-104-104Zm576 0L664-416l56 56 160-160-160-160-56 56 104 104Z"/></svg>',
+    folder: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z"/></svg>',
+    chart: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="m296-320 122-122 80 80 142-141v63h80v-200H520v80h63l-85 85-80-80-178 179 56 56Zm-96 200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>',
+    checklist: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M222-200 80-342l56-56 85 85 170-170 56 57-225 226Zm0-320L80-662l56-56 85 85 170-170 56 57-225 226Zm298 240v-80h360v80H520Zm0-320v-80h360v80H520Z"/></svg>',
+    flow: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M160-480v240-480 240Zm400 360q17 0 28.5-11.5T600-160q0-17-11.5-28.5T560-200q-17 0-28.5 11.5T520-160q0 17 11.5 28.5T560-120Zm240-400q17 0 28.5-11.5T840-560q0-17-11.5-28.5T800-600q-17 0-28.5 11.5T760-560q0 17 11.5 28.5T800-520Zm-560 0h200v-80H240v80Zm0 160h200v-80H240v80Zm-80 200q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720H160v480h200v80H160ZM560-40q-50 0-85-35t-35-85q0-39 22.5-70t57.5-43v-127h240v-47q-35-12-57.5-43T680-560q0-50 35-85t85-35q50 0 85 35t35 85q0 39-22.5 70T840-447v127H600v47q35 12 57.5 43t22.5 70q0 50-35 85t-85 35Z"/></svg>',
+    doubleArrow: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#333333"><path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z"/></svg>'
+} %}
+
+<main id="template3" class="sheetLayout">
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <div class="pageHeaderImage">
+                {% if this.photoLiveSrc != '' %}
+                    <img src="{{ asset(this.photoLiveSrc) }}" alt="Foto">
+                {% else %}
+                    <img src="{{ asset('build/images/profilePlaceholder.png') }}" alt="Foto">
+                {% endif %}
+            </div>
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText">
+                    <p class="pageHeaderName">{{ formData.name }}</p>
+                    {% if formData.positions is not empty %}
+                        <p class="pageHeaderPosition">{{ formData.positions|join(' | ') }}</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </header>
+
+        <div class="pageMain">
+            <aside class="sidebar">
+
+                <p class="sidebarHeading">Persönliche Daten</p>
+                <p class="sidebarText">Name: {{ formData.name }}</p>
+                <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>
+
+                <div class="sidebarLanguages">
+                    {% if formData.languages is not empty %}
+                        {% for lang in formData.languages %}
+                            <p class="sidebarText">{{ lang.title|default('') }}</p>
+                            <div class="sidebarLanguageLevel">
+                                {% set level = lang.level|default(0) %}
+                                {% for i in 1..level*2 %}
+                                    <span></span>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </aside>
+
+            <div class="pageContent">
+                <section class="contentGroup">
+                    <h3 class="contentHead">
+                        {{ icons.user|raw }}
+                        Persönliches Profil
+                    </h3>
+                    {% if formData.schoolGraduation is not empty %}
+                        <div class="contentRow">
+                            <span>Schulabschluss</span>
+                            <span>{{ formData.schoolGraduation }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if formData.trainingGraduation is not empty %}
+                        <div class="contentRow">
+                            <span>Ausbildungs</span>
+                            <span>{{ formData.trainingGraduation }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if formData.positions is not empty %}
+                        <div class="contentRow">
+                            <span>Derzeitige Tätigkeit</span>
+                            <span>{% for position in formData.positions %}{{ position }}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+                        </div>
+                    {% endif %}
+                </section>
+
+                <section class="contentGroup">
+                    <h3 class="contentHead">
+                        {{ icons.skill|raw }}
+                        Fähigkeiten
+                    </h3>
+
+                    <h5 class="contentSubhead">Programmiersprachen</h5>
+                    <ul class="contentList">
+                        {% if formData.programmingLanguages is not empty %}
+                            {% for item in formData.programmingLanguages %}
+                                <li class="contentItem">{{ item }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+
+                    <h5 class="contentSubhead">Handwerkszeug</h5>
+                    <ul class="contentList">
+                        {% if formData.tools is not empty %}
+                            {% for item in formData.tools %}
+                                <li class="contentItem">{{ item }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+
+                </section>
+
+                <section class="contentGroup">
+                    <h3 class="contentHead">
+                        {{ icons.doubleArrow|raw }}
+                        Projekte auf Folgeseite
+                    </h3>
+                </section>
+            </div>
+        </div>
+
+    </div>
+
+    {% if formData.projects is not empty %}
+
+        {% for project in formData.projects %}
+            <div class="sheetContent">
+                <header class="pageHeader pageProject">
+                    <div class="pageHeaderContent">
+                        <div class="pageHeaderText">
+                            <p class="pageHeaderName">{{ project.year|default('') }}</p>
+                            <p class="pageHeaderName">|</p>
+                            <p class="pageHeaderName"> {{ project.title|default('') }}</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="pageMain">
+                    <div class="pageContent pageProject">
+                        <section class="contentGroup">
+                            <h4 class="contentHead">
+                                {{ icons.folder|raw }}
+                                Projektbeschreibung
+                            </h4>
+                            <div class="contentRow">
+                                <p>{{ project.description|default('') }}</p>
+                            </div>
+                        </section>
+
+                        <section class="contentGroup">
+                            <h4 class="contentHead">
+                                {{ icons.chart|raw }}
+                                Technologien
+                            </h4>
+                            <ul class="contentList">
+                                {% if project.technologies is defined and project.technologies is not empty %}
+                                    {% for item in project.technologies %}
+                                        <li class="contentItem">{{ item }}</li>
+                                    {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </section>
+
+                        <section class="contentGroup">
+                            <h4 class="contentHead">
+                                {{ icons.checklist|raw }}
+                                Aufgabenbereich
+                            </h4>
+                            <div class="contentRow">
+                                <p>{{ project.task|default('') }}</p>
+                            </div>
+                        </section>
+
+                        <section class="contentGroup">
+                            <h4 class="contentHead">
+                                {{ icons.flow|raw }}
+                                Workflow
+                            </h4>
+                            <div class="contentRow">
+                                <p>{{ project.workflow|default('') }}</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</main>

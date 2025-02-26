@@ -223,7 +223,7 @@ class ResumeCreator extends AbstractController
                 ->assets(Stream::path($assetPath . '/coding.jpg'))
                 ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
                 ->html(Stream::string('index.html', $renderedForm));
-        } else if ($this->template == 2) {
+        } else {
             $request = $baseRequest
                 ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
                 ->html(Stream::string('index.html', $renderedForm));

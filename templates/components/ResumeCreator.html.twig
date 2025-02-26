@@ -30,6 +30,13 @@
                     Vorlage 2
                 </label>
             </div>
+            <div class="form-check template-switch">
+                <input class="form-check-input" hidden type="radio" name="cvTemplate" id="cvTemplate3" value="3"
+                       data-model="on(change)|template">
+                <label class="form-check-label" for="cvTemplate3">
+                    Vorlage 3
+                </label>
+            </div>
         </div>
 
         {% if this.isConverting %}
@@ -76,6 +83,8 @@
                         {% include('resumes/live_template_1.html.twig') %}
                     {% elseif this.template == 2 %}
                         {% include('resumes/live_template_2.html.twig') %}
+                    {% elseif this.template == 3 %}
+                        {% include('resumes/live_template_3.html.twig') %}
                     {% endif %}
                 </div>
             </div>
