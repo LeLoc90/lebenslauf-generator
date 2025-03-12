@@ -2,20 +2,15 @@
 
 namespace App\DTO;
 
-use App\Entity\Resume;
-use App\Repository\LanguageRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 class LanguageDTO
 {
-    private ?Ulid $id = null;
+    protected ?Ulid $id = null;
 
-    private ?string $title = null;
+    protected ?string $title = null;
 
-    private ?int $level = null;
+    protected ?int $level = null;
 
 
     public function getId(): ?Ulid

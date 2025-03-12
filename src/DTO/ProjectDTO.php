@@ -6,18 +6,18 @@ use Symfony\Component\Uid\Ulid;
 
 class ProjectDTO
 {
-    private ?Ulid $id = null;
+    protected ?Ulid $id = null;
 
-    private ?string $title = null;
+    protected ?string $title = null;
 
-    private ?int $year = null;
+    protected ?int $year = null;
 
-    private ?string $description = null;
+    protected ?string $description = null;
 
-    private array $technologies = [];
+    protected array $technologies = [];
 
-    private ?string $task = null;
-    private ?string $workflow = null;
+    protected ?string $task = null;
+    protected ?string $workflow = null;
 
     public function getId(): ?Ulid
     {

@@ -8,21 +8,19 @@ use Doctrine\Common\Collections\Collection;
 
 class ResumeDTO
 {
-    private ?string $name = null;
+    protected ?string $name = null;
 
-    private ?DateTime $birthdate = null;
-    private ?string $schoolGraduation = null;
-    private ?string $trainingGraduation = null;
+    protected ?DateTime $birthdate = null;
+    protected ?string $schoolGraduation = null;
+    protected ?string $trainingGraduation = null;
+    protected array $positions = [];
 
-    private array $positions = [];
+    protected Collection $languages;
 
+    protected array $programmingLanguages = [];
+    protected array $tools = [];
 
-    private Collection $languages;
-
-    private array $programmingLanguages = [];
-    private array $tools = [];
-
-    private Collection $projects;
+    protected Collection $projects;
 
 
     public function __construct()
