@@ -18,8 +18,9 @@ class MainController extends AbstractController
     public function index(): Response
     {
         $resumeRepository = $this->entityManager->getRepository(Resume::class);
+        $resumes = $resumeRepository->getProjectsJoinWithResumeProject();
         return $this->render('pages/index.html.twig', [
-            'resumes' => $resumeRepository->findAll(),
+            'resumes' => $resumes,
         ]);
     }
 

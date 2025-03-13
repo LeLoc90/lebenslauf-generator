@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ResumeRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -44,15 +46,26 @@ class Resume
     #[ORM\Column(type: Types::ARRAY)]
     private array $tools = [];
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $projects = [];
-
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updated_at = null;
 
+    /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'resumes')]
+    private Collection $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
+
+    /**
+     * @return void
+     */
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -169,18 +182,6 @@ class Resume
         return $this;
     }
 
-    public function getProjects(): array
-    {
-        return $this->projects;
-    }
-
-    public function setProjects(array $projects): static
-    {
-        $this->projects = $projects;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
@@ -201,6 +202,30 @@ class Resume
     public function setUpdatedAt(?DateTimeImmutable $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $this->projects->removeElement($project);
 
         return $this;
     }

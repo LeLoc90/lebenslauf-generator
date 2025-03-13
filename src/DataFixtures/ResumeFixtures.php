@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Project;
 use App\Entity\Resume;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,6 +15,40 @@ class ResumeFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
+
+        $this->createProject(
+            "Internes Dashboard für Mustermann GmbH",
+            2021,
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+            [
+                "PHP",
+                "Symfony",
+                "Docker",
+                "Jira",
+                "Bitbucker",
+                "PostgreSQL",
+                "React",
+            ],
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+        );
+
+        $this->createProject(
+            "Dynamische Website für Musterfirma ",
+            2022,
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+            [
+                "React",
+                "TypeScript",
+                "HTML5",
+                "CSS3",
+                "Git",
+                "Rest API",
+                "Docker"
+            ],
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
+        );
 
         $this->createResume(
             'Maxx Mustermann',
@@ -46,40 +81,30 @@ class ResumeFixtures extends Fixture
                 "Docker",
                 "Atlassian Stack",
                 "PHPStorm"
-            ], [
-            [
-                "title" => "Internes Dashboard für Mustermann GmbH",
-                'year' => 2021,
-                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "technologies" => [
-                    "PHP",
-                    "Symfony",
-                    "Docker",
-                    "Jira",
-                    "Bitbucker",
-                    "PostgreSQL",
-                    "React",
-                ],
-                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
             ],
-            [
-                "title" => "Dynamische Website für Musterfirma ",
-                "year" => 2022,
-                "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "technologies" => [
-                    "React",
-                    "TypeScript",
-                    "HTML5",
-                    "CSS3",
-                    "Git",
-                    "Rest API",
-                    "Docker"
-                ],
-                "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-            ]
-        ]);
+        );
+    }
+
+    protected function createProject(
+        string $title,
+        int    $year,
+        string $description,
+        array  $technologies,
+        string $task,
+        string $workflow
+    ): void
+    {
+        $project = new Project();
+
+        $project->setTitle($title);
+        $project->setYear($year);
+        $project->setDescription($description);
+        $project->setTechnologies($technologies);
+        $project->setTask($task);
+        $project->setWorkflow($workflow);
+
+        $this->manager->persist($project);
+        $this->manager->flush();
     }
 
     protected function createResume(
@@ -91,7 +116,6 @@ class ResumeFixtures extends Fixture
         array  $languages,
         array  $programmingLanguages,
         array  $tools,
-        array  $projects
     ): void
     {
         $resume = new Resume();
@@ -104,7 +128,11 @@ class ResumeFixtures extends Fixture
         $resume->setLanguages($languages);
         $resume->setProgrammingLanguages($programmingLanguages);
         $resume->setTools($tools);
-        $resume->setProjects($projects);
+
+        $projects = $this->manager->getRepository(Project::class)->findAll();
+        for ($i = 0; $i < 2; $i++) {
+            $resume->addProject($projects[$i]);
+        }
 
         $this->manager->persist($resume);
         $this->manager->flush();
