@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ResumeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -19,263 +19,141 @@ class Resume
     private ?Ulid $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $introduction = null;
+    private ?string $name = null;
 
-    #[ORM\OneToOne(inversedBy: 'resume', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Person $person = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $birthdate = null;
 
-    /**
-     * @var Collection<int, Language>
-     */
-    #[ORM\OneToMany(targetEntity: Language::class, mappedBy: 'resume')]
-    private Collection $languages;
+    #[ORM\Column(length: 255)]
+    private ?string $schoolGraduation = null;
 
-    /**
-     * @var Collection<int, Education>
-     */
-    #[ORM\OneToMany(targetEntity: Education::class, mappedBy: 'resume')]
-    private Collection $educations;
+    #[ORM\Column(length: 255)]
+    private ?string $trainingGraduation = null;
 
-    /**
-     * @var Collection<int, ProgrammingLanguage>
-     */
-    #[ORM\OneToMany(targetEntity: ProgrammingLanguage::class, mappedBy: 'resume')]
-    private Collection $programmingLanguages;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $positions = [];
 
-    /**
-     * @var Collection<int, Task>
-     */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'resume')]
-    private Collection $tasks;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $languages = [];
 
-    /**
-     * @var Collection<int, Competence>
-     */
-    #[ORM\OneToMany(targetEntity: Competence::class, mappedBy: 'resume')]
-    private Collection $competences;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $programmingLanguages = [];
 
-    /**
-     * @var Collection<int, Project>
-     */
-    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'resume')]
-    private Collection $projects;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $tools = [];
 
-    public function __construct()
-    {
-        $this->languages = new ArrayCollection();
-        $this->educations = new ArrayCollection();
-        $this->programmingLanguages = new ArrayCollection();
-        $this->tasks = new ArrayCollection();
-        $this->competences = new ArrayCollection();
-        $this->projects = new ArrayCollection();
-    }
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $projects = [];
 
     public function getId(): ?Ulid
     {
         return $this->id;
     }
 
-    public function getIntroduction(): ?string
+    public function getName(): ?string
     {
-        return $this->introduction;
+        return $this->name;
     }
 
-    public function setIntroduction(string $introduction): static
+    public function setName(string $name): static
     {
-        $this->introduction = $introduction;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getPerson(): ?Person
+    public function getBirthdate(): ?DateTimeInterface
     {
-        return $this->person;
+        return $this->birthdate;
     }
 
-    public function setPerson(Person $person): static
+    public function setBirthdate(DateTimeInterface $birthdate): static
     {
-        $this->person = $person;
+        $this->birthdate = $birthdate;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Language>
-     */
-    public function getLanguages(): Collection
+    public function getSchoolGraduation(): ?string
+    {
+        return $this->schoolGraduation;
+    }
+
+    public function setSchoolGraduation(string $schoolGraduation): static
+    {
+        $this->schoolGraduation = $schoolGraduation;
+
+        return $this;
+    }
+
+    public function getTrainingGraduation(): ?string
+    {
+        return $this->trainingGraduation;
+    }
+
+    public function setTrainingGraduation(string $trainingGraduation): static
+    {
+        $this->trainingGraduation = $trainingGraduation;
+
+        return $this;
+    }
+
+    public function getPositions(): array
+    {
+        return $this->positions;
+    }
+
+    public function setPositions(array $positions): static
+    {
+        $this->positions = $positions;
+
+        return $this;
+    }
+
+    public function getLanguages(): array
     {
         return $this->languages;
     }
 
-    public function addLanguage(Language $language): static
+    public function setLanguages(array $languages): static
     {
-        if (!$this->languages->contains($language)) {
-            $this->languages->add($language);
-            $language->setResume($this);
-        }
+        $this->languages = $languages;
 
         return $this;
     }
 
-    public function removeLanguage(Language $language): static
-    {
-        if ($this->languages->removeElement($language)) {
-            // set the owning side to null (unless already changed)
-            if ($language->getResume() === $this) {
-                $language->setResume(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Education>
-     */
-    public function getEducations(): Collection
-    {
-        return $this->educations;
-    }
-
-    public function addEducation(Education $education): static
-    {
-        if (!$this->educations->contains($education)) {
-            $this->educations->add($education);
-            $education->setResume($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEducation(Education $education): static
-    {
-        if ($this->educations->removeElement($education)) {
-            // set the owning side to null (unless already changed)
-            if ($education->getResume() === $this) {
-                $education->setResume(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProgrammingLanguage>
-     */
-    public function getProgrammingLanguages(): Collection
+    public function getProgrammingLanguages(): array
     {
         return $this->programmingLanguages;
     }
 
-    public function addProgrammingLanguage(ProgrammingLanguage $programmingLanguage): static
+    public function setProgrammingLanguages(array $programmingLanguages): static
     {
-        if (!$this->programmingLanguages->contains($programmingLanguage)) {
-            $this->programmingLanguages->add($programmingLanguage);
-            $programmingLanguage->setResume($this);
-        }
+        $this->programmingLanguages = $programmingLanguages;
 
         return $this;
     }
 
-    public function removeProgrammingLanguage(ProgrammingLanguage $programmingLanguage): static
+    public function getTools(): array
     {
-        if ($this->programmingLanguages->removeElement($programmingLanguage)) {
-            // set the owning side to null (unless already changed)
-            if ($programmingLanguage->getResume() === $this) {
-                $programmingLanguage->setResume(null);
-            }
-        }
+        return $this->tools;
+    }
+
+    public function setTools(array $tools): static
+    {
+        $this->tools = $tools;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Task>
-     */
-    public function getTasks(): Collection
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Task $task): static
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
-            $task->setResume($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): static
-    {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getResume() === $this) {
-                $task->setResume(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Competence>
-     */
-    public function getCompetences(): Collection
-    {
-        return $this->competences;
-    }
-
-    public function addCompetence(Competence $competence): static
-    {
-        if (!$this->competences->contains($competence)) {
-            $this->competences->add($competence);
-            $competence->setResume($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetence(Competence $competence): static
-    {
-        if ($this->competences->removeElement($competence)) {
-            // set the owning side to null (unless already changed)
-            if ($competence->getResume() === $this) {
-                $competence->setResume(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Project>
-     */
-    public function getProjects(): Collection
+    public function getProjects(): array
     {
         return $this->projects;
     }
 
-    public function addProject(Project $project): static
+    public function setProjects(array $projects): static
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->setResume($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): static
-    {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getResume() === $this) {
-                $project->setResume(null);
-            }
-        }
+        $this->projects = $projects;
 
         return $this;
     }

@@ -4,18 +4,31 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Resume;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
-
-    public function createResume(): Response
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        return $this->render('pages/resume.html.twig');
     }
 
-    public function getPdfs()
+    public function index(): Response
+    {
+        $resumeRepository = $this->entityManager->getRepository(Resume::class);
+        return $this->render('pages/index.html.twig', [
+            'resumes' => $resumeRepository->findAll(),
+        ]);
+    }
+
+    public function createResume()
+    {
+
+    }
+
+    public function getPdfs(): Response
     {
         // Get the project directory and the absolute path of the pdf folder.
         $projectDir = $this->getParameter('kernel.project_dir');

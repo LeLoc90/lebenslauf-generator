@@ -16,6 +16,21 @@ cache: ## Clears the cache.
 enter: ## Enter php container
 	@bash
 
+create-database: ## Create Database
+	@symfony console doctrine:database:create
+
+drop-database: ## Delete Database
+	@symfony console doctrine:database:drop --force
+
+create-migration:
+	@symfony console doctrine:migrations:diff
+
+migrate: ## Run migrations
+	@symfony console doctrine:migrations:migrate -n
+
+fixtures: ## Load sample Data
+	@symfony console doctrine:fixtures:load -n
+
 start: ## Start Containers
 	@docker compose up -d
 	symfony server:start -d --no-tls --port=8500
