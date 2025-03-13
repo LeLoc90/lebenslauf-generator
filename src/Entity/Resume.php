@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ResumeRepository;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,7 @@ use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: ResumeRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Resume
 {
     #[ORM\Id]
@@ -44,6 +46,27 @@ class Resume
 
     #[ORM\Column(type: Types::ARRAY)]
     private array $projects = [];
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $updated_at = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->created_at = new DateTimeImmutable("now");
+        if (!$this->updated_at) {
+            $this->updated_at = new DateTimeImmutable("now");
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updated_at = new DateTimeImmutable("now");
+    }
 
     public function getId(): ?Ulid
     {
@@ -154,6 +177,30 @@ class Resume
     public function setProjects(array $projects): static
     {
         $this->projects = $projects;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): static
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

@@ -22,6 +22,10 @@ create-database: ## Create Database
 drop-database: ## Delete Database
 	@symfony console doctrine:database:drop --force
 
+database:
+	@$(MAKE) drop-database
+	@$(MAKE) create-database
+
 create-migration:
 	@symfony console doctrine:migrations:diff
 
