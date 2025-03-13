@@ -3,5 +3,61 @@
 {% block title %}Lebenlauf Generator{% endblock %}
 
 {% block body %}
-    {{ dump(resumes[0].projects[0]) }}
+    {{ dump(resumes) }}
+    <article class="w-100 overflow-hidden rounded-2">
+        <table class="table table-hover m-0 p-0">
+            <colgroup>
+                <col span="1" style="width: 20%">
+                <col span="1" style="width: 25%">
+                <col span="1" style="width: 35%">
+                <col span="1" style="width: 10%">
+                <col span="1" style="width: 10%">
+            </colgroup>
+            <thead>
+            <tr class="table-primary bg-gradient align-middle">
+                <th scope="col">Namen</th>
+                <th scope="col">Positions</th>
+                <th scope="col">Projekte</th>
+                <th scope="col">Letzte Update</th>
+                <th scope="col" class="text-center">Aktionen</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for resume in resumes %}
+                <tr class="align-middle">
+                    <td>
+                        <a href="{{ path('edit-resume', {'ulid': resume.id}) }}"
+                           class="text-decoration-underline fw-semibold">{{ loop.index > 10 ?: "0"~loop.index }}
+                            . {{ resume.name }}</a>
+                    </td>
+                    <td>
+                        {% for position in resume.positions %}
+                            {{ position }}{% if not loop.last %}, {% endif %}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for project in resume.projects %}
+                            {{ project.title }}{% if not loop.last %}, {% endif %}<br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ resume.updatedAt|date('d.m.Y') }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('edit-resume', {'ulid': resume.id}) }}" class="me-m1"
+                           data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Bearbeiten">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a href="{{ path('delete-resume', {'ulid': resume.id}) }}"
+                           data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Entfernen">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
 {% endblock %}
