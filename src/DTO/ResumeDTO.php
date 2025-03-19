@@ -9,20 +9,15 @@ use Doctrine\Common\Collections\Collection;
 class ResumeDTO
 {
     protected ?string $name = null;
-
     protected ?DateTime $birthdate = null;
     protected ?string $schoolGraduation = null;
     protected ?string $trainingGraduation = null;
     protected array $positions = [];
-
     protected Collection $languages;
-
     protected array $programmingLanguages = [];
     protected array $tools = [];
-
     protected Collection $projects;
-
-
+    
     public function __construct()
     {
         $this->languages = new ArrayCollection();
