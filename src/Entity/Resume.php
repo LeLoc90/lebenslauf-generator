@@ -3,24 +3,25 @@
 namespace App\Entity;
 
 use App\Repository\ResumeRepository;
+use App\Service\IDService;
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UlidType;
-use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: ResumeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Resume
 {
     #[ORM\Id]
-    #[ORM\Column(type: UlidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
-    private ?Ulid $id = null;
+    #[ORM\Column(type: 'string')]
+//    #[ORM\Column(type: UlidType::NAME, unique: true)]
+//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+//    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    private string $id;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -38,9 +39,6 @@ class Resume
     private array $positions = [];
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $languages = [];
-
-    #[ORM\Column(type: Types::ARRAY)]
     private array $programmingLanguages = [];
 
     #[ORM\Column(type: Types::ARRAY)]
@@ -51,16 +49,18 @@ class Resume
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updated_at = null;
-
-    /**
-     * @var Collection<int, Project>
-     */
-    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'resumes')]
+    
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'resume')]
     private Collection $projects;
+
+    #[ORM\OneToMany(targetEntity: Language::class, mappedBy: 'resume')]
+    private Collection $languages;
 
     public function __construct()
     {
+        $this->id ??= IDService::MakeULID(new DateTime("now"));
         $this->projects = new ArrayCollection();
+        $this->languages = new ArrayCollection();
     }
 
     /**
@@ -81,7 +81,7 @@ class Resume
         $this->updated_at = new DateTimeImmutable("now");
     }
 
-    public function getId(): ?Ulid
+    public function getId(): string
     {
         return $this->id;
     }
@@ -146,18 +146,6 @@ class Resume
         return $this;
     }
 
-    public function getLanguages(): array
-    {
-        return $this->languages;
-    }
-
-    public function setLanguages(array $languages): static
-    {
-        $this->languages = $languages;
-
-        return $this;
-    }
-
     public function getProgrammingLanguages(): array
     {
         return $this->programmingLanguages;
@@ -218,6 +206,7 @@ class Resume
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
+            $project->setResume($this);
         }
 
         return $this;
@@ -225,7 +214,42 @@ class Resume
 
     public function removeProject(Project $project): static
     {
-        $this->projects->removeElement($project);
+        if ($this->projects->removeElement($project)) {
+            // set the owning side to null (unless already changed)
+            if ($project->getResume() === $this) {
+                $project->setResume(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Language>
+     */
+    public function getLanguages(): Collection
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(Language $language): static
+    {
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
+            $language->setResume($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(Language $language): static
+    {
+        if ($this->languages->removeElement($language)) {
+            // set the owning side to null (unless already changed)
+            if ($language->getResume() === $this) {
+                $language->setResume(null);
+            }
+        }
 
         return $this;
     }

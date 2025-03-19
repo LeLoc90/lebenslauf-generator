@@ -19,9 +19,9 @@ class ResumeRepository extends ServiceEntityRepository
     public function getProjectsJoinWithResumeProject()
     {
         $qb = $this->createQueryBuilder('resume')
-            ->select('resume')
-            ->innerJoin('resume.projects', 'project')
-            ->addSelect('project');
+            ->select('resume, project, language')
+            ->leftJoin('resume.projects', 'project')
+            ->leftJoin('resume.languages', 'language');
 
         return $qb->getQuery()->getResult();
     }

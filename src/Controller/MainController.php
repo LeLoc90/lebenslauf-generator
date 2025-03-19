@@ -19,6 +19,7 @@ class MainController extends AbstractController
     {
         $resumeRepository = $this->entityManager->getRepository(Resume::class);
         $resumes = $resumeRepository->getProjectsJoinWithResumeProject();
+//        dd($resumes);
         return $this->render('pages/index.html.twig', [
             'resumes' => $resumes,
         ]);

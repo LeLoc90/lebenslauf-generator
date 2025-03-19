@@ -3,21 +3,21 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Service\IDService;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
     #[ORM\Id]
-    #[ORM\Column(type: UlidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
-    private ?Ulid $id = null;
+    #[ORM\Column(type: 'string')]
+//    #[ORM\Column(type: UlidType::NAME, unique: true)]
+//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+//    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    private string $id;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -37,18 +37,15 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $workflow = null;
 
-    /**
-     * @var Collection<int, Resume>
-     */
-    #[ORM\ManyToMany(targetEntity: Resume::class, mappedBy: 'projects')]
-    private Collection $resumes;
+    #[ORM\ManyToOne(targetEntity: Resume::class, inversedBy: 'projects')]
+    private ?Resume $resume = null;
 
     public function __construct()
     {
-        $this->resumes = new ArrayCollection();
+        $this->id ??= IDService::MakeULID(new DateTime('now'));
     }
 
-    public function getId(): ?Ulid
+    public function getId(): string
     {
         return $this->id;
     }
@@ -132,29 +129,14 @@ class Project
         return $this;
     }
 
-    /**
-     * @return Collection<int, Resume>
-     */
-    public function getResumes(): Collection
+    public function getResume(): ?Resume
     {
-        return $this->resumes;
+        return $this->resume;
     }
 
-    public function addResume(Resume $resume): static
+    public function setResume(?Resume $resume): static
     {
-        if (!$this->resumes->contains($resume)) {
-            $this->resumes->add($resume);
-            $resume->addProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResume(Resume $resume): static
-    {
-        if ($this->resumes->removeElement($resume)) {
-            $resume->removeProject($this);
-        }
+        $this->resume = $resume;
 
         return $this;
     }

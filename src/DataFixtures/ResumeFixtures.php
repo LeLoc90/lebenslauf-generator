@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Language;
 use App\Entity\Project;
 use App\Entity\Resume;
+use DateMalformedStringException;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,7 +18,20 @@ class ResumeFixtures extends Fixture
     {
         $this->manager = $manager;
 
+        $this->createLanguage(
+            '01HT008NHYB79T1Z581BZJYVYD',
+            "Deutsch",
+            5,
+        );
+
+        $this->createLanguage(
+            '01HT008NHYB79T1Z581BZJYVYE',
+            "Englisch",
+            4,
+        );
+
         $this->createProject(
+            '01HT008NHYB79T1Z581BZJYVYJ',
             "Internes Dashboard für Mustermann GmbH",
             2021,
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
@@ -34,6 +49,7 @@ class ResumeFixtures extends Fixture
         );
 
         $this->createProject(
+            '01HT008NHYB79T1Z581BZJYVGG',
             "Dynamische Website für Musterfirma ",
             2022,
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
@@ -51,6 +67,7 @@ class ResumeFixtures extends Fixture
         );
 
         $this->createResume(
+            '01HT008NHYB79T1Z581BZJYNNN',
             'Maxx Mustermann',
             '1999-11-11T00:00:00+00:00',
             "Abitur",
@@ -85,7 +102,23 @@ class ResumeFixtures extends Fixture
         );
     }
 
+    protected function createLanguage(
+        string $id,
+        string $title,
+        int    $level,
+    ): void
+    {
+        $language = new Language();
+
+        $language->setTitle($title);
+        $language->setLevel($level);
+
+        $this->manager->persist($language);
+        $this->manager->flush();
+    }
+
     protected function createProject(
+        string $id,
         string $title,
         int    $year,
         string $description,
@@ -107,7 +140,11 @@ class ResumeFixtures extends Fixture
         $this->manager->flush();
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     protected function createResume(
+        string $id,
         string $name,
         string $birthdate,
         string $schoolGraduation,
@@ -125,9 +162,13 @@ class ResumeFixtures extends Fixture
         $resume->setSchoolGraduation($schoolGraduation);
         $resume->setTrainingGraduation($trainingGraduation);
         $resume->setPositions($positions);
-        $resume->setLanguages($languages);
         $resume->setProgrammingLanguages($programmingLanguages);
         $resume->setTools($tools);
+
+        $languages = $this->manager->getRepository(Language::class)->findAll();
+        for ($i = 0; $i < 2; $i++) {
+            $resume->addLanguage($languages[$i]);
+        }
 
         $projects = $this->manager->getRepository(Project::class)->findAll();
         for ($i = 0; $i < 2; $i++) {
