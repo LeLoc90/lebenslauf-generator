@@ -12,7 +12,7 @@ class Language
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-    private string $id;
+    private string $ulid;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -21,19 +21,18 @@ class Language
     private ?int $level = null;
 
     #[ORM\ManyToOne(targetEntity: Resume::class, inversedBy: 'languages')]
-    #[ORM\JoinColumn(name: 'resume_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'resume_ulid', referencedColumnName: 'ulid', onDelete: 'CASCADE')]
     private ?Resume $resume = null;
 
     public function __construct()
     {
-        $this->id ??= IDService::MakeULID(new DateTime('now'));
+        $this->ulid ??= IDService::MakeULID(new DateTime('now'));
     }
 
-    public function getId(): string
+    public function getUlid(): string
     {
-        return $this->id;
+        return $this->ulid;
     }
-
 
     public function getTitle(): ?string
     {

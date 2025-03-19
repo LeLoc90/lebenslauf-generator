@@ -19,7 +19,7 @@ class Resume
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-    private string $id;
+    private string $ulid;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -57,7 +57,7 @@ class Resume
 
     public function __construct()
     {
-        $this->id ??= IDService::MakeULID(new DateTime("now"));
+        $this->ulid ??= IDService::MakeULID(new DateTime("now"));
         $this->projects = new ArrayCollection();
         $this->languages = new ArrayCollection();
     }
@@ -80,9 +80,9 @@ class Resume
         $this->updated_at = new DateTimeImmutable("now");
     }
 
-    public function getId(): string
+    public function getUlid(): string
     {
-        return $this->id;
+        return $this->ulid;
     }
 
     public function getName(): ?string

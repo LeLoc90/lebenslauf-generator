@@ -27,7 +27,7 @@
             {% for resume in resumes %}
                 <tr class="align-middle">
                     <td>
-                        <a href="{{ path('edit-resume', {'ulid': resume.id}) }}"
+                        <a href="{{ path('edit-resume', {'ulid': resume.ulid}) }}"
                            class="text-decoration-underline fw-semibold">{{ loop.index > 10 ?: "0"~loop.index }}
                             . {{ resume.name }}</a>
                     </td>
@@ -43,11 +43,11 @@
                     </td>
                     <td>{{ resume.updatedAt|date('d.m.Y') }}</td>
                     <td class="text-center">
-                        <a href="{{ path('edit-resume', {'ulid': resume.id}) }}" class="me-m1"
+                        <a href="{{ path('edit-resume', {'ulid': resume.ulid}) }}" class="me-m1"
                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Bearbeiten">
                             <i class="bi bi-pencil-square"></i>
                         </a>
-                        <a href="{{ path('delete-resume', {'ulid': resume.id}) }}"
+                        <a href="{{ path('delete-resume', {'ulid': resume.ulid}) }}"
                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Entfernen">
                             <i class="bi bi-trash"></i>
                         </a>

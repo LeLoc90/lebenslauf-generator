@@ -19,19 +19,16 @@ class ResumeFixtures extends Fixture
         $this->manager = $manager;
 
         $this->createLanguage(
-            '01HT008NHYB79T1Z581BZJYVYD',
             "Deutsch",
             5,
         );
 
         $this->createLanguage(
-            '01HT008NHYB79T1Z581BZJYVYE',
             "Englisch",
             4,
         );
 
         $this->createProject(
-            '01HT008NHYB79T1Z581BZJYVYJ',
             "Internes Dashboard für Mustermann GmbH",
             2021,
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
@@ -49,7 +46,6 @@ class ResumeFixtures extends Fixture
         );
 
         $this->createProject(
-            '01HT008NHYB79T1Z581BZJYVGG',
             "Dynamische Website für Musterfirma ",
             2022,
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
@@ -67,7 +63,6 @@ class ResumeFixtures extends Fixture
         );
 
         $this->createResume(
-            '01HT008NHYB79T1Z581BZJYNNN',
             'Maxx Mustermann',
             '1999-11-11T00:00:00+00:00',
             "Abitur",
@@ -75,16 +70,6 @@ class ResumeFixtures extends Fixture
             [
                 "Lead-Entwickler",
                 "Frontend-Entwickler",
-            ],
-            [
-                [
-                    "title" => "Deutsch",
-                    "level" => 5
-                ],
-                [
-                    "title" => "Englisch",
-                    "level" => 4
-                ]
             ],
             [
                 "HTML",
@@ -103,7 +88,6 @@ class ResumeFixtures extends Fixture
     }
 
     protected function createLanguage(
-        string $id,
         string $title,
         int    $level,
     ): void
@@ -118,7 +102,6 @@ class ResumeFixtures extends Fixture
     }
 
     protected function createProject(
-        string $id,
         string $title,
         int    $year,
         string $description,
@@ -128,7 +111,6 @@ class ResumeFixtures extends Fixture
     ): void
     {
         $project = new Project();
-
         $project->setTitle($title);
         $project->setYear($year);
         $project->setDescription($description);
@@ -144,19 +126,16 @@ class ResumeFixtures extends Fixture
      * @throws DateMalformedStringException
      */
     protected function createResume(
-        string $id,
         string $name,
         string $birthdate,
         string $schoolGraduation,
         string $trainingGraduation,
         array  $positions,
-        array  $languages,
         array  $programmingLanguages,
         array  $tools,
     ): void
     {
         $resume = new Resume();
-
         $resume->setName($name);
         $resume->setBirthdate(new DateTime($birthdate));
         $resume->setSchoolGraduation($schoolGraduation);

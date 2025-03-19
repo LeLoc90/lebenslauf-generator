@@ -7,14 +7,13 @@ use App\Service\IDService;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-    private string $id;
+    private string $ulid;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -35,24 +34,17 @@ class Project
     private ?string $workflow = null;
 
     #[ORM\ManyToOne(targetEntity: Resume::class, inversedBy: 'projects')]
-    #[ORM\JoinColumn(name: 'resume_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'resume_ulid', referencedColumnName: 'ulid', onDelete: 'CASCADE')]
     private ?Resume $resume = null;
 
     public function __construct()
     {
-        $this->id ??= IDService::MakeULID(new DateTime('now'));
+        $this->ulid ??= IDService::MakeULID(new DateTime('now'));
     }
 
-    public function getId(): string
+    public function getUlid(): string
     {
-        return $this->id;
-    }
-
-    public function setId(Ulid $id): static
-    {
-        $this->id = $id;
-
-        return $this;
+        return $this->ulid;
     }
 
     public function getTitle(): ?string
