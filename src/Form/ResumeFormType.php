@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\DTO\ResumeDTO;
+use App\Entity\Resume;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -246,7 +246,7 @@ class ResumeFormType extends BaseForm
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ResumeDTO::class,
+            'data_class' => Resume::class,
             'custom_option' => null,
         ]);
         $resolver->setRequired('custom_option');

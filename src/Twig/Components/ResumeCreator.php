@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components;
 
-use App\DTO\ResumeDTO;
+use App\Entity\Resume;
 use App\Form\ResumeFormType;
 use App\Service\FileUploader;
 use Exception;
@@ -128,7 +128,7 @@ class ResumeCreator extends AbstractController
 
 
     #[LiveProp]
-    public ?ResumeDTO $initialFormData = null;
+    public Resume|null $initialFormData = null;
 
     public function __construct(
         protected Environment $environment,

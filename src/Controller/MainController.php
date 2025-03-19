@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Resume;
+use App\Form\ResumeFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
@@ -19,15 +21,64 @@ class MainController extends AbstractController
     {
         $resumeRepository = $this->entityManager->getRepository(Resume::class);
         $resumes = $resumeRepository->getProjectsJoinWithResumeProject();
-//        dd($resumes);
         return $this->render('pages/index.html.twig', [
             'resumes' => $resumes,
         ]);
     }
 
-    public function createResume()
+    public function createResume(Request $request): Response
+    {
+        $resume = new Resume();
+        $form = $this->createForm(ResumeFormType::class, $resume);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $resume = $form->getData();
+            $languages = $resume->getLanguages();
+            $projects = $resume->getProjects();
+
+            foreach ($languages as $language) {
+                $this->entityManager->persist($language);
+            }
+            foreach ($projects as $project) {
+                $this->entityManager->persist($project);
+            }
+
+            $this->entityManager->persist($resume);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('resume-index');
+        }
+
+        return $this->render('pages/create_resume.html.twig', [
+            'form' => $form,
+            'resume' => $resume
+        ]);
+    }
+
+    public function deleteResume(string $ulid): Response
     {
 
+        $resume = $this->entityManager->getRepository(Resume::class)->find($ulid);
+        if (!$resume) {
+            throw $this->createNotFoundException('Keine Lebenslauf mit der ULID gefunden:' . $ulid);
+        }
+
+        $languages = $resume->getLanguages();
+        $projects = $resume->getProjects();
+
+        foreach ($languages as $language) {
+            $this->entityManager->remove($language);
+        }
+        
+        foreach ($projects as $project) {
+            $this->entityManager->remove($project);
+        }
+
+        $this->entityManager->remove($resume);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('resume-index', [], Response::HTTP_SEE_OTHER);
     }
 
     public function getPdfs(): Response

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\DTO\LanguageDTO;
+use App\Entity\Language;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -66,7 +66,7 @@ class LanguageFormType extends BaseForm
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => LanguageDTO::class,
+            'data_class' => Language::class,
             'custom_option' => null,
         ]);
         $resolver->setRequired('custom_option');

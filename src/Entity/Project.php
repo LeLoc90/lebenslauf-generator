@@ -14,9 +14,6 @@ class Project
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-//    #[ORM\Column(type: UlidType::NAME, unique: true)]
-//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-//    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
     private string $id;
 
     #[ORM\Column(length: 255)]
@@ -38,6 +35,7 @@ class Project
     private ?string $workflow = null;
 
     #[ORM\ManyToOne(targetEntity: Resume::class, inversedBy: 'projects')]
+    #[ORM\JoinColumn(name: 'resume_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Resume $resume = null;
 
     public function __construct()

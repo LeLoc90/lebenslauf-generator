@@ -1,0 +1,10 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Lebenlauf Generator{% endblock %}
+
+{% block body %}
+    {{ component('ResumeCreator', {
+        initialFormData: resume,
+        form: form
+    }) }}
+{% endblock %}

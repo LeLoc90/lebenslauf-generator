@@ -12,9 +12,6 @@ class Language
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-//    #[ORM\Column(type: UlidType::NAME, unique: true)]
-//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-//    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
     private string $id;
 
     #[ORM\Column(length: 255)]
@@ -24,6 +21,7 @@ class Language
     private ?int $level = null;
 
     #[ORM\ManyToOne(targetEntity: Resume::class, inversedBy: 'languages')]
+    #[ORM\JoinColumn(name: 'resume_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Resume $resume = null;
 
     public function __construct()
@@ -42,7 +40,7 @@ class Language
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -54,7 +52,7 @@ class Language
         return $this->level;
     }
 
-    public function setLevel(int $level): static
+    public function setLevel(?int $level): static
     {
         $this->level = $level;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\DTO\ProjectDTO;
+use App\Entity\Project;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -88,7 +88,7 @@ class ProjectFormType extends BaseForm
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ProjectDTO::class,
+            'data_class' => Project::class,
             'custom_option' => null,
         ]);
         $resolver->setRequired('custom_option');

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ResumeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -18,16 +19,11 @@ class Resume
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
-//    #[ORM\Column(type: UlidType::NAME, unique: true)]
-//    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-//    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
     private string $id;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?DateTimeInterface $birthdate = null;
 
     #[ORM\Column(length: 255)]
     private ?string $schoolGraduation = null;
@@ -49,12 +45,15 @@ class Resume
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updated_at = null;
-    
+
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'resume')]
     private Collection $projects;
 
     #[ORM\OneToMany(targetEntity: Language::class, mappedBy: 'resume')]
     private Collection $languages;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $birthdate = null;
 
     public function __construct()
     {
@@ -91,31 +90,20 @@ class Resume
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getBirthdate(): ?DateTimeInterface
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthdate(DateTimeInterface $birthdate): static
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
 
     public function getSchoolGraduation(): ?string
     {
         return $this->schoolGraduation;
     }
 
-    public function setSchoolGraduation(string $schoolGraduation): static
+    public function setSchoolGraduation(?string $schoolGraduation): static
     {
         $this->schoolGraduation = $schoolGraduation;
 
@@ -127,7 +115,7 @@ class Resume
         return $this->trainingGraduation;
     }
 
-    public function setTrainingGraduation(string $trainingGraduation): static
+    public function setTrainingGraduation(?string $trainingGraduation): static
     {
         $this->trainingGraduation = $trainingGraduation;
 
@@ -139,7 +127,7 @@ class Resume
         return $this->positions;
     }
 
-    public function setPositions(array $positions): static
+    public function setPositions(?array $positions): static
     {
         $this->positions = $positions;
 
@@ -151,7 +139,7 @@ class Resume
         return $this->programmingLanguages;
     }
 
-    public function setProgrammingLanguages(array $programmingLanguages): static
+    public function setProgrammingLanguages(?array $programmingLanguages): static
     {
         $this->programmingLanguages = $programmingLanguages;
 
@@ -163,7 +151,7 @@ class Resume
         return $this->tools;
     }
 
-    public function setTools(array $tools): static
+    public function setTools(?array $tools): static
     {
         $this->tools = $tools;
 
@@ -250,6 +238,18 @@ class Resume
                 $language->setResume(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthdate(): ?DateTimeInterface
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(?DateTimeInterface $birthdate): static
+    {
+        $this->birthdate = $birthdate;
 
         return $this;
     }

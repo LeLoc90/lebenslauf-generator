@@ -4,6 +4,7 @@
 
 {% block body %}
     {{ dump(resumes) }}
+    <a href="{{ path('create-resume') }}" class="btn btn-primary">+ Erstellen</a>
     <article class="w-100 overflow-hidden rounded-2">
         <table class="table table-hover m-0 p-0">
             <colgroup>

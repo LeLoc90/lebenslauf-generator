@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250319094458 extends AbstractMigration
+final class Version20250319112146 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,7 +25,7 @@ final class Version20250319094458 extends AbstractMigration
         $this->addSql('CREATE TABLE project (id VARCHAR(255) NOT NULL, resume_id VARCHAR(255) DEFAULT NULL, title VARCHAR(255) NOT NULL, year INT NOT NULL, description VARCHAR(255) NOT NULL, technologies TEXT NOT NULL, task VARCHAR(255) NOT NULL, workflow VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_2FB3D0EED262AF09 ON project (resume_id)');
         $this->addSql('COMMENT ON COLUMN project.technologies IS \'(DC2Type:array)\'');
-        $this->addSql('CREATE TABLE resume (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, birthdate TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, school_graduation VARCHAR(255) NOT NULL, training_graduation VARCHAR(255) NOT NULL, positions TEXT NOT NULL, programming_languages TEXT NOT NULL, tools TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE resume (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, school_graduation VARCHAR(255) NOT NULL, training_graduation VARCHAR(255) NOT NULL, positions TEXT NOT NULL, programming_languages TEXT NOT NULL, tools TEXT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, birthdate DATE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN resume.positions IS \'(DC2Type:array)\'');
         $this->addSql('COMMENT ON COLUMN resume.programming_languages IS \'(DC2Type:array)\'');
         $this->addSql('COMMENT ON COLUMN resume.tools IS \'(DC2Type:array)\'');

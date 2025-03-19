@@ -22,7 +22,7 @@ edit-resume:
 
 delete-resume:
   path: /resume/{ulid}/delete
-  methods: [ POST ]
+  methods: [ GET, POST ]
   controller: App\Controller\MainController::deleteResume
 
 pdfs-index:

@@ -14,7 +14,7 @@
             <img src="{{ asset('build/images/coding.jpg') }}" alt="Header Background" class="pageHeaderBackground">
             <div class="pageHeaderContent">
                 <div class="pageHeaderText">
-                    <p class="pageHeaderName">{{ formData.name }}</p>
+                    <p class="pageHeaderName">{{ formData.name|default('') }}</p>
                     {% if formData.positions is not empty %}
                         <p class="pageHeaderPosition">{{ formData.positions|join(' | ') }}</p>
                     {% endif %}
