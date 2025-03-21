@@ -3,20 +3,28 @@
 {% block title %}Lebenlauf Generator{% endblock %}
 
 {% block body %}
-    {{ dump(resumes) }}
-    <a href="{{ path('create-resume') }}" class="btn btn-primary">+ Erstellen</a>
-    <article class="w-100 overflow-hidden rounded-2">
+    <h1 class="text-primary space">Übersicht</h1>
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ path('create-resume') }}"
+           class="btn btn-primary d-flex align-items-center gap-2 fw-semibold">
+            <i class="bi bi-plus-lg h5 m-0 me-xs icon-bold"></i>
+            Erstelen
+        </a>
+    </div>
+    <article class="w-100 overflow-hidden rounded-2 shadow-sm">
         <table class="table table-hover m-0 p-0">
             <colgroup>
                 <col span="1" style="width: 20%">
+                <col span="1" style="width: 15%">
+                <col span="1" style="width: 15%">
                 <col span="1" style="width: 30%">
-                <col span="1" style="width: 35%">
                 <col span="1" style="width: 10%">
                 <col span="1" style="width: 10%">
             </colgroup>
             <thead>
             <tr class="table-primary bg-gradient align-middle">
                 <th scope="col">Namen</th>
+                <th scope="col">Sprachen</th>
                 <th scope="col">Positions</th>
                 <th scope="col">Projekte</th>
                 <th scope="col">Letzte Update</th>
@@ -28,8 +36,14 @@
                 <tr class="align-middle">
                     <td>
                         <a href="{{ path('edit-resume', {'ulid': resume.ulid}) }}"
-                           class="text-decoration-underline fw-semibold">{{ loop.index > 10 ?: "0"~loop.index }}
-                            . {{ resume.name }}</a>
+                           class="fw-semibold"><span
+                                    class="text-decoration-underline">{{ loop.index > 10 ?: "0"~loop.index }}.</span> {{ resume.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {% for language in resume.languages %}
+                            {{ language.title }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
                     </td>
                     <td>
                         {% for position in resume.positions %}
@@ -43,7 +57,7 @@
                     </td>
                     <td>{{ resume.updatedAt|date('d.m.Y') }}</td>
                     <td class="text-center">
-                        <a href="{{ path('edit-resume', {'ulid': resume.ulid}) }}" class="me-m1"
+                        <a href="{{ path('edit-resume', {'ulid': resume.ulid}) }}" class="me-2"
                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Bearbeiten">
                             <i class="bi bi-pencil-square"></i>
                         </a>

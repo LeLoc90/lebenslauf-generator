@@ -69,4 +69,12 @@ class Language
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'level' => $this->level,
+        ];
+    }
 }

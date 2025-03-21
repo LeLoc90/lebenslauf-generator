@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MainController extends AbstractController
 {
@@ -20,7 +21,7 @@ class MainController extends AbstractController
     public function index(): Response
     {
         $resumeRepository = $this->entityManager->getRepository(Resume::class);
-        $resumes = $resumeRepository->getProjectsJoinWithResumeProject();
+        $resumes = $resumeRepository->getAllResumesWithRelatedObjects();
         return $this->render('pages/index.html.twig', [
             'resumes' => $resumes,
         ]);
@@ -50,9 +51,66 @@ class MainController extends AbstractController
             return $this->redirectToRoute('resume-index');
         }
 
-        return $this->render('pages/create_resume.html.twig', [
+        return $this->render('pages/_resume_form.html.twig', [
             'form' => $form,
             'resume' => $resume
+        ]);
+    }
+
+    public function editResume(Request $request, string $ulid, SerializerInterface $serializer): Response
+    {
+        $resume = $this->entityManager->getRepository(Resume::class)->getResumeWithRelatedObjects($ulid)[0];
+        if (!$resume) {
+            throw $this->createNotFoundException('Keine Lebenslauf mit der ULID gefunden:' . $ulid);
+        }
+
+        $form = $this->createForm(ResumeFormType::class, $resume);
+        $data = $form->getData();
+
+        $languages = array_map(function ($language) {
+            return $language->toArray();
+        }, $data->getLanguages()->toArray());
+
+        $projects = array_map(function ($project) {
+            return $project->toArray();
+        }, $data->getProjects()->toArray());
+
+        $liveViewData = [
+            "name" => $data->getName(),
+            "birthdate" => $data->getBirthdate()->format('d-m-Y'),
+            "schoolGraduation" => $data->getSchoolGraduation(),
+            "trainingGraduation" => $data->getTrainingGraduation(),
+            "positions" => $data->getPositions(),
+            "languages" => $languages,
+            "programmingLanguages" => $data->getProgrammingLanguages(),
+            "tools" => $data->getTools(),
+            "projects" => $projects,
+        ];
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $resume = $form->getData();
+            $languages = $resume->getLanguages();
+            $projects = $resume->getProjects();
+
+            foreach ($languages as $language) {
+                $this->entityManager->persist($language);
+            }
+            foreach ($projects as $project) {
+                $this->entityManager->persist($project);
+            }
+
+            $this->entityManager->persist($resume);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('resume-index');
+        }
+
+        return $this->render('pages/_resume_form.html.twig', [
+            'form' => $form,
+            'resume' => $resume,
+            'liveViewData' => $liveViewData
         ]);
     }
 
@@ -70,7 +128,7 @@ class MainController extends AbstractController
         foreach ($languages as $language) {
             $this->entityManager->remove($language);
         }
-        
+
         foreach ($projects as $project) {
             $this->entityManager->remove($project);
         }

@@ -37,12 +37,13 @@ class ResumeCreator extends AbstractController
     public int $template = 1;
     #[LiveProp(writable: true)]
     public ?string $photoLiveSrc = "";
-
-    #[LiveProp(writable: true, onUpdated: 'updateIsConverting')]
-    public bool $isConverting = false;
-
     #[LiveProp(writable: true)]
-    public array $formData = [
+    public ?string $photoForPDF = "";
+
+    #[LiveProp(writable: true,
+        hydrateWith: 'hydrateFormData',
+        dehydrateWith: 'dehydrateFormData')]
+    public ?array $formData = [
         "name" => "",
         "birthdate" => "",
         "schoolGraduation" => "",
@@ -53,79 +54,6 @@ class ResumeCreator extends AbstractController
         "tools" => [],
         "projects" => [],
     ];
-    #[LiveProp(writable: true)]
-    public ?string $photoForPDF = "";
-
-
-    /*    #[LiveProp(writable: true)]
-        public array $formData = [
-            "name" => "Maxx Mustermann",
-            "birthdate" => "1999-11-11T00:00:00+00:00",
-            "schoolGraduation" => "Abitur",
-            "trainingGraduation" => "Fachinformatiker Anwendungsentwickler",
-            "positions" => [
-                "Lead-Entwickler",
-                "Frontend-Entwickler",
-            ],
-            "photo" => null,
-            "languages" => [
-                [
-                    "id" => null,
-                    "title" => "Deutsch",
-                    "level" => 5
-                ],
-                [
-                    "id" => null,
-                    "title" => "Englisch",
-                    "level" => 4
-                ]
-            ],
-            "programmingLanguages" => [
-                "HTML",
-                "CSS",
-                "PHP",
-                "JavaScript"
-            ],
-            "tools" => [
-                "Scrum",
-                "Jira",
-                "Docker",
-                "Atlassian Stack",
-                "PHPStorm"
-            ],
-            "projects" => [
-                [
-                    "id" => null,
-                    "title" => "Projekt 1",
-                    'year' => 2021,
-                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "technologies" => [
-                        "Technology1",
-                        "Technology2",
-                        "Technology3",
-                        "Technology4",
-                        "Technology5"
-                    ],
-                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-                ],
-                [
-                    "id" => null,
-                    "title" => "Projekt 2",
-                    "year" => 2022,
-                    "description" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "technologies" => [
-                        "Technology1",
-                        "Technology2",
-                        "Technology3",
-                        "Technology4"
-                    ],
-                    "task" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At",
-                    "workflow" => "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At"
-                ]
-            ]
-        ];*/
-
 
     #[LiveProp]
     public Resume|null $initialFormData = null;
@@ -134,6 +62,16 @@ class ResumeCreator extends AbstractController
         protected Environment $environment,
     )
     {
+    }
+
+    public static function dehydrateFormData(?array $formData): string
+    {
+        return json_encode($formData);
+    }
+
+    public static function hydrateFormData(string $jsonData): ?array
+    {
+        return json_decode($jsonData, true);
     }
 
     #[LiveAction]

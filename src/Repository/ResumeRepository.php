@@ -16,13 +16,24 @@ class ResumeRepository extends ServiceEntityRepository
         parent::__construct($registry, Resume::class);
     }
 
-    public function getProjectsJoinWithResumeProject()
+    public function getAllResumesWithRelatedObjects()
     {
         $qb = $this->createQueryBuilder('resume')
             ->select('resume, project, language')
             ->leftJoin('resume.projects', 'project')
             ->leftJoin('resume.languages', 'language');
 
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getResumeWithRelatedObjects(string $ulid)
+    {
+        $qb = $this->createQueryBuilder('resume')
+            ->select('resume, project, language')
+            ->leftJoin('resume.projects', 'project')
+            ->leftJoin('resume.languages', 'language')
+            ->where('resume.ulid = :ulid')
+            ->setParameter('ulid', $ulid);
         return $qb->getQuery()->getResult();
     }
 }

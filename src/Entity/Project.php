@@ -130,4 +130,16 @@ class Project
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'year' => $this->year,
+            'description' => $this->description,
+            'technologies' => $this->technologies,
+            'task' => $this->task,
+            'workflow' => $this->workflow,
+        ];
+    }
 }

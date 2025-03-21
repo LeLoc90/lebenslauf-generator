@@ -1,0 +1,19 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block title %}Lebenlauf Generator{% endblock %}
+
+{% block body %}
+    
+    {% if liveViewData is defined %}
+        {{ component('ResumeCreator', {
+            initialFormData: resume,
+            form: form,
+            formData: liveViewData,
+        }) }}
+    {% else %}
+        {{ component('ResumeCreator', {
+            initialFormData: resume,
+            form: form,
+        }) }}
+    {% endif %}
+{% endblock %}

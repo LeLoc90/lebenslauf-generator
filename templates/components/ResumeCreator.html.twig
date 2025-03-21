@@ -3,7 +3,8 @@
                 <path d="M160-120v-170l527-526q12-12 27-18t30-6q16 0 30.5 6t25.5 18l56 56q12 11 18 25.5t6 30.5q0 15-6 30t-18 27L330-120H160Zm80-80h56l393-392-28-29-29-28-392 393v56Zm560-503-57-57 57 57Zm-139 82-29-28 57 57-28-29ZM560-120q74 0 137-37t63-103q0-36-19-62t-51-45l-59 59q23 10 36 22t13 26q0 23-36.5 41.5T560-200q-17 0-28.5 11.5T520-160q0 17 11.5 28.5T560-120ZM183-426l60-60q-20-8-31.5-16.5T200-520q0-12 18-24t76-37q88-38 117-69t29-70q0-55-44-87.5T280-840q-45 0-80.5 16T145-785q-11 13-9 29t15 26q13 11 29 9t27-13q14-14 31-20t42-6q41 0 60.5 12t19.5 28q0 14-17.5 25.5T262-654q-80 35-111 63.5T120-520q0 32 17 54.5t46 39.5Z"/>
             </svg>',
     'upload' : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>',
-    'convert' : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M400-280h160v-80H400v80Zm0-160h280v-80H400v80ZM280-600h400v-80H280v80Zm200 120ZM80-80v-80h102q-48-23-77.5-68T75-330q0-79 55.5-134.5T265-520v80q-45 0-77.5 32T155-330q0 39 24 69t61 38v-97h80v240H80Zm320-40v-80h360v-560H200v160h-80v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H400Z"/></svg>'
+    'convert' : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M400-280h160v-80H400v80Zm0-160h280v-80H400v80ZM280-600h400v-80H280v80Zm200 120ZM80-80v-80h102q-48-23-77.5-68T75-330q0-79 55.5-134.5T265-520v80q-45 0-77.5 32T155-330q0 39 24 69t61 38v-97h80v240H80Zm320-40v-80h360v-560H200v160h-80v-160q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H400Z"/></svg>',
+    'backArrow' : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>'
 } %}
 
 <div {{ attributes }}>
@@ -14,6 +15,10 @@
         </div>
     {% endfor %}
     <div class="container-fluid mb-5 d-flex justify-content-center align-items-center">
+        <a href="{{ path('resume-index') }}" class="btn btn-primary d-flex align-items-center gap-1">
+            {{ icons.backArrow|raw }}
+            Zurück
+        </a>
         <div class="d-flex justify-content-around align-items-center gap-3 bg-white px-4 py-2 mx-auto border border-opacity-25 border-primary border-2 rounded-pill ">
             {{ icons.design|raw }}
             <div class="form-check template-switch">
@@ -39,22 +44,12 @@
             </div>
         </div>
 
-        {% if this.isConverting %}
-            <div class="spinner-border text-primary me-3" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <button class="btn btn-primary disabled d-flex align-items-center gap-2" data-action="live#action"
-                    data-live-action-param="pdfGenerator">
-                {{ icons.convert|raw }}
-                PDF Konvertieren
-            </button>
-        {% else %}
-            <button class="btn btn-primary d-flex align-items-center gap-2" data-action="live#action"
-                    data-live-action-param="pdfGenerator">
-                {{ icons.convert|raw }}
-                PDF Konvertieren
-            </button>
-        {% endif %}
+        <button class="btn btn-primary d-flex align-items-center gap-2" data-action="live#action"
+                data-live-action-param="pdfGenerator">
+            {{ icons.convert|raw }}
+            PDF Konvertieren
+        </button>
+
     </div>
 
     <div class="container-fluid">
@@ -75,7 +70,14 @@
                 </div>
 
                 {{ form_rest(form) }}
-                <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                    <a href="{{ path('resume-index') }}"
+                       class="btn btn-outline-primary d-flex align-items-center gap-1">
+                        {{ icons.backArrow|raw }}
+                        Zurück
+                    </a>
+                    <button class="btn btn-primary">{{ button_label|default('Speichern') }}</button>
+                </div>
                 {{ form_end(form) }}
             </div>
             <div class="col-7 ps-4 pe-0">
