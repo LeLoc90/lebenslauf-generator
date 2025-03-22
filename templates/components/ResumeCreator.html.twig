@@ -7,7 +7,7 @@
     'backArrow' : '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>'
 } %}
 
-<div {{ attributes }}>
+<div {{ attributes.defaults(stimulus_controller('generator_component')) }}>
     {% for message in app.flashes('success') %}
         <div class="alert alert-info position-fixed top-0 end-0 alert-dismissible fade show">
             {{ message }}
@@ -44,18 +44,16 @@
             </div>
         </div>
 
-        <button class="btn btn-primary d-flex align-items-center gap-2"
-                data-action="live#action"
-                data-live-action-param="generatePDF"
-                onclick="this.classList.add('disabled');
-                setTimeout(
-                    () => this.classList.remove('disabled'),
-                    2300
-                )"
-        >
-            {{ icons.convert|raw }}
-            PDF Konvertieren
-        </button>
+        <div class="d-flex justify-content-center" style="min-width: 190px">
+            <div class="spinner-border text-primary loading-spinner"></div>
+            <button class="btn btn-primary d-flex align-items-center gap-2 convert-pdf-button"
+                    data-action="live#action"
+                    data-live-action-param="generatePDF"
+            >
+                {{ icons.convert|raw }}
+                PDF Konvertieren
+            </button>
+        </div>
     </div>
 
     <div class="container-fluid">

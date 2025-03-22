@@ -123,11 +123,13 @@ class ResumeCreator extends AbstractController
 
         if (file_exists($fullPath)) {
             $this->addFlash('success', 'PDF wird erstellt, bitte warten!');
+            if ($this->photoForPDF !== 'profilePlaceholder.png') {
+                $this->removeUploadedPhoto();
+            }
         } else {
             $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
         }
     }
-
 
     private function getTemplateHTML(): string
     {
@@ -168,6 +170,19 @@ class ResumeCreator extends AbstractController
                 ->html(Stream::string('index.html', $renderedForm));
         }
         return $request;
+    }
+
+    private function removeUploadedPhoto(): void
+    {
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $assetsPath = $projectDir . '/assets/images/' . $this->photoForPDF;
+        $publicPath = $projectDir . '/public/build/images/' . $this->photoForPDF;
+
+        foreach ([$assetsPath, $publicPath] as $path) {
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
     }
 
     protected function instantiateForm(): FormInterface

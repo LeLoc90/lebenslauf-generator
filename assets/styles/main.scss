@@ -242,5 +242,19 @@ a {
     color: $white;
     background-color: $primary;
   }
+}
 
+/* =======================================================
+===================== Converting Button ====================
+======================================================= */
+.convert-pdf-button {
+  &.isConverting {
+    @extend .d-none;
+  }
+}
+
+.loading-spinner {
+  &:not(.isConverting) {
+    @extend .d-none;
+  }
 }
