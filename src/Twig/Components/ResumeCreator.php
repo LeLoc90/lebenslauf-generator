@@ -157,11 +157,11 @@ class ResumeCreator extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        $this->updateResume();
+        $this->updateLiveView();
         return $this->createForm(ResumeFormType::class, $this->initialFormData);
     }
 
-    public function updateResume(): void
+    public function updateLiveView(): void
     {
         if ($this->formValues) {
             $this->formData = $this->formValues;

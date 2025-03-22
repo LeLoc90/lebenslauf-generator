@@ -234,6 +234,7 @@ class ResumeFormType extends BaseForm
                     'attr' => [
                         'hidden' => true,
                     ],
+                    'required' => false,
                     'label' => false])
             ->add('uploadPhoto', DropzoneType::class,
                 [
