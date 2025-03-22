@@ -34,3 +34,8 @@ delete-pdf:
   path: /pdfs/{filename}/delete
   methods: [ GET, POST ]
   controller: App\Controller\MainController::deletePdf
+
+delete-all-pdfs:
+  path: /pdfs/delete-all
+  methods: [ GET, POST ]
+  controller: App\Controller\MainController::deleteAllPdfs

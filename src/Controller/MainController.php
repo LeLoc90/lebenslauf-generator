@@ -183,5 +183,16 @@ class MainController extends AbstractController
         return $this->redirectToRoute('pdfs-index', [], Response::HTTP_SEE_OTHER);
 
     }
+
+    public function deleteAllPdfs(): Response
+    {
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $pdfDirectory = $projectDir . '/public/pdfs';
+        $files = glob($pdfDirectory . '/*.pdf');
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        return $this->redirectToRoute('pdfs-index', [], Response::HTTP_SEE_OTHER);
+    }
 }
 

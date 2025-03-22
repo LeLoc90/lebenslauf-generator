@@ -35,7 +35,7 @@ function handleLoadingStateOfConvertButton(component) {
                 convertButton.classList.remove('isConverting');
                 loadingSpinner.classList.remove('isConverting');
             },
-            2100
+            2000
         )
     });
 }

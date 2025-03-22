@@ -4,27 +4,35 @@
 
 {% block body %}
     {% if pdfs is not empty %}
-        {{ dump(pdfs) }}
-        <ul class="pdf-list container-xl w-100 d-flex flex-wrap justify-content-center align-items-center gap-5">
-            {% for pdf in pdfs %}
-                <li class="pdf-item p-4 d-flex flex-column gap-4 justify-content-center shadow-sm border border-secondary border-1 rounded-3 bg-white">
-                    <div class="pdf-preview px-2 pt-2 bg-secondary">
-                        <iframe src="{{ asset(pdf.path) }}" height="300"></iframe>
-                    </div>
-                    <div class="d-flex gap-3 just-content-start">
-                        <a href="{{ asset(pdf.path) }}" download class="btn btn-primary flex-fill">
-                            {{ icons.download|raw }}
-                            Herunterladen
-                        </a>
-                        <a href="{{ path('delete-pdf', {'filename': pdf.filename}) }}"
-                           data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Entfernen"
-                           class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="d-flex flex-column">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="{{ path('delete-all-pdfs') }}"
+                   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Entfernen"
+                   class="btn btn-outline-danger">
+                    Entfernen alle PDFs
+                </a>
+            </div>
+            <ul class="pdf-list container-xl w-100 d-flex flex-wrap justify-content-center align-items-center gap-5">
+                {% for pdf in pdfs %}
+                    <li class="pdf-item p-4 d-flex flex-column gap-4 justify-content-center shadow-sm border border-secondary border-1 rounded-3 bg-white">
+                        <div class="pdf-preview px-2 pt-2 bg-secondary">
+                            <iframe src="{{ asset(pdf.path) }}" height="300"></iframe>
+                        </div>
+                        <div class="d-flex gap-3 just-content-start">
+                            <a href="{{ asset(pdf.path) }}" download class="btn btn-primary flex-fill">
+                                {{ icons.download|raw }}
+                                Herunterladen
+                            </a>
+                            <a href="{{ path('delete-pdf', {'filename': pdf.filename}) }}"
+                               data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Entfernen"
+                               class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     {% else %}
         <p>Keine PDF Dateien gefunden.</p>
     {% endif %}

@@ -122,7 +122,6 @@ class ResumeCreator extends AbstractController
         $fullPath = $pdfPath . '/' . $filename;
 
         if (file_exists($fullPath)) {
-            $this->addFlash('success', 'PDF wird erstellt, bitte warten!');
             if ($this->photoForPDF !== 'profilePlaceholder.png') {
                 $this->removeUploadedPhoto();
             }
