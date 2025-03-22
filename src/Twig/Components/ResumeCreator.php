@@ -36,8 +36,6 @@ class ResumeCreator extends AbstractController
     #[LiveProp(writable: true)]
     public int $template = 1;
     #[LiveProp(writable: true)]
-    public ?string $photoLiveSrc = "";
-    #[LiveProp(writable: true)]
     public ?string $photoForPDF = "";
 
     #[LiveProp(writable: true,
@@ -77,25 +75,12 @@ class ResumeCreator extends AbstractController
     #[LiveAction]
     public function uploadPhoto(Request $request, FileUploader $fileUploader)
     {
-        $uploadedFile = $request->files->get('resume_form')['photo'] ?? null;
+        $uploadedFile = $request->files->get('resume_form')['uploadPhoto'] ?? null;
         if ($uploadedFile) {
             try {
                 $fileName = $fileUploader->upload($uploadedFile);
-                // Set the relative path (without a leading slash, so asset() works correctly)
-                $this->photoLiveSrc = 'build/images/' . $fileName;
-
-                // copy the file from public/build/images to assets/images for PDF generation.
-                $projectDir = $this->getParameter('kernel.project_dir');
-                $sourcePath = $projectDir . '/public/build/images/' . $fileName;
-                $destinationPath = $projectDir . '/assets/images/' . $fileName;
-
-                if (!copy($sourcePath, $destinationPath)) {
-                    throw new Exception("Failed to copy file to assets/images directory");
-                }
-
-                // store the PDF-specific path in formData.
                 $this->photoForPDF = $fileName;
-
+                $this->formValues['photo'] = $this->photoForPDF;
             } catch (Exception $e) {
                 return $this->json(['error' => $e->getMessage()], 500);
             }
@@ -122,9 +107,7 @@ class ResumeCreator extends AbstractController
         $fullPath = $pdfPath . '/' . $filename;
 
         if (file_exists($fullPath)) {
-            if ($this->photoForPDF !== 'profilePlaceholder.png') {
-                $this->removeUploadedPhoto();
-            }
+            $this->addFlash('success', 'PDF wurde erfolgreich erstellt!');
         } else {
             $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
         }
@@ -150,6 +133,7 @@ class ResumeCreator extends AbstractController
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         $assetPath = $projectDir . '/assets/images';
+        $publicPath = $projectDir . '/public/build/images';
         $outputFileName = 'Lebenslauf_' . str_replace(' ', '_', $this->formData['name']) . time();
 
         $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
@@ -161,27 +145,14 @@ class ResumeCreator extends AbstractController
         if ($this->template == 1) {
             $request = $baseRequest
                 ->assets(Stream::path($assetPath . '/coding.jpg'))
-                ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
+                ->assets(Stream::path($publicPath . '/' . $this->photoForPDF))
                 ->html(Stream::string('index.html', $renderedForm));
         } else {
             $request = $baseRequest
-                ->assets(Stream::path($assetPath . '/' . $this->photoForPDF))
+                ->assets(Stream::path($publicPath . '/' . $this->photoForPDF))
                 ->html(Stream::string('index.html', $renderedForm));
         }
         return $request;
-    }
-
-    private function removeUploadedPhoto(): void
-    {
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $assetsPath = $projectDir . '/assets/images/' . $this->photoForPDF;
-        $publicPath = $projectDir . '/public/build/images/' . $this->photoForPDF;
-
-        foreach ([$assetsPath, $publicPath] as $path) {
-            if (file_exists($path)) {
-                unlink($path);
-            }
-        }
     }
 
     protected function instantiateForm(): FormInterface

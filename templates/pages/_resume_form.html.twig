@@ -3,12 +3,13 @@
 {% block title %}Lebenlauf Generator{% endblock %}
 
 {% block body %}
-    
+
     {% if liveViewData is defined %}
         {{ component('ResumeCreator', {
             initialFormData: resume,
             form: form,
             formData: liveViewData,
+            photoForPDF: photo
         }) }}
     {% else %}
         {{ component('ResumeCreator', {

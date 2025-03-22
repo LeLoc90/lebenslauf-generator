@@ -6,11 +6,12 @@ namespace App\Controller;
 
 use App\Entity\Resume;
 use App\Form\ResumeFormType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class MainController extends AbstractController
 {
@@ -27,7 +28,10 @@ class MainController extends AbstractController
         ]);
     }
 
-    public function createResume(Request $request): Response
+    /**
+     * @throws Exception
+     */
+    public function createResume(Request $request, FileUploader $fileUploader): Response
     {
         $resume = new Resume();
         $form = $this->createForm(ResumeFormType::class, $resume);
@@ -57,7 +61,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    public function editResume(Request $request, string $ulid, SerializerInterface $serializer): Response
+    public function editResume(Request $request, string $ulid, FileUploader $fileUploader): Response
     {
         $resume = $this->entityManager->getRepository(Resume::class)->getResumeWithRelatedObjects($ulid)[0];
         if (!$resume) {
@@ -74,7 +78,6 @@ class MainController extends AbstractController
         $projects = array_map(function ($project) {
             return $project->toArray();
         }, $data->getProjects()->toArray());
-
         $liveViewData = [
             "name" => $data->getName(),
             "birthdate" => $data->getBirthdate() ? $data->getBirthdate()->format('Y-m-d') : '',
@@ -85,6 +88,7 @@ class MainController extends AbstractController
             "programmingLanguages" => $data->getProgrammingLanguages(),
             "tools" => $data->getTools(),
             "projects" => $projects,
+            "photo" => $data->getPhoto(),
         ];
 
         $form->handleRequest($request);
@@ -104,13 +108,14 @@ class MainController extends AbstractController
             $this->entityManager->persist($resume);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('resume-index');
+            return $this->redirectToRoute('edit-resume', ['ulid' => $ulid]);
         }
 
         return $this->render('pages/_resume_form.html.twig', [
             'form' => $form,
             'resume' => $resume,
-            'liveViewData' => $liveViewData
+            'liveViewData' => $liveViewData,
+            'photo' => $liveViewData['photo']
         ]);
     }
 

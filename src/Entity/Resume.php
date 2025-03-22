@@ -30,13 +30,13 @@ class Resume
     private ?string $trainingGraduation = null;
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $positions = [];
+    private ?array $positions = [];
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $programmingLanguages = [];
+    private ?array $programmingLanguages = [];
 
     #[ORM\Column(type: Types::ARRAY)]
-    private array $tools = [];
+    private ?array $tools = [];
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $created_at = null;
@@ -52,6 +52,9 @@ class Resume
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?DateTimeInterface $birthdate = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $photo = null;
 
     public function __construct()
     {
@@ -248,6 +251,18 @@ class Resume
     public function setBirthdate(?DateTimeInterface $birthdate): static
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }

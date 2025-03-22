@@ -229,7 +229,13 @@ class ResumeFormType extends BaseForm
                         ],
                     ]
                 ])
-            ->add('photo', DropzoneType::class,
+            ->add('photo', TextType::class,
+                [
+                    'attr' => [
+                        'hidden' => true,
+                    ],
+                    'label' => false])
+            ->add('uploadPhoto', DropzoneType::class,
                 [
                     'label' => 'FOTO (jpg, png, gif)',
                     'mapped' => false,

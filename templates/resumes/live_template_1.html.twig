@@ -83,8 +83,8 @@
                 </section>
             </div>
             <aside class="sidebar">
-                {% if this.photoLiveSrc != '' %}
-                    <img src="{{ asset(this.photoLiveSrc) }}" class="sidebarImage" alt="Foto">
+                {% if this.photoForPDF != '' %}
+                    <img src="{{ asset('build/images/' ~ this.photoForPDF) }}" class="sidebarImage" alt="Foto">
                 {% else %}
                     <img src="{{ asset('build/images/profilePlaceholder.png') }}" class="sidebarImage" alt="Foto">
                 {% endif %}

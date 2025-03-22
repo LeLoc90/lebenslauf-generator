@@ -84,6 +84,7 @@ class ResumeFixtures extends Fixture
                 "Atlassian Stack",
                 "PHPStorm"
             ],
+            'example-profile.png'
         );
     }
 
@@ -133,6 +134,7 @@ class ResumeFixtures extends Fixture
         array  $positions,
         array  $programmingLanguages,
         array  $tools,
+        string $photo
     ): void
     {
         $resume = new Resume();
@@ -143,6 +145,7 @@ class ResumeFixtures extends Fixture
         $resume->setPositions($positions);
         $resume->setProgrammingLanguages($programmingLanguages);
         $resume->setTools($tools);
+        $resume->setPhoto($photo);
 
         $languages = $this->manager->getRepository(Language::class)->findAll();
         for ($i = 0; $i < 2; $i++) {
