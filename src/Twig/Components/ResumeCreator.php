@@ -56,7 +56,7 @@ class ResumeCreator extends AbstractController
     ];
 
     #[LiveProp]
-    public Resume|null $initialFormData = null;
+    public ?Resume $initialFormData = null;
 
     public function __construct(
         protected Environment $environment,
@@ -110,7 +110,7 @@ class ResumeCreator extends AbstractController
      * @throws NoOutputFileInResponse
      */
     #[LiveAction]
-    public function pdfGenerator(FileUploader $fileUploader)
+    public function generatePDF(FileUploader $fileUploader)
     {
         $renderedForm = $this->getTemplateHTML();
 
@@ -127,6 +127,7 @@ class ResumeCreator extends AbstractController
             $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
         }
     }
+
 
     private function getTemplateHTML(): string
     {

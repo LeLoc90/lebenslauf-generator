@@ -44,12 +44,18 @@
             </div>
         </div>
 
-        <button class="btn btn-primary d-flex align-items-center gap-2" data-action="live#action"
-                data-live-action-param="pdfGenerator">
+        <button class="btn btn-primary d-flex align-items-center gap-2"
+                data-action="live#action"
+                data-live-action-param="generatePDF"
+                onclick="this.classList.add('disabled');
+                setTimeout(
+                    () => this.classList.remove('disabled'),
+                    2300
+                )"
+        >
             {{ icons.convert|raw }}
             PDF Konvertieren
         </button>
-
     </div>
 
     <div class="container-fluid">

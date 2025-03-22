@@ -77,7 +77,7 @@ class MainController extends AbstractController
 
         $liveViewData = [
             "name" => $data->getName(),
-            "birthdate" => $data->getBirthdate()->format('d-m-Y'),
+            "birthdate" => $data->getBirthdate() ? $data->getBirthdate()->format('Y-m-d') : '',
             "schoolGraduation" => $data->getSchoolGraduation(),
             "trainingGraduation" => $data->getTrainingGraduation(),
             "positions" => $data->getPositions(),
@@ -153,7 +153,11 @@ class MainController extends AbstractController
         foreach ($files as $file) {
             // Remove the projectDir/public part to get the relative path.
             $relativePath = str_replace($projectDir . '/public/', '', $file);
-            $pdfs[] = $relativePath;
+            $filename = basename($relativePath);
+            $pdfs[] = [
+                'filename' => $filename,
+                'path' => $relativePath,
+            ];
         }
 
         // Render a template that lists the PDF files.
@@ -161,4 +165,23 @@ class MainController extends AbstractController
             'pdfs' => $pdfs,
         ]);
     }
+
+    public function deletePdf(string $filename): Response
+    {
+        // Get the project directory and the absolute path of the pdf folder.
+        $projectDir = $this->getParameter('kernel.project_dir');
+        $pdfDirectory = $projectDir . '/public/pdfs';
+
+        // Check if the file exists.
+        $fullPath = $pdfDirectory . '/' . $filename;
+        if (file_exists($fullPath)) {
+            // Delete the file.
+            unlink($fullPath);
+        }
+
+        // Redirect to the list of PDF files.
+        return $this->redirectToRoute('pdfs-index', [], Response::HTTP_SEE_OTHER);
+
+    }
 }
+

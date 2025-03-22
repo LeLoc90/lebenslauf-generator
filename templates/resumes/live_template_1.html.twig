@@ -89,7 +89,7 @@
                     <img src="{{ asset('build/images/profilePlaceholder.png') }}" class="sidebarImage" alt="Foto">
                 {% endif %}
                 <p class="sidebarHeading">Persönliche Daten</p>
-                <p class="sidebarText">Name: {{ formData.name }}</p>
+                <p class="sidebarText">Name: {{ formData.name|default('') }}</p>
                 <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>
 
                 <div class="sidebarLanguages">
