@@ -127,6 +127,16 @@ class MainController extends AbstractController
             throw $this->createNotFoundException('Keine Lebenslauf mit der ULID gefunden:' . $ulid);
         }
 
+        $photo = $resume->getPhoto();
+        if ($photo) {
+            $projectDir = $this->getParameter('kernel.project_dir');
+            $photoPath = $projectDir . '/public/build/images/' . $photo;
+
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
+        }
+
         $languages = $resume->getLanguages();
         $projects = $resume->getProjects();
 
