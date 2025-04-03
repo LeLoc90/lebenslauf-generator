@@ -58,7 +58,7 @@ class LanguageFormType extends BaseForm
                         '4' => '4',
                         '5' => '5',
                     ],
-                    'label' => 'Level',
+                    'label' => 'Stufe',
                     'row_attr' => ['class' => 'form-group form-floating'],
                 ]);
     }

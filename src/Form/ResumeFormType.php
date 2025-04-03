@@ -38,7 +38,7 @@ class ResumeFormType extends BaseForm
                 ])
             ->add('birthdate', DateType::class,
                 [
-                    'label' => 'GEBRUTSDATUM',
+                    'label' => 'GEBURTSDATUM',
                     'widget' => 'single_text',
                     'row_attr' => [
                         "class" => "form-group",

@@ -19,7 +19,7 @@ class MainController extends AbstractController
     {
     }
 
-    public function index(): Response
+    public function getAllResumes(): Response
     {
         $resumeRepository = $this->entityManager->getRepository(Resume::class);
         $resumes = $resumeRepository->getAllResumesWithRelatedObjects();
@@ -52,7 +52,7 @@ class MainController extends AbstractController
             $this->entityManager->persist($resume);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('resume-index');
+            return $this->redirectToRoute('get-all-resumes');
         }
 
         return $this->render('pages/_resume_form.html.twig', [
@@ -151,63 +151,7 @@ class MainController extends AbstractController
         $this->entityManager->remove($resume);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('resume-index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    public function getPdfs(): Response
-    {
-        // Get the project directory and the absolute path of the pdf folder.
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $pdfDirectory = $projectDir . '/public/pdfs';
-
-        // Use glob() to find all PDF files in the directory.
-        $files = glob($pdfDirectory . '/*.pdf');
-        $pdfs = [];
-
-        // Convert each file path into a relative path for asset() usage.
-        foreach ($files as $file) {
-            // Remove the projectDir/public part to get the relative path.
-            $relativePath = str_replace($projectDir . '/public/', '', $file);
-            $filename = basename($relativePath);
-            $pdfs[] = [
-                'filename' => $filename,
-                'path' => $relativePath,
-            ];
-        }
-
-        // Render a template that lists the PDF files.
-        return $this->render('pages/pdfs_list.html.twig', [
-            'pdfs' => $pdfs,
-        ]);
-    }
-
-    public function deletePdf(string $filename): Response
-    {
-        // Get the project directory and the absolute path of the pdf folder.
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $pdfDirectory = $projectDir . '/public/pdfs';
-
-        // Check if the file exists.
-        $fullPath = $pdfDirectory . '/' . $filename;
-        if (file_exists($fullPath)) {
-            // Delete the file.
-            unlink($fullPath);
-        }
-
-        // Redirect to the list of PDF files.
-        return $this->redirectToRoute('pdfs-index', [], Response::HTTP_SEE_OTHER);
-
-    }
-
-    public function deleteAllPdfs(): Response
-    {
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $pdfDirectory = $projectDir . '/public/pdfs';
-        $files = glob($pdfDirectory . '/*.pdf');
-        foreach ($files as $file) {
-            unlink($file);
-        }
-        return $this->redirectToRoute('pdfs-index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('get-all-resumes', [], Response::HTTP_SEE_OTHER);
     }
 }
 

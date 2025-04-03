@@ -15,7 +15,7 @@
         </div>
     {% endfor %}
     <div class="container-fluid mb-5 d-flex justify-content-center align-items-center">
-        <a href="{{ path('resume-index') }}" class="btn btn-primary d-flex align-items-center gap-1">
+        <a href="{{ path('get-all-resumes') }}" class="btn btn-primary d-flex align-items-center gap-1">
             {{ icons.backArrow|raw }}
             Zurück
         </a>
@@ -75,7 +75,7 @@
 
                 {{ form_rest(form) }}
                 <div class="d-flex align-items-center justify-content-between gap-2">
-                    <a href="{{ path('resume-index') }}"
+                    <a href="{{ path('get-all-resumes') }}"
                        class="btn btn-outline-primary d-flex align-items-center gap-1">
                         {{ icons.backArrow|raw }}
                         Zurück

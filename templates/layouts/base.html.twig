@@ -23,8 +23,8 @@
 <body data-turbo="false">
 <header class="container-fluid px-5 py-3 d-flex align-items-center gap-3 bg-primary">
     {{ icons.pdf|raw }}
-    <a href="{{ path('resume-index') }}" class="text-white text-decoration-none h3 m-0">LEBENSLAUF GENERATOR</a>
-    <a href="{{ path('pdfs-index') }}" class="header-download text-white">
+    <a href="{{ path('get-all-resumes') }}" class="text-white text-decoration-none h3 m-0">LEBENSLAUF GENERATOR</a>
+    <a href="{{ path('get-all-pdfs') }}" class="header-download text-white">
         {{ icons.folder|raw }}
         Herunterladen
     </a>
