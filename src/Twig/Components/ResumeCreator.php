@@ -36,21 +36,21 @@ class ResumeCreator extends AbstractController
     #[LiveProp(writable: true)]
     public int $template = 1;
     #[LiveProp(writable: true)]
-    public ?string $photoForPDF = "";
+    public ?string $photoForPDF = '';
 
     #[LiveProp(writable: true,
         hydrateWith: 'hydrateFormData',
         dehydrateWith: 'dehydrateFormData')]
     public ?array $formData = [
-        "name" => "",
-        "birthdate" => "",
-        "schoolGraduation" => "",
-        "trainingGraduation" => "",
-        "positions" => [],
-        "languages" => [],
-        "programmingLanguages" => [],
-        "tools" => [],
-        "projects" => [],
+        'name' => '',
+        'birthdate' => '',
+        'schoolGraduation' => '',
+        'trainingGraduation' => '',
+        'positions' => [],
+        'languages' => [],
+        'programmingLanguages' => [],
+        'tools' => [],
+        'projects' => [],
     ];
 
     #[LiveProp]
@@ -98,18 +98,59 @@ class ResumeCreator extends AbstractController
     public function generatePDF(FileUploader $fileUploader)
     {
         $renderedForm = $this->getTemplateHTML();
-
-        $projectDir = $this->getParameter('kernel.project_dir');
-        $pdfPath = $projectDir . '/public/pdfs';
+        $pdfPath = $this->prepareData()['pdfPath'];
 
         $gotenbergRequest = $this->createGotenbergRequest($renderedForm);
         $filename = Gotenberg::save($gotenbergRequest, $pdfPath);
-        $fullPath = $pdfPath . '/' . $filename;
+
+        $this->checkSavedSuccess($filename);
+    }
+
+    private function createGotenbergRequest(string $renderedForm)
+    {
+        $preparedData = $this->prepareData();
+
+        $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
+            ->pdf()
+            ->outputFilename($preparedData['outputFileName'])
+            ->margins(0, 0, 0, 0)
+            ->paperSize('210mm', '297mm');
+
+        if ($this->template == 1) {
+            $request = $baseRequest
+                ->assets(Stream::path($preparedData['assetPath'] . '/resumeHead.jpg'))
+                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        } else {
+            $request = $baseRequest
+                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        }
+        return $request;
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        $this->updateLiveView();
+        return $this->createForm(ResumeFormType::class, $this->initialFormData);
+    }
+
+    public function checkSavedSuccess(string $filename): void
+    {
+        $fullPath = $this->prepareData()['pdfPath'] . '/' . $filename;
 
         if (file_exists($fullPath)) {
             $this->addFlash('success', 'PDF wurde erfolgreich erstellt!');
         } else {
             $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
+        }
+    }
+
+
+    public function updateLiveView(): void
+    {
+        if ($this->formValues) {
+            $this->formData = $this->formValues;
         }
     }
 
@@ -129,42 +170,19 @@ class ResumeCreator extends AbstractController
         return $renderedForm;
     }
 
-    private function createGotenbergRequest(string $renderedForm)
+    public function prepareData()
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         $assetPath = $projectDir . '/assets/images';
         $publicPath = $projectDir . '/public/build/images';
+        $pdfPath = $projectDir . '/public/pdfs';
         $outputFileName = 'Lebenslauf_' . str_replace(' ', '_', $this->formData['name']) . time();
 
-        $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
-            ->pdf()
-            ->outputFilename($outputFileName)
-            ->margins(0, 0, 0, 0)
-            ->paperSize('210mm', '297mm');
-
-        if ($this->template == 1) {
-            $request = $baseRequest
-                ->assets(Stream::path($assetPath . '/coding.jpg'))
-                ->assets(Stream::path($publicPath . '/' . $this->photoForPDF))
-                ->html(Stream::string('index.html', $renderedForm));
-        } else {
-            $request = $baseRequest
-                ->assets(Stream::path($publicPath . '/' . $this->photoForPDF))
-                ->html(Stream::string('index.html', $renderedForm));
-        }
-        return $request;
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        $this->updateLiveView();
-        return $this->createForm(ResumeFormType::class, $this->initialFormData);
-    }
-
-    public function updateLiveView(): void
-    {
-        if ($this->formValues) {
-            $this->formData = $this->formValues;
-        }
+        return [
+            'assetPath' => $assetPath,
+            'publicPath' => $publicPath,
+            'pdfPath' => $pdfPath,
+            'outputFileName' => $outputFileName,
+        ];
     }
 }
