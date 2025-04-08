@@ -17,7 +17,12 @@
       `nvm install --lts`
 
 * install required dependencies via `make install`
+* run `make database`
+* run `make create-migration`
+* run `make migrate`
+* run `make fixtures`
 * run `make start`
+
 * the project is now up & running!
     * webapp:  `http://localhost:8500`
 
