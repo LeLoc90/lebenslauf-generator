@@ -18,7 +18,7 @@
 
 * install required dependencies via `make install`
 * run `make database`
-* run `make create-migration`
+* run `make migrations`
 * run `make migrate`
 * run `make fixtures`
 * run `make start`

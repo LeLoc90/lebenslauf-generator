@@ -26,7 +26,7 @@ database:
 	@$(MAKE) drop-database
 	@$(MAKE) create-database
 
-create-migration:
+migrations: ## Create migrations
 	@symfony console doctrine:migrations:diff
 
 migrate: ## Run migrations
