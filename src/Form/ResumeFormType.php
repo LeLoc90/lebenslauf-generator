@@ -29,7 +29,7 @@ class ResumeFormType extends BaseForm
                         'class' => '',
                     ],
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ],
                     'attr' => [
                         'placeholder' => 'Namen',
@@ -41,7 +41,7 @@ class ResumeFormType extends BaseForm
                     'label' => 'GEBURTSDATUM',
                     'widget' => 'single_text',
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ],
                     'attr' => [
                         'placeholder' => 'Geburtsdatum',
@@ -63,7 +63,7 @@ class ResumeFormType extends BaseForm
                     ],
                     'label' => 'SCHULABSCHLUSS',
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ],
                     'required' => false,
 
@@ -81,7 +81,7 @@ class ResumeFormType extends BaseForm
                     'label' => 'AUSBILDUNGSABSCHLUSS',
                     'required' => false,
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ]])
             ->add('positions', ChoiceType::class,
                 [
@@ -108,7 +108,7 @@ class ResumeFormType extends BaseForm
                     'label' => 'POSITIONEN',
                     'required' => false,
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ],]
             )
             ->add('languages', LiveCollectionType::class,
@@ -116,7 +116,7 @@ class ResumeFormType extends BaseForm
                     'entry_type' => LanguageFormType::class,
                     'label' => 'SPRACHEN',
                     'row_attr' => [
-                        "class" => "form-collections",
+                        'class' => 'form-collections',
                     ],
                     'attr' => [
                         'class' => 'form-collection form-collection--language',
@@ -142,10 +142,11 @@ class ResumeFormType extends BaseForm
                 [
                     'choices' => [
                         'Auswählen' => '',
-                        'HTML5' => 'HTML',
-                        'CSS/SASS/LESS' => 'CSS',
+                        'HTML5' => 'HTML5',
+                        'CSS3/SASS/LESS' => 'CSS3/SASS/LESS',
                         'JavaScript' => 'JavaScript',
                         'TypeScript' => 'TypeScript',
+                        'React' => 'React',
                         'PHP' => 'PHP',
                         'Python' => 'Python',
                         'Ruby' => 'Ruby',
@@ -165,7 +166,7 @@ class ResumeFormType extends BaseForm
                     'label' => 'PROGRAMMIERSPRACHEN',
                     'required' => false,
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ]
                 ]
             )
@@ -190,6 +191,10 @@ class ResumeFormType extends BaseForm
                         'Redis' => 'Redis',
                         'Laravel' => 'Laravel',
                         'Symfony' => 'Symfony',
+                        'Bootstrap' => 'Bootstrap',
+                        'Tailwind CSS' => 'Tailwind CSS',
+
+
                     ], 'multiple' => true,
                     'choice_attr' => function ($choice) {
                         return null === $choice ? ['disabled' => true] : [];
@@ -198,7 +203,7 @@ class ResumeFormType extends BaseForm
                     'label' => 'HANDWERKZEUGE',
                     'required' => false,
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ]
                 ]
             )
@@ -211,7 +216,7 @@ class ResumeFormType extends BaseForm
                         'label_attr' => ['hidden' => true],
                     ],
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ],
                     'attr' => [
                         'class' => 'form-collection',
@@ -245,7 +250,7 @@ class ResumeFormType extends BaseForm
                         'placeholder' => 'Ziehen und Ablegen ein Photo oder klicken Sie hier',
                         'data-controller' => 'photoDropzone'],
                     'row_attr' => [
-                        "class" => "form-group",
+                        'class' => 'form-group',
                     ]
                 ]);
     }

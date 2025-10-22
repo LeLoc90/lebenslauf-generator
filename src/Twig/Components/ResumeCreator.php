@@ -106,54 +106,6 @@ class ResumeCreator extends AbstractController
         $this->checkSavedSuccess($filename);
     }
 
-    private function createGotenbergRequest(string $renderedForm)
-    {
-        $preparedData = $this->prepareData();
-
-        $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
-            ->pdf()
-            ->outputFilename($preparedData['outputFileName'])
-            ->margins(0, 0, 0, 0)
-            ->paperSize('210mm', '297mm');
-
-        if ($this->template == 1) {
-            $request = $baseRequest
-                ->assets(Stream::path($preparedData['assetPath'] . '/resumeHead.jpg'))
-                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
-                ->html(Stream::string('index.html', $renderedForm));
-        } else {
-            $request = $baseRequest
-                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
-                ->html(Stream::string('index.html', $renderedForm));
-        }
-        return $request;
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        $this->updateLiveView();
-        return $this->createForm(ResumeFormType::class, $this->initialFormData);
-    }
-
-    public function checkSavedSuccess(string $filename): void
-    {
-        $fullPath = $this->prepareData()['pdfPath'] . '/' . $filename;
-
-        if (file_exists($fullPath)) {
-            $this->addFlash('success', 'PDF wurde erfolgreich erstellt!');
-        } else {
-            $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
-        }
-    }
-
-
-    public function updateLiveView(): void
-    {
-        if ($this->formValues) {
-            $this->formData = $this->formValues;
-        }
-    }
-
     private function getTemplateHTML(): string
     {
         $data = $this->formData;
@@ -184,5 +136,67 @@ class ResumeCreator extends AbstractController
             'pdfPath' => $pdfPath,
             'outputFileName' => $outputFileName,
         ];
+    }
+
+    private function createGotenbergRequest(string $renderedForm)
+    {
+        $preparedData = $this->prepareData();
+
+        $baseRequest = Gotenberg::chromium($_ENV['GOTENBERG_DSN'])
+            ->pdf()
+            ->outputFilename($preparedData['outputFileName'])
+            ->margins(0, 0, 0, 0)
+            ->paperSize('210mm', '297mm');
+
+        if ($this->template == 1) {
+            $request = $baseRequest
+                ->assets(Stream::path($preparedData['assetPath'] . '/resumeHead.jpg'))
+
+                // begin Temp codes
+                ->assets(Stream::path($preparedData['assetPath'] . '/PSMI.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/PSDI.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/lofi_1.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/lofi_2.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/lofi_3.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/lofi_4.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/new_2mt_1.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/new_2mt_2.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/cv-generator.png'))
+                ->assets(Stream::path($preparedData['assetPath'] . '/cv-generator-1.png'))
+
+                // end Temp codes
+
+                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        } else {
+            $request = $baseRequest
+                ->assets(Stream::path($preparedData['publicPath'] . '/' . $this->photoForPDF))
+                ->html(Stream::string('index.html', $renderedForm));
+        }
+        return $request;
+    }
+
+    public function checkSavedSuccess(string $filename): void
+    {
+        $fullPath = $this->prepareData()['pdfPath'] . '/' . $filename;
+
+        if (file_exists($fullPath)) {
+            $this->addFlash('success', 'PDF wurde erfolgreich erstellt!');
+        } else {
+            $this->addFlash('error', 'PDF konnte nicht erstellt werden!');
+        }
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        $this->updateLiveView();
+        return $this->createForm(ResumeFormType::class, $this->initialFormData);
+    }
+
+    public function updateLiveView(): void
+    {
+        if ($this->formValues) {
+            $this->formData = $this->formValues;
+        }
     }
 }

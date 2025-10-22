@@ -64,13 +64,13 @@ main#template1 {
                 }
 
                 & .pageHeaderName {
-                    font-size: 1.75rem;
+                    font-size: 2.25rem;
                     font-weight: bold;
                     display: inline-block;
                 }
 
                 & .pageHeaderPosition {
-                    font-size: 1.15em;
+                    font-size: 1.5em;
                 }
             }
         }
@@ -103,6 +103,11 @@ main#template1 {
             font-weight: bold;
             border-bottom: 2px solid #fff;
             text-align: left;
+
+            :not(:first-child) {
+                margin-top: 2rem;
+                border-top: 2px solid #fff;
+            }
         }
 
         .sidebarText {

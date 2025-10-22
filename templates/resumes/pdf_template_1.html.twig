@@ -82,13 +82,13 @@
                         }
 
                         & .pageHeaderName {
-                            font-size: 1.75rem;
+                            font-size: 2.25rem;
                             font-weight: bold;
                             display: inline-block;
                         }
 
                         & .pageHeaderPosition {
-                            font-size: 1.15em;
+                            font-size: 1.5em;
                         }
                     }
                 }
@@ -121,6 +121,11 @@
                     font-weight: bold;
                     border-bottom: 2px solid #fff;
                     text-align: left;
+
+                    :not(:first-child) {
+                        margin-top: 2rem;
+                        border-top: 2px solid #fff;
+                    }
                 }
 
                 .sidebarText {
@@ -144,6 +149,19 @@
                     }
                 }
 
+                .sidebarBadges {
+                    margin-top: 2rem;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    gap: 1rem;
+
+                    .sidebarBadge {
+                        max-width: 40%;
+                    }
+                }
+
             }
 
             .pageContent {
@@ -151,6 +169,7 @@
                 padding: 4rem 2rem 2rem;
 
                 .contentGroup {
+                    width: 100%;
                     margin-bottom: 2rem;
 
                     .contentHead {
@@ -203,6 +222,22 @@
                         }
                     }
 
+
+                }
+
+                .contentScreenshots {
+                    width: 100%;
+                    padding: .5rem 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+
+                    .contentScreenshot {
+                        margin-top: 2rem;
+                        height: 20vh;
+
+                    }
                 }
             }
 
@@ -269,6 +304,11 @@
                         </div>
                     {% endif %}
 
+                    <div class="contentRow">
+                        <span>Projekterfahrung:</span>
+                        <span>seit 2023</span>
+                    </div>
+
                     {% if formData.positions is not empty %}
                         <div class="contentRow">
                             <span>Derzeitige Tätigkeit:</span>
@@ -327,73 +367,291 @@
                         {% endfor %}
                     {% endif %}
                 </div>
+
+                <p class="sidebarHeading" style="">Auszeichnungen</p>
+
+                <div class="sidebarBadges">
+                    <img src="PSMI.png" alt="PSM Badge"
+                         class="sidebarBadge">
+                    <img src="PSDI.png" alt="PSM Badge"
+                         class="sidebarBadge">
+                </div>
             </aside>
         </div>
-
     </div>
 
-    {% if formData.projects is not empty %}
-
-        {% for project in formData.projects %}
-            <div class="sheetContent">
-                <header class="pageHeader">
-                    <img src="resumeHead.jpg" alt="Header Background"
-                         class="pageHeaderBackground">
-                    <div class="pageHeaderContent">
-                        <div class="pageHeaderText">
-                            <p class="pageHeaderName">{{ project.year|default('') }}</p>
-                            <p class="pageHeaderName">|</p>
-                            <p class="pageHeaderName"> {{ project.title|default('') }}</p>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="pageMain">
-                    <div class="pageContent pageProject">
-                        <section class="contentGroup">
-                            <h4 class="contentHead">Projektbeschreibung
-                                {{ icons.folder|raw }}
-                            </h4>
-                            <div class="contentRow">
-                                <p>{{ project.description|default('') }}</p>
-                            </div>
-                        </section>
-
-                        <section class="contentGroup">
-                            <h4 class="contentHead">Technologien
-                                {{ icons.chart|raw }}
-                            </h4>
-                            <ul class="contentList">
-                                {% if project.technologies is defined and project.technologies is not empty %}
-                                    {% for item in project.technologies %}
-                                        <li class="contentItem">{{ item }}</li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </section>
-
-                        <section class="contentGroup">
-                            <h4 class="contentHead">Aufgabenbereich
-                                {{ icons.checklist|raw }}
-                            </h4>
-                            <div class="contentRow">
-                                <p>{{ project.task|default('') }}</p>
-                            </div>
-                        </section>
-
-                        <section class="contentGroup">
-                            <h4 class="contentHead">Workflow
-                                {{ icons.flow|raw }}
-                            </h4>
-                            <div class="contentRow">
-                                <p>{{ project.workflow|default('') }}</p>
-                            </div>
-                        </section>
-                    </div>
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <img src="resumeHead.jpg" alt="Header Background"
+                 class="pageHeaderBackground">
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Seit 2024</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">|</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Webanwendungen in Microservices</p>
                 </div>
             </div>
-        {% endfor %}
-    {% endif %}
+        </header>
+
+        <div class="pageMain">
+            <div class="pageContent pageProject">
+                <section class="contentGroup">
+                    <h4 class="contentHead">Projektbeschreibung
+                        {{ icons.folder|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>Entwicklung moderner Softwarelösungen für ein kommunales Jobcenter.<br><br>
+                            Konzeption und Umsetzung mehrerer Anwendungen, darunter ein
+                            Online-Terminverwaltungssystem, eine PDF-Generierungs-API, ein digitaler
+                            Antragsservice sowie ein zentrales Posteingangssystem – jeweils mit Anbindung an
+                            verschiedene REST-APIs.<br><br>
+                            Die Lösungen basieren auf einer Microservice-Architektur, die eine hohe Wartbarkeit,
+                            Skalierbarkeit und Erweiterbarkeit gewährleistet.
+                            Der Fokus lag auf der stabilen Integration bestehender Systeme, der automatisierten
+                            Datenverarbeitung und der optimierten Nutzererfahrung im Verwaltungsumfeld.<br><br>
+                            Dauer des Einsatzes: bis Heute fortlaufend
+                        </p>
+                    </div>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Technologien
+                        {{ icons.chart|raw }}
+                    </h4>
+                    <ul class="contentList">
+                        <li class="contentItem">Symfony</li>
+                        <li class="contentItem">PHP</li>
+                        <li class="contentItem">HTML5 / CSS3</li>
+                        <li class="contentItem">JavaScript</li>
+                        <li class="contentItem">Rest-Schnittstellen</li>
+                        <li class="contentItem">Atlassian Stack</li>
+                        <li class="contentItem">Docker</li>
+                        <li class="contentItem">Git</li>
+
+                    </ul>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Aufgabenbereich
+                        {{ icons.checklist|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>• Konzeption und Entwicklung des Frontends in Softwareprojekten durch die Anbindung
+                            an
+                            APIs.<br>
+                            • Implementierung der skalierbaren und wiederverwendbaren Komponenten.<br>
+                            • Debug, Optimierung, und Weiterentwicklung von UI/UX zur Steigerung der
+                            Performance.</p>
+                    </div>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Workflow
+                        {{ icons.flow|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>Agiles Projektmanagement nach Scrum. 4-wöchige Sprints mit regelmäßigen Feedback
+                            Treffen mit den Kunden (Sprint Review) und Product-Backlog-Reﬁnements.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <img src="resumeHead.jpg" alt="Header Background"
+                 class="pageHeaderBackground">
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
+                    <p class="pageHeaderName" style="font-size: 1.75rem">2023</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">|</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem"> Anwendung zur Ticketverwaltung</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="pageMain">
+            <div class="pageContent pageProject">
+                <section class="contentGroup">
+                    <h4 class="contentHead">Projektbeschreibung
+                        {{ icons.folder|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>Entwicklung eines Portals zur Verwaltung von Tickets innerhalb eines Callcenters
+                            bei eingehenden Mails oder Anrufen. Das Backend besteht hierbei aus einer Micro -
+                            services Struktur, um eine hohe Wartbarkeit und Erweiterbarkeit zu gewährleisten.
+                            Diese wird in auf Symfony basierenden APIs umgesetzt, welche sich um die Verwal -
+                            tung und Bereitstellung der entsprechenden Daten an das Frontend kümmert. Das
+                            Frontend basiert auf einer React Anwendung und verwendet unter anderem React
+                            Redux(-Saga) für State Management und React Router DOM für das Routing.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Technologien
+                        {{ icons.chart|raw }}
+                    </h4>
+                    <ul class="contentList">
+                        <li class="contentItem">HTML5 / CSS3</li>
+                        <li class="contentItem">JavaScript/TypeScript</li>
+                        <li class="contentItem">React</li>
+                        <li class="contentItem">React Query</li>
+                        <li class="contentItem">Shadcn/ui</li>
+                        <li class="contentItem">Rest-Schnittstellen</li>
+                        <li class="contentItem">Atlassian Stack</li>
+
+                    </ul>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Aufgabenbereich
+                        {{ icons.checklist|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>• Konzeption und Entwicklung des UI/UX Workﬂow.<br>
+                            • Entwicklung des Frontends in TypeScript.
+                    </div>
+                </section>
+
+                <section class="contentGroup">
+                    <h4 class="contentHead">Workflow
+                        {{ icons.flow|raw }}
+                    </h4>
+                    <div class="contentRow">
+                        <p>Agiles Projektmanagement nach Scrum. 1-wöchige Sprints mit regelmäßigen Feedback
+                            Treffen mit den Kunden (Sprint Review) und Product-Backlog-Reﬁnements.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <img src="resumeHead.jpg" alt="Header Background"
+                 class="pageHeaderBackground">
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="pageMain">
+            <div class="pageContent pageProject">
+                <section class="contentGroup">
+                    <h3 class="contentHead">2025 | Lebenslauf-Generator
+                        {{ icons.folder|raw }}
+                    </h3>
+                    <div class="contentRow">
+                        <p>Abschlussprojekt der Ausbildung – Entwicklung einer webbasierten Anwendung zur Erfassung,
+                            Verwaltung von Lebenslaufdaten und PDF-Generierung mit vordefinierter
+                            Lebenslauf-Vorlagen.
+                        </p><br>
+                    </div>
+                    <div class="contentRow">
+                        <h4>Aufgaben:</h4>
+                    </div>
+                    <div class="contentRow">
+                        <p>• Gestaltung von Designs und Layouts in Figma.<br>
+                            • Entwicklung einer Fullstack-Anwendung mit Symfony, PHP, JavaScript, HTML/CSS und
+                            PostgreSQL.<br>
+                            • Umsetzung einer benutzerfreundlichen Oberfläche und strukturierten Datenverwaltung.
+                    </div>
+                </section>
+
+                <section class="contentScreenshots">
+                    <img src="cv-generator.png" alt="Projekt Screenshot" class="contentScreenshot">
+                    <img src="cv-generator-1.png" alt="Projekt Screenshot" class="contentScreenshot">
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <img src="resumeHead.jpg" alt="Header Background"
+                 class="pageHeaderBackground">
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="pageMain">
+            <div class="pageContent pageProject">
+                <section class="contentGroup">
+                    <h3 class="contentHead">2023 | Landingpage für 2mt
+                        {{ icons.folder|raw }}
+                    </h3>
+                    <div class="contentRow">
+                        <p>Entwicklung einer modernen und responsiven Landingpage zur Unternehmenspräsentation und
+                            Lead-Generierung. Der Fokus lag auf ansprechendem Design, klarer Struktur und optimierter
+                            Benutzerführung.
+                        </p>
+                    </div>
+                    <div class="contentRow">
+                        <h4>Aufgaben:</h4>
+                    </div>
+                    <div class="contentRow">
+                        <p>• Gestaltung von Designs und Layouts in Figma<br>
+                            • Umsetzung der responsiven Benutzeroberfläche und Animationen mit HTML, CSS und JavaScript.
+                    </div>
+                </section>
+
+                <section class="contentScreenshots">
+                    <img src="new_2mt_1.png" alt="Projekt Screenshot" class="contentScreenshot">
+                    <img src="new_2mt_2.png" alt="Projekt Screenshot" class="contentScreenshot">
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="sheetContent">
+        <header class="pageHeader">
+            <img src="resumeHead.jpg" alt="Header Background"
+                 class="pageHeaderBackground">
+            <div class="pageHeaderContent">
+                <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="pageMain">
+            <div class="pageContent pageProject">
+                <section class="contentGroup">
+                    <h3 class="contentHead">2022 | Dynamische Lofi-Musikwebsite mit sanften Animationen
+                        {{ icons.folder|raw }}
+                    </h3>
+                    <div class="contentRow">
+                        <p>Erstellung einer ästhetisch ansprechenden, statischen Website zur Präsentation von
+                            Lofi-Musik. Der Fokus lag auf einem modernen Design, sanften Animationen und einer
+                            angenehmen Benutzererfahrung.
+                        </p>
+                    </div>
+                    <div class="contentRow">
+                        <h4>Aufgaben:</h4>
+                    </div>
+                    <div class="contentRow">
+                        <p>• Entwicklung des Backends mit Node.js und Anbindung an einen JSON-Server<br>
+                            • Umsetzung einer responsiven Benutzeroberfläche mit Animationen und dynamischen
+                            Hintergründen.<br>
+                            • Implementierung interaktiver Funktionalitäten mit JavaScript
+                    </div>
+                </section>
+
+                <section class="contentScreenshots">
+                    <img src="lofi_1.png" alt="Projekt Screenshot" class="contentScreenshot">
+                    <img src="lofi_2.png" alt="Projekt Screenshot" class="contentScreenshot">
+                </section>
+            </div>
+        </div>
+    </div>
 </main>
 </body>
 </html>
