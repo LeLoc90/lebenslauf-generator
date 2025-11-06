@@ -280,7 +280,9 @@
             <div class="pageHeaderContent">
                 <div class="pageHeaderText">
                     <p class="pageHeaderName">{{ formData.name }}</p>
-                    <p class="pageHeaderPosition">Frontend Developer</p>
+                    {% if formData.positions is not empty %}
+                        <p class="pageHeaderPosition">{{ formData.positions|join(' | ') }}</p>
+                    {% endif %}
                 </div>
 
             </div>
@@ -289,7 +291,7 @@
         <div class="pageMain">
             <div class="pageContent">
                 <section class="contentGroup">
-                    <h3 class="contentHead">Personal Profile
+                    <h3 class="contentHead">Persönliches Profil
                         {{ icons.user|raw }}
                     </h3>
                     {% if formData.schoolGraduation is not empty %}
@@ -301,30 +303,30 @@
 
                     {% if formData.trainingGraduation is not empty %}
                         <div class="contentRow">
-                            <span>Education:</span>
-                            <span>Apprenticeship as an IT specialist for application development</span>
+                            <span>Ausbildung:</span>
+                            <span>{{ formData.trainingGraduation }}</span>
                         </div>
                     {% endif %}
 
                     <div class="contentRow">
-                        <span>Project Experience:</span>
-                        <span>Since 2023</span>
+                        <span>Projekterfahrung:</span>
+                        <span>seit 2023</span>
                     </div>
 
                     {% if formData.positions is not empty %}
                         <div class="contentRow">
-                            <span>Current Position:</span>
-                            <span>Frontend Developer</span>
+                            <span>Derzeitige Tätigkeit:</span>
+                            <span>{% for position in formData.positions %}{{ position }}{% if not loop.last %}, {% endif %}{% endfor %}</span>
                         </div>
                     {% endif %}
                 </section>
 
                 <section class="contentGroup">
-                    <h3 class="contentHead">Skills
+                    <h3 class="contentHead">Fähigkeiten
                         {{ icons.skill|raw }}
                     </h3>
 
-                    <h5 class="contentSubhead">Programming Languages</h5>
+                    <h5 class="contentSubhead">Programmiersprachen</h5>
                     <ul class="contentList">
                         {% if formData.programmingLanguages is not empty %}
                             {% for item in formData.programmingLanguages %}
@@ -333,7 +335,7 @@
                         {% endif %}
                     </ul>
 
-                    <h5 class="contentSubhead">Toolset</h5>
+                    <h5 class="contentSubhead">Handwerkszeug</h5>
                     <ul class="contentList">
                         {% if formData.tools is not empty %}
                             {% for item in formData.tools %}
@@ -343,36 +345,35 @@
                     </ul>
                 </section>
                 <section class="contentGroup">
-                    <h3 class="contentHead">Projects
+                    <h3 class="contentHead">Projekte auf Folgeseiten
                         {{ icons.doubleArrow|raw }}
                     </h3>
-                    <p style="margin-top: 1rem">See next pages for detailed projects</p>
                 </section>
             </div>
             <aside class="sidebar">
 
                 <img src="{{ profilePhoto }}" class="sidebarImage" alt="Foto">
 
-                <p class="sidebarHeading">Personal Information</p>
+                <p class="sidebarHeading">Persönliche Daten</p>
                 <p class="sidebarText">Name: {{ formData.name }}</p>
-                <p class="sidebarText">Date of Birth: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>
+                <p class="sidebarText">Geburtstag: {{ formData.birthdate|date('d.m.Y')|default('') }}</p>
 
                 <div class="sidebarLanguages">
-                    <p class="sidebarText">German</p>
-                    <div class="sidebarLanguageLevel">
-                        {% for i in 1..10 %}
-                            <span class="{{ loop.index <= 8 ? 'active' : '' }}"></span>
+                    {% if formData.languages is not empty %}
+                        {% for lang in formData.languages %}
+                            <p class="sidebarText">{{ lang.title|default('') }}</p>
+                            <div class="sidebarLanguageLevel">
+                                {% set level = lang.level|default(0) %}
+                                {% for i in 1..10 %}
+                                    <span class="{{ loop.index <= level * 2 ? 'active' : '' }}"></span>
+                                {% endfor %}
+                            </div>
                         {% endfor %}
-                    </div>
-                    <p class="sidebarText">English</p>
-                    <div class="sidebarLanguageLevel">
-                        {% for i in 1..10 %}
-                            <span class="{{ loop.index <= 8 ? 'active' : '' }}"></span>
-                        {% endfor %}
-                    </div>
+                    {% endif %}
                 </div>
 
-                <p class="sidebarHeading" style="margin-top:1.5rem">Certifications</p>
+                <p class="sidebarHeading" style="margin-top:1.5rem">Auszeichnungen</p>
+
                 <div class="sidebarBadges">
                     <img src="PSMI.png" alt="PSM Badge"
                          class="sidebarBadge">
@@ -389,10 +390,9 @@
                  class="pageHeaderBackground">
             <div class="pageHeaderContent">
                 <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
-                    <p class="pageHeaderName" style="font-size: 1.5rem">Since 2024</p>
-                    <p class="pageHeaderName" style="font-size: 1.5rem">|</p>
-                    <p class="pageHeaderName" style="font-size: 1.5rem">Web Applications in Microservices
-                        Architecture</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Seit 2024</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">|</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Webanwendungen in Microservices</p>
                 </div>
             </div>
         </header>
@@ -400,25 +400,26 @@
         <div class="pageMain">
             <div class="pageContent pageProject">
                 <section class="contentGroup">
-                    <h4 class="contentHead">Project Description
+                    <h4 class="contentHead">Projektbeschreibung
                         {{ icons.folder|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>Development of modern software solutions for a municipal job center.<br><br>
-                            Designed and implemented multiple applications, including an online appointment management
-                            system, a PDF generation API, a digital application service, and a centralized incoming mail
-                            system, each integrated with various REST APIs.<br><br>
-                            The solutions are based on a microservices architecture ensuring high maintainability,
-                            scalability, and extensibility. The focus was on the stable integration of existing systems,
-                            automated data processing, and optimizing the user experience within an administrative
-                            environment.<br><br>
-                            Duration: Ongoing
+                        <p>Entwicklung moderner Softwarelösungen für ein kommunales Jobcenter.<br><br>
+                            Konzeption und Umsetzung mehrerer Anwendungen, darunter ein
+                            Online-Terminverwaltungssystem, eine PDF-Generierung-API, ein digitaler
+                            Antragsservice sowie ein zentrales Posteingangssystem, jeweils mit Anbindung an
+                            verschiedene REST-APIs.<br><br>
+                            Die Lösungen basieren auf einer Microservice-Architektur, die eine hohe Wartbarkeit,
+                            Skalierbarkeit und Erweiterbarkeit gewährleistet.
+                            Der Fokus lag auf der stabilen Integration bestehender Systeme, der automatisierten
+                            Datenverarbeitung und der optimierten Nutzererfahrung im Verwaltungsumfeld.<br><br>
+                            Dauer des Einsatzes: bis Heute fortlaufend
                         </p>
                     </div>
                 </section>
 
                 <section class="contentGroup">
-                    <h4 class="contentHead">Technologies
+                    <h4 class="contentHead">Technologien
                         {{ icons.chart|raw }}
                     </h4>
                     <ul class="contentList">
@@ -427,7 +428,7 @@
                         <li class="contentItem">React</li>
                         <li class="contentItem">JavaScript</li>
                         <li class="contentItem">HTML5 / CSS3</li>
-                        <li class="contentItem">Rest API</li>
+                        <li class="contentItem">Rest-Schnittstellen</li>
                         <li class="contentItem">Atlassian Stack</li>
                         <li class="contentItem">Docker</li>
                         <li class="contentItem">Git</li>
@@ -436,13 +437,16 @@
                 </section>
 
                 <section class="contentGroup">
-                    <h4 class="contentHead">Responsibilities
+                    <h4 class="contentHead">Aufgabenbereich
                         {{ icons.checklist|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>• Designed and developed frontend of projects integrated with REST APIs<br>
-                            • Implemented scalable and reusable UI components<br>
-                            • Debugged, optimized, and enhanced UI/UX to improve application performance</p>
+                        <p>• Konzeption und Entwicklung des Frontends in Softwareprojekten durch die Anbindung
+                            an
+                            APIs.<br>
+                            • Implementierung der skalierbaren und wiederverwendbaren Komponenten.<br>
+                            • Debug, Optimierung, und Weiterentwicklung von UI/UX zur Steigerung der
+                            Performance.</p>
                     </div>
                 </section>
 
@@ -451,9 +455,8 @@
                         {{ icons.flow|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>Agile project management following the Scrum methodology.
-                            4-week sprints with regular customer feedback meetings (Sprint Reviews) and Product
-                            Backlog Refinements.</p>
+                        <p>Agiles Projektmanagement nach Scrum. 4-wöchige Sprints mit regelmäßigen Feedback
+                            Treffen mit den Kunden (Sprint Review) und Product-Backlog-Reﬁnements.</p>
                     </div>
                 </section>
             </div>
@@ -468,7 +471,7 @@
                 <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
                     <p class="pageHeaderName" style="font-size: 1.75rem">2023</p>
                     <p class="pageHeaderName" style="font-size: 1.75rem">|</p>
-                    <p class="pageHeaderName" style="font-size: 1.75rem">Ticket Management Application</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem"> Anwendung zur Ticketverwaltung</p>
                 </div>
             </div>
         </header>
@@ -476,43 +479,45 @@
         <div class="pageMain">
             <div class="pageContent pageProject">
                 <section class="contentGroup">
-                    <h4 class="contentHead">Project Description
+                    <h4 class="contentHead">Projektbeschreibung
                         {{ icons.folder|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>Development of a portal for managing support tickets within a call center, triggered by
-                            incoming emails or phone calls.
-                            The backend follows a microservices architecture to ensure high maintainability and
-                            extensibility, implemented through Symfony-based APIs responsible for managing and providing
-                            the required data to the frontend.
-                            The frontend is built with React and utilizes React Redux for state
-                            management and React Router DOM for routing.
+                        <p>Entwicklung eines Portals zur Verwaltung von Tickets innerhalb eines Callcenters
+                            bei eingehenden Mails oder Anrufen. Das Backend besteht hierbei aus einer
+                            Microservices-Struktur, um eine hohe Wartbarkeit und Erweiterbarkeit zu gewährleisten.
+                            Diese wird in auf Symfony basierenden APIs umgesetzt, welche sich um die Verwaltung und
+                            Bereitstellung der entsprechenden Daten an das Frontend kümmert. Das
+                            Frontend basiert auf einer React Anwendung und verwendet unter anderem React
+                            Redux(-Saga) für State Management und React Router DOM für das Routing.
                         </p>
                     </div>
                 </section>
 
                 <section class="contentGroup">
-                    <h4 class="contentHead">Technologies
+                    <h4 class="contentHead">Technologien
                         {{ icons.chart|raw }}
                     </h4>
                     <ul class="contentList">
+                        <li class="contentItem">Symfony</li>
+                        <li class="contentItem">PHP</li>
                         <li class="contentItem">HTML5 / CSS3</li>
                         <li class="contentItem">JavaScript/TypeScript</li>
                         <li class="contentItem">React</li>
-                        <li class="contentItem">React Query</li>
                         <li class="contentItem">Shadcn/ui</li>
-                        <li class="contentItem">Rest API</li>
+                        <li class="contentItem">Rest-Schnittstellen</li>
                         <li class="contentItem">Atlassian Stack</li>
+
                     </ul>
                 </section>
 
                 <section class="contentGroup">
-                    <h4 class="contentHead">Responsibilities
+                    <h4 class="contentHead">Aufgabenbereich
                         {{ icons.checklist|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>• Designed and developed the UI/UX workflow<br>
-                            • Implemented the frontend using TypeScript and React
+                        <p>• Konzeption und Entwicklung des UI/UX Workﬂow.<br>
+                            • Entwicklung des Frontends in TypeScript.
                     </div>
                 </section>
 
@@ -521,9 +526,8 @@
                         {{ icons.flow|raw }}
                     </h4>
                     <div class="contentRow">
-                        <p>Agile project management following the Scrum methodology.
-                            1-week sprints with regular customer feedback sessions (Sprint Reviews) and Product
-                            Backlog Refinements.</p>
+                        <p>Agiles Projektmanagement nach Scrum. 1-wöchige Sprints mit regelmäßigen Feedback
+                            Treffen mit den Kunden (Sprint Review) und Product-Backlog-Reﬁnements.</p>
                     </div>
                 </section>
             </div>
@@ -537,7 +541,7 @@
                  class="pageHeaderBackground">
             <div class="pageHeaderContent">
                 <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
-                    <p class="pageHeaderName" style="font-size: 1.75rem">Other Projects</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
                 </div>
             </div>
         </header>
@@ -545,22 +549,23 @@
         <div class="pageMain">
             <div class="pageContent pageProject">
                 <section class="contentGroup">
-                    <h3 class="contentHead">2025 | Resume Generator
+                    <h3 class="contentHead">2025 | Lebenslauf-Generator
                         {{ icons.folder|raw }}
                     </h3>
                     <div class="contentRow">
-                        <p>Built a web-based platform that enables users to manage personal
-                            data and generate professional PDF resumes from predefined templates.
+                        <p>Entwicklung einer webbasierten Anwendung zur Erfassung,
+                            Verwaltung von Lebenslaufdaten und PDF-Generierung mit vordefinierter
+                            Lebenslauf-Vorlagen.
                         </p><br>
                     </div>
                     <div class="contentRow">
-                        <h4>Responsibilities:</h4>
+                        <h4>Aufgaben:</h4>
                     </div>
                     <div class="contentRow">
-                        <p>• Designed layouts and UI concepts in Figma<br>
-                            • Developed a full-stack web application using Symfony, PHP, JavaScript, HTML/CSS, and
-                            PostgreSQL<br>
-                            • Implemented a user-friendly interface and structured data management system
+                        <p>• Gestaltung von Designs und Layouts in Figma.<br>
+                            • Entwicklung einer Fullstack-Anwendung mit Symfony, PHP, JavaScript, HTML/CSS und
+                            PostgreSQL.<br>
+                            • Umsetzung einer benutzerfreundlichen Oberfläche und strukturierten Datenverwaltung.
                     </div>
                 </section>
 
@@ -578,7 +583,7 @@
                  class="pageHeaderBackground">
             <div class="pageHeaderContent">
                 <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
-                    <p class="pageHeaderName" style="font-size: 1.75rem">Other Projects</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
                 </div>
             </div>
         </header>
@@ -586,22 +591,21 @@
         <div class="pageMain">
             <div class="pageContent pageProject">
                 <section class="contentGroup">
-                    <h3 class="contentHead">2023 | Landing page
-
+                    <h3 class="contentHead">2023 | Landingpage
                         {{ icons.folder|raw }}
                     </h3>
                     <div class="contentRow">
-                        <p>Development of a modern, responsive landing page for corporate presentation and lead
-                            generation. Focused on clean design, clear structure, and smooth animations for an
-                            engaging user experience.
+                        <p>Entwicklung einer modernen und responsiven Landingpage zur Unternehmenspräsentation und
+                            Lead-Generierung. Der Fokus lag auf ansprechendem Design, klarer Struktur und optimierter
+                            Benutzerführung.
                         </p>
                     </div>
                     <div class="contentRow">
-                        <h4>Responsibilities:</h4>
+                        <h4>Aufgaben:</h4>
                     </div>
                     <div class="contentRow">
-                        <p>• Designed layouts and visual concepts in Figma<br>
-                            • Implemented a responsive UI and animations using HTML, CSS, and JavaScript
+                        <p>• Gestaltung von Designs und Layouts in Figma<br>
+                            • Umsetzung der responsiven Benutzeroberfläche und Animationen mit HTML, CSS und JavaScript.
                     </div>
                 </section>
 
@@ -619,7 +623,7 @@
                  class="pageHeaderBackground">
             <div class="pageHeaderContent">
                 <div class="pageHeaderText" style="padding-top: 1rem; padding-bottom: 1rem">
-                    <p class="pageHeaderName" style="font-size: 1.75rem">Other Projects</p>
+                    <p class="pageHeaderName" style="font-size: 1.75rem">Weitere Projekte</p>
                 </div>
             </div>
         </header>
@@ -627,21 +631,23 @@
         <div class="pageMain">
             <div class="pageContent pageProject">
                 <section class="contentGroup">
-                    <h3 class="contentHead">2022 | Dynamic Lofi Music Website with smooth Animations
+                    <h3 class="contentHead">2022 | Dynamische Lofi-Musikwebsite mit sanften Animationen
                         {{ icons.folder|raw }}
                     </h3>
                     <div class="contentRow">
-                        <p>Created a visually engaging static website to showcase Lofi music, emphasizing modern design,
-                            smooth animations, and an enjoyable user experience.
+                        <p>Erstellung einer ästhetisch ansprechenden, statischen Website zur Präsentation von
+                            Lofi-Musik. Der Fokus lag auf einem modernen Design, sanften Animationen und einer
+                            angenehmen Benutzererfahrung.
                         </p>
                     </div>
                     <div class="contentRow">
-                        <h4>Responsibilities:</h4>
+                        <h4>Aufgaben:</h4>
                     </div>
                     <div class="contentRow">
-                        <p>• Developed the backend using Node.js and connected it to a JSON server<br>
-                            • Built a responsive UI with animations and dynamic backgrounds<br>
-                            • Implemented interactive features using JavaScript
+                        <p>• Entwicklung des Backends mit Node.js und Anbindung an einen JSON-Server<br>
+                            • Umsetzung einer responsiven Benutzeroberfläche mit Animationen und dynamischen
+                            Hintergründen.<br>
+                            • Implementierung interaktiver Funktionalitäten mit JavaScript
                     </div>
                 </section>
 
